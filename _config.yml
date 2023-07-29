@@ -108,7 +108,7 @@ deploy:
 
 search:
   path: search.xml
-  field: post # post, page, all
+  field: all # post, page, all
   content: true # include all content of the post
 
 markdown:
