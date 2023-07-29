@@ -1,4 +1,8 @@
 ---
+title: $filedir
+date: 2022-8-15
+---
+---
 title: git-学习
 tag: git
 category:

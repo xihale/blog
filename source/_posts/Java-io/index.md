@@ -1,4 +1,8 @@
 ---
+title: $filedir
+date: 2022-8-15
+---
+---
 title: Java-io
 tag: java
 category: [编程,java]

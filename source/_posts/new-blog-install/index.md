@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 ---
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 title: new blog install
 date: 2023-05-24 17:17:44
 tags:

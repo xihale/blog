@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 ---
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 title: aur publish
 date: 2023-07-16 10:50:22
 tags: aur arch

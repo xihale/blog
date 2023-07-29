@@ -1,3 +1,7 @@
+---
+title: $filedir
+date: 2022-8-15
+---
 利用 `performance` 接口即可
 
 `performance.getEntries()`

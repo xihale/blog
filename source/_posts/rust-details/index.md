@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 ---
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 title: rust-details
 date: 2023-06-07 21:18:42
 tags: rust

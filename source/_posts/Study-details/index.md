@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 ---
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 title: Study details
 date: 2023-07-05 18:16:20
 tags: study

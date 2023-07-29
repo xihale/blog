@@ -1,4 +1,8 @@
 ---
+title: $filedir
+date: 2022-8-15
+---
+---
 title: python-蓝凑云直链解析
 tags: python
 category: [编程,python]

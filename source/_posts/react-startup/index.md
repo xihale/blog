@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 ---
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 title: react-startup
 date: 2023-06-18 12:36:42
 tags:
