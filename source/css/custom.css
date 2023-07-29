@@ -1,0 +1,43 @@
+#footer {
+    background: rgba(255,255,255,.15);
+    color: #000;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    backdrop-filter: saturate(100%) blur(5px)
+}
+
+#footer::before {
+    background: rgba(255,255,255,.15)
+}
+
+#footer #footer-wrap {
+    color: var(--font-color)
+}
+
+#footer #footer-wrap a {
+    color: var(--font-color)
+}
+
+@font-face{
+    font-family:"Segoe UI";
+    src:url('/fonts/Segoe UI.ttf');
+}
+@font-face{
+  font-family:"FiraCode-Light";
+  src:url('/fonts/FiraCode-Light.ttf');
+}
+@font-face{
+  font-family:"FiraCode-Medium";
+  src:url('/fonts/FiraCode-Medium.ttf');
+}
+@font-face{
+  font-family:"HanyiSummerPalace";
+  src:url('/fonts/HanyiSummerPalace.ttf');
+}
+.recent-post-item{
+    max-height: 360px;
+}
+*::selection{
+    background-color: rgba(93, 166, 255, 0.6);;
+    color: auto;
+}
