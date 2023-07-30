@@ -1,6 +1,6 @@
 ---
 title: xmysql-一个简单的mysql类
-tags: c/c++
+tags: cpp
 categories: 编程
 date: 2021-08-28 08:48:42
 ---
@@ -15,7 +15,7 @@ Bug肯定是还有的,不过正常使用应该没啥问题了
 
 #### xmysql
 
-```c++
+```cpp
 #ifndef XMYSQL
 #define XMYSQL
 
@@ -44,7 +44,7 @@ namespace xihale{
 
 #### xmysql.cpp
 
-```c++
+```cpp
 #include <iostream>
 #include "xmysql.h"
 using namespace xihale;

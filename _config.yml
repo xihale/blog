@@ -44,7 +44,7 @@ post_asset_folder: true
 relative_link: false
 future: true
 highlight:
-  enable: true
+  enable: false
   line_number: true
   auto_detect: false
   tab_replace: '  '
@@ -55,6 +55,9 @@ prismjs:
   preprocess: true
   line_number: true
   tab_replace: '  '
+shiki:
+  enable: false
+  theme: dark-plus
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')

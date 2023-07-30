@@ -26,7 +26,7 @@ fn main(){
 
 不难看出，这里会报错: 
 
-```Rust
+```rust
 error[E0502]: cannot borrow `a` as immutable because it is also borrowed as mutable
 33 |     let p: &mut [u8]=&mut a[2..=5];
    |                           - mutable borrow occurs here

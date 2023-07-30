@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@renbaoshuo/markdown-it-katex": "renbaoshuo/markdown-it-katex",
+    "deasync": "^0.1.28",
     "hexo": "^6.3.0",
     "hexo-asset-img": "git://github.com/yiyungent/hexo-asset-img.git",
     "hexo-deployer-git": "^4.0.0",
@@ -27,9 +28,10 @@
     "hexo-renderer-stylus": "^3.0.0",
     "hexo-server": "^3.0.0",
     "hexo-theme-landscape": "^1.0.0",
-    "hexo-util": "^3.0.1",
+    "hexo-util": "^3.1.0",
     "hexo-wordcount": "^6.0.1",
-    "hexo-xencrypt": "^1.0.2",
+    "hexo-xencrypt": "^2.0.1",
+    "hexo-shiki": "^0.0.1",
     "katex": "^0.16.8",
     "markdown-it-footnote": "^3.0.3",
     "markdown-it-ins": "^3.0.1",
@@ -37,6 +39,6 @@
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "vanilla-lazyload": "^17.8.3"
+    "vanilla-lazyload": "^17.8.4"
   }
 }
