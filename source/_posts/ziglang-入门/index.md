@@ -25,7 +25,28 @@ shiki:
 答案见其中的 `patch`
 ~~我补充完的版本(Async 那里不知道是否正确): [ziglings-mine](https://github.com/xihale/ziglings-mine)~~
 
-## 刨析 Futures
+## 重要
+
+### Builtin functions
+{% note info modern %}
+首先,所有的 `builtin functions` 都遵循原则: 使用 `@` 前缀
+同时, 很多都有使用 `comptime` 变量
+{% endnote %}
+
+#### `@addrSpaceCast`
+```zig
+@addrSpaceCast(ptr: anytype) anytype
+```
+{% note info modern %}
+作用: 将指针从一个地址空间转换为另一个地址空间。(根据结果类型推断)
+注意: 此强制转换可能是无操作、复杂操作或非法。
+如果强制转换是合法的，则生成的指针指向与指针操作数相同的内存位置。在同一地址空间之间强制转换指针始终有效。
+{% endnote %}
+
+
+
+
+## 归纳 Futures
 
 {% blockquote %}
 没有意外情况的话，按照 [ziglearn](https://ziglearn.org/) 的叙述顺序来讲

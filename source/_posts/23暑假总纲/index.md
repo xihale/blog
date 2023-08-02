@@ -138,3 +138,109 @@ date: 2023-07-11 16:04:29
 <!-- endtab -->
 
 {% endtabs %}
+<<<<<<< Updated upstream
+=======
+
+### {% label 7.12 purple %}
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+早上:
+- [x] {% label 7:40 blue %} 前到达新家
+- [x] 数学专题*2
+- [ ] 数独算法
+- [x] 化学专题*1
+- [ ] 数独算法
+下午:
+- [ ] 数学专题*2
+
+<!-- tab 回顾 -->
+牙疼，所以数学差一点写完，明天补
+<!-- endtab -->
+
+{% endtabs %}
+
+### {% label 7.13 purple %}
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+早上:
+- [x] 数学专题*1
+- [ ] 化学专题*2
+下午:
+- [ ] 英语专题*2
+- [ ] 一化儿-复习有机
+
+<!-- tab 回顾 -->
+持续三天的牙齿修复以及休息开始了...
+<!-- endtab -->
+
+{% endtabs %}
+
+### {% label 7.15 purple %}
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+早上:
+- [x] 化学专题*2
+下午:
+和TJ出去玩
+<!-- tab 回顾 -->
+逛得还算开心，至少出来走走也比在家里躺着要快乐一些!
+<!-- endtab -->
+
+{% endtabs %}
+
+### {% label 7.17 purple %}
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+早上:
+- [x] 英语专题*2
+下午:
+- [x] 生物专题*3
+- [x] 英语专题*1
+晚上:
+- [ ] 英语专题*1
+- [ ] 生物专题*1
+<!-- tab 回顾 -->
+
+<!-- endtab -->
+
+{% endtabs %}
+
+### {% label 7.18~7.31 purple %}
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+杂七杂八
+<!-- tab 回顾 -->
+这些天,中间断了几天就把这事给忘了.
+还能怎么办呢? 只好是重新开始了!
+<!-- endtab -->
+
+{% endtabs %}
+
+{% note info modern %}
+我发现只写学习上的内容不足以提起我对这个东西的兴趣,所以加上一些编程上的东西!
+{% endnote %}
+
+### {% label 8.1 purple %}
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+1. `Crafting Interpreters`
+  - [ ] `A Map of the Territory`
+  - [ ] `The Lox Language`
+2. 学业
+  1. 数学
+  - [ ] 向量基本运算
+  - [ ] 向量数量积
+  2. 化学
+  - [ ] 一化儿-视频<sup>+</sup>
+<!-- tab 回顾 -->
+
+<!-- endtab -->
+
+{% endtabs %}
+>>>>>>> Stashed changes
