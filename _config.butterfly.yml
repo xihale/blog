@@ -14,8 +14,8 @@ menu:
   时光机: /archives/ || fas fa-archive
   标签: /tags/ || fas fa-tags
   分类: /categories/ || fas fa-folder-open
-  # 杂页||fas fa-list:
-    # 暑假总纲: /23暑假总纲/ || fas fa-sun
+  杂页||fas fa-list:
+    暑假总纲: /23暑假总纲/ || fas fa-sun
   # Home: / || fas fa-home
   # Archives: /archives/ || fas fa-archive
   # Tags: /tags/ || fas fa-tags
