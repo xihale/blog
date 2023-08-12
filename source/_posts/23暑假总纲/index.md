@@ -8,6 +8,30 @@ date: 2023-07-11 16:04:29
 
 ## Plans
 
+
+### {% label 8.4 purple %}
+
+{% tabs T/R %}
+
+<!-- tab 任务 -->
+1. Tarjan
+    - [x] 受欢迎的牛 G
+    - [ ] Network
+2. 最短路
+    - [x] 寻找道路
+    - [ ] Intervals
+    - [ ] 加工零件
+    - [ ] Milk Pumping G
+<!-- endtab -->
+<!-- tab 回顾 -->
+大失败, 几乎调试了一个下午&&晚上的 `受欢迎的牛`.
+最后发现是没有处理好出栈的时间节点
+
+不过好在晚上还是把 寻找道路一起调试完了!
+<!-- endtab -->
+
+{% endtabs %}
+
 ### {% label 8.1 purple %}
 
 {% note info modern %}

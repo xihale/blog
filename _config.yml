@@ -56,8 +56,8 @@ prismjs:
   line_number: true
   tab_replace: '  '
 shiki:
-  enable: false
-  theme: dark-plus
+  enable: true
+  theme: one-dark-pro
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')

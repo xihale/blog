@@ -245,7 +245,7 @@ aside:
       link: https://github.com/xihale
   card_announcement:
     enable: true
-    content: 正在研究 C++ 网络和协程
+    content: 杂学中...
   card_recent_post:
     enable: false
     limit: 5 # if set 0 will show all

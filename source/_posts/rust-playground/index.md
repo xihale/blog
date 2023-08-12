@@ -89,7 +89,7 @@ mdbook serve
 {% note warning simple %}
 如果 `mdbook` 运行不成功，可能是 `env` 没有设置好，运行以下命令即可  
 ```bash
-echo "export PATH=$HOME/.cargo/bin/:$PATH" > ~/.bashrc
+echo "export PATH=$HOME/.cargo/bin/:\$PATH" >> ~/.zshrc
 ```
 {% endnote %}
 
