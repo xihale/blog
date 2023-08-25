@@ -117,9 +117,9 @@ search:
 markdown:
     plugins:
       - '@renbaoshuo/markdown-it-katex'
-      # - 'markdown-it-task-lists'
-      # - 'markdown-it-footnote'
-      # - 'markdown-it-ins'
-      # - 'markdown-it-mark'
-      # - 'markdown-it-sub'
-      # - 'markdown-it-sup'
+      - 'markdown-it-task-lists'
+      - 'markdown-it-footnote'
+      - 'markdown-it-ins'
+      - 'markdown-it-mark'
+      - 'markdown-it-sub'
+      - 'markdown-it-sup'

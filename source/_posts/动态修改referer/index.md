@@ -1,11 +1,7 @@
 ---
-title: $filedir
 date: 2022-8-15
----
----
 title: 动态修改Referer欺骗服务器
-tag: electron
-category: 编程
+tag: electron referer
 ---
 
 ## 前言

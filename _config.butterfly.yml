@@ -244,7 +244,7 @@ aside:
       text: Follow Me
       link: https://github.com/xihale
   card_announcement:
-    enable: true
+    enable: false
     content: 求索  记录  传播
   card_recent_post:
     enable: false
@@ -252,7 +252,7 @@ aside:
     sort: date # date or updated
     sort_order: # Don't modify the setting unless you know how it works
   card_categories:
-    enable: true
+    enable: false
     limit: 8 # if set 0 will show all
     expand: none # none/true/false
     sort_order: # Don't modify the setting unless you know how it works

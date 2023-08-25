@@ -8,7 +8,6 @@ date: 2023-07-11 16:04:29
 
 ## Plans
 
-
 ### {% label 8.4 purple %}
 
 {% tabs T/R %}
@@ -162,8 +161,6 @@ date: 2023-07-11 16:04:29
 <!-- endtab -->
 
 {% endtabs %}
-<<<<<<< Updated upstream
-=======
 
 ### {% label 7.12 purple %}
 {% tabs T/R %}
@@ -267,4 +264,3 @@ date: 2023-07-11 16:04:29
 <!-- endtab -->
 
 {% endtabs %}
->>>>>>> Stashed changes

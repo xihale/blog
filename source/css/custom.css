@@ -58,3 +58,7 @@
         display:none!important;
     }
 }
+
+.task-list-item{
+  list-style: none;
+}
