@@ -2,7 +2,6 @@
 date: 2022-02-26
 title: 自动 mount
 tag: linux
-category: linux
 ---
 
 ## 序

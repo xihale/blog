@@ -1,13 +1,15 @@
 ---
 date: 2021-11-20
 title: Onedrive5T(E5的获取)
-tag: 
-- [白嫖]
-- [Onedrive]
-categories: 白嫖 Onedrive
+tag: onedrive
 top_img: /images/onedrive.png
 cover: /images/onedrive.png
 ---
+
+{% note danger modern %}
+大概率无用了, 请另寻他法
+{% endnote %}
+
 ## 前言
 
 Office365开发版E5是为开发人员提供的，是微软的官方活动，申请Office 365开发者计划可以获得为期3个月的免费Office365 E5。 而E5计划就包含了25个用于所有Office 365 应用的许可证。如果嫌正版office365贵的话，这可是你免费获取office的好机会了！

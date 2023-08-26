@@ -39,6 +39,7 @@
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "vanilla-lazyload": "^17.8.4"
+    "vanilla-lazyload": "^17.8.4",
+    "hexo-hotreloader": ">=0.0.1"
   }
 }

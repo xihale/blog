@@ -1,5 +1,5 @@
 ---
-title: $filedir
+title: JavaScript监控网页网络请求
 date: 2022-8-15
 ---
 利用 `performance` 接口即可

@@ -1,7 +1,9 @@
 ---
 title: rust-playground
 date: 2023-06-03 20:28:54
-tags: rust cargo
+tags: 
+  - rust
+  - cargo
 ---
 
 ## 前言

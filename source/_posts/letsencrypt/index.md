@@ -1,9 +1,7 @@
 ---
 date: 2021-11-14
 title: letsencrypt 证书生成
-tags: letsencrypt
-categories:
-- [letsencrypt]
+tags: ssl
 ---
 ## 前言
 `letsencrypt`是一个免费的`ssl`证书机构

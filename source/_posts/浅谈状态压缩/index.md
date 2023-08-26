@@ -1,7 +1,11 @@
 ---
 title: 浅谈状态压缩
 date: 2023-08-25 08:56:54
-tags: learn dp optimize 状态压缩
+tags: 
+  - learn
+  - dp
+  - optimize
+category: oi
 ---
 
 ## Preface

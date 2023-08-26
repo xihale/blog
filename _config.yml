@@ -123,3 +123,6 @@ markdown:
       - 'markdown-it-mark'
       - 'markdown-it-sub'
       - 'markdown-it-sup'
+
+hotreloader:
+  enable: true

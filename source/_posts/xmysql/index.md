@@ -1,7 +1,6 @@
 ---
 title: xmysql-一个简单的mysql类
 tags: cpp
-categories: 编程
 date: 2021-08-28 08:48:42
 ---
 

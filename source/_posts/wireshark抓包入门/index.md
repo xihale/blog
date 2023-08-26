@@ -1,8 +1,7 @@
 ---
 date: 2022-02-06
 title: wireshark抓包入门
-tag: wireshark
-category: 网络
+tag: network
 ---
 
 ## 序

@@ -1,13 +1,7 @@
 ---
-title: $filedir
 date: 2022-8-15
----
----
 title: Electron
 tags: electron
-categories: 
-- [编程]
-- [桌面软件]
 ---
 
 ## 前言

@@ -1,7 +1,9 @@
 ---
 date: 2021-12-04
 title: 初学VB
-tag: learn vb
+tag: 
+  - learn
+  - vb
 ---
 
 # 前言

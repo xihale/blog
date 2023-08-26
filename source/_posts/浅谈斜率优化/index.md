@@ -1,7 +1,11 @@
 ---
 title: 浅谈斜率优化
 date: 2023-08-24 09:43:41
-tags: learn dp optimize
+tags: 
+  - learn
+  - dp
+  - optimize
+category: oi
 katex:
   enable: true
 ---

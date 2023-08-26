@@ -1,7 +1,9 @@
 ---
 date: 2022-8-15
 title: 动态修改Referer欺骗服务器
-tag: electron referer
+tag: 
+  - electron
+  - referer
 ---
 
 ## 前言

@@ -2,7 +2,6 @@
 date: 2021-11-20
 title: Linux-磁盘分析
 tags: linux
-categories: linux
 ---
 
 ## 前言

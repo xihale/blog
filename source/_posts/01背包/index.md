@@ -1,8 +1,7 @@
 ---
 date: 2022-02-26
 title: 01背包问题
-tag: 动态规划
-category: 算法
+tag: dp
 hidden: true
 ---
 

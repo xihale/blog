@@ -1,7 +1,10 @@
 ---
 title: 炮兵阵地
 date: 2023-08-25 09:45:03
-tags: dp optimize 状态压缩
+tags: 
+  - dp
+  - optimize
+category: oi
 katex:
   enable: true
 ---

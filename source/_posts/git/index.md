@@ -1,13 +1,7 @@
 ---
-title: $filedir
 date: 2022-8-15
----
----
 title: git-学习
 tag: git
-category:
-- [编程]
-- [学习]
 ---
 ## 准备工作
 1. 连接你的账号

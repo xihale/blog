@@ -1,10 +1,7 @@
 ---
 date: 2022-02-07
-title: 在Linux下编译exe文件
-tag: c++
-category:
-- [编程]
-- [linux]
+title: cross compile for cpp
+tag: compile
 ---
 
 ## 序
