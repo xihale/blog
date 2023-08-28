@@ -5,7 +5,7 @@ tags:
   - learn
   - dp
   - optimize
-category: oi
+category: OI
 katex:
   enable: true
 ---

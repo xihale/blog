@@ -4,7 +4,7 @@ date: 2023-08-25 09:45:03
 tags: 
   - dp
   - optimize
-category: oi
+category: OI
 katex:
   enable: true
 ---

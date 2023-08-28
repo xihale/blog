@@ -7,7 +7,7 @@ tags:
   - kmp
   - ac
   - trie
-category: oi
+category: OI
 katex:
   enable: true
 ---
