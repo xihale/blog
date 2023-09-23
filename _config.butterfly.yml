@@ -16,6 +16,7 @@ menu:
   分类: /categories/ || fas fa-folder-open
   杂页||fas fa-list:
     暑假总纲: /23暑假总纲/ || fas fa-sun
+    番谈: /番谈/ || fas fa-comment
   # Home: / || fas fa-home
   # Archives: /archives/ || fas fa-archive
   # Tags: /tags/ || fas fa-tags
