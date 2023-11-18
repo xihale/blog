@@ -21,6 +21,10 @@ categories:
 请使用 `c++17` 以上 `Standard` 进行编译
 {% endnote %}
 
+{% note warning modern %}
+当文件多起来了, 这样使用 `thread` 大概会拖慢程序, 建议实现一个简单的负载均衡
+{% endnote %}
+
 ```cpp
 #include <iostream>
 #include <fstream>
