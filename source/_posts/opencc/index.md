@@ -2,10 +2,10 @@
 title: opencc
 date: 2023-10-28 22:22:44
 tags:
-  - opencc
-  - cpp
+  - [opencc]
+  - [cpp]
 categories:
-  - toy
+  - [toy]
 ---
 
 ## Preface

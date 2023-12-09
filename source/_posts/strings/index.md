@@ -2,11 +2,11 @@
 title: 字符串相关
 date: 2023-08-25 21:32:05
 tags:
-  - learn
-  - string
-  - kmp
-  - ac
-  - trie
+  - [learn]
+  - [string]
+  - [kmp]
+  - [ac]
+  - [trie]
 category: OI
 katex:
   enable: true

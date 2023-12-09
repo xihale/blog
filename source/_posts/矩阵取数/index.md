@@ -2,11 +2,11 @@
 title: 矩阵取数
 date: 2023-08-26 15:18:11
 tags: 
-  - interregional
-  - dp
-  - learn
+  - [interregional]
+  - [dp]
+  - [learn]
 category:
-  - OI
+  - [算法]
 katex:
   enable: true
 ---

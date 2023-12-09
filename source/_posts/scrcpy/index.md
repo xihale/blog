@@ -2,8 +2,8 @@
 title: scrcpy
 date: 2023-11-05 09:23:57
 tags:
-  - android
-  - software
+  - [android]
+  - [software]
 ---
 
 ## install

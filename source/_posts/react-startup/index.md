@@ -2,8 +2,8 @@
 title: react-startup
 date: 2023-06-18 12:36:42
 tags:
-    - react
-    - web
+    - [react]
+    - [web]
 ---
 
 # 前言

@@ -2,9 +2,9 @@
 title: 组合数学初步
 date: 2023-08-26 08:23:08
 tags: 
-  - learn
-  - math
-  - permutations
+  - [learn]
+  - [math]
+  - [permutations]
 category: math
 katex:
   enable: true

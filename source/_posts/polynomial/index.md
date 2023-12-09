@@ -1,12 +1,12 @@
 ---
 title: 浅谈多项式算法
 tags:
-  - learn
-  - polynomial
-  - fft
-  - ntt
+  - [learn]
+  - [polynomial]
+  - [fft]
+  - [ntt]
 category:
-  - [OI]
+  - [算法]
   - [math]
 katex:
   enable: true

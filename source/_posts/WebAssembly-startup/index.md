@@ -2,9 +2,9 @@
 title: WebAssembly startup
 date: 2023-08-09 20:23:01
 tags: 
-  - wasm
-  - zig
-  - learn
+  - [wasm]
+  - [zig]
+  - [learn]
 ---
 
 # Preface

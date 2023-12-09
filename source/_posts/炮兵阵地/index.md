@@ -2,8 +2,8 @@
 title: 炮兵阵地
 date: 2023-08-25 09:45:03
 tags: 
-  - dp
-  - optimize
+  - [dp]
+  - [optimize]
 category: OI
 katex:
   enable: true

@@ -2,8 +2,8 @@
 title: css details
 date: 2023-07-25 08:51:48
 tags: 
-  - css
-  - learn
+  - [css]
+  - [learn]
 ---
 
 > 以下内容全部来自 《Modern CSS Master the Key Concepts of CSS for Modern Web Development》

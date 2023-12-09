@@ -2,9 +2,9 @@
 title: linux - 安装驱动后无法启动
 date: 2023-12-09 19:03:24
 tags:
-  - drive
+  - [drive]
 categories:
-  - linux
+  - [linux]
 ---
 
 ## Preface

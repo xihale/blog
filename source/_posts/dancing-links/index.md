@@ -1,10 +1,10 @@
 ---
 title: dancing links
 tags:
-  - learn
-  - sudoku
+  - [learn]
+  - [sudoku]
 category:
-  - OI
+  - [算法]
 katex:
   enable: true
 date: 2023-08-30 07:35:55

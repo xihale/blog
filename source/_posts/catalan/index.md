@@ -2,9 +2,9 @@
 title: 浅谈 Catalan 数
 date: 2023-08-25 11:39:51
 tags: 
-  - learn
-  - math
-  - permutations
+  - [learn]
+  - [math]
+  - [permutations]
 category: math
 katex:
   enable: true

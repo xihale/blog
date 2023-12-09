@@ -2,8 +2,8 @@
 title: ziglang 入门
 date: 2023-07-27 20:38:49
 tags: 
-  - zig
-  - learn
+  - [zig]
+  - [learn]
 shiki:
   enable: true
   theme: one-dark-pro

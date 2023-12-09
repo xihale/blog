@@ -2,8 +2,8 @@
 title: rust-details
 date: 2023-10-04 14:34:21
 tags:
-  - learn
-  - rust
+  - [learn]
+  - [rust]
 ---
 
 ## Preface

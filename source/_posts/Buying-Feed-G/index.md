@@ -2,8 +2,8 @@
 title: Buying Feed G
 date: 2023-08-20 16:40:28
 tags: 
-  - learn
-  - competition
+  - [learn]
+  - [competition]
 katex:
   enable: true
 ---

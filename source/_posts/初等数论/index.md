@@ -1,11 +1,11 @@
 ---
 title: 初等数论
 tags:
-  - learn
-  - elementary
+  - [learn]
+  - [elementary]
 category:
-  - OI
-  - math
+  - [算法]
+  - [math]
 katex:
   enable: true
 date: 2023-09-23 18:45:47

@@ -2,9 +2,9 @@
 title: 来自新世界
 date: 2023-09-30 06:36:47
 tags:
-  - introspection
+  - [introspection]
 category:
-  - philosophy
+  - [philosophy]
 ---
 
 ## Preface

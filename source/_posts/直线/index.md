@@ -2,9 +2,9 @@
 title: 直线
 date: 2023-09-28 20:51:51
 tags:
-  - lines
+  - [lines]
 category:
-  - math
+  - [math]
 katex:
   enable: true
 ---

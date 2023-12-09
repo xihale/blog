@@ -2,9 +2,9 @@
 title: 线性代数笔记
 date: 2023-08-28 10:17:04
 tags:
-  - learn
+  - [learn]
 category:
-  - math
+  - [math]
 katex:
   enable: true
 ---

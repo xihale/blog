@@ -2,9 +2,9 @@
 title: 浅谈斜率优化
 date: 2023-08-24 09:43:41
 tags: 
-  - learn
-  - dp
-  - optimize
+  - [learn]
+  - [dp]
+  - [optimize]
 category: OI
 katex:
   enable: true

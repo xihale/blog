@@ -1,9 +1,9 @@
 ---
 title: 离散傅里叶
 tags:
-  - learn
+  - [learn]
 category:
-  - OI
+  - [算法]
 katex:
   enable: true
 date: 2023-09-23 19:06:49

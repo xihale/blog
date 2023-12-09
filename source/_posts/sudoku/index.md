@@ -1,9 +1,9 @@
 ---
 title: sudoku
 tags:
-  - learn
+  - [learn]
 category:
-  - OI
+  - [算法]
 katex:
   enable: true
 date: 2023-08-30 10:14:10

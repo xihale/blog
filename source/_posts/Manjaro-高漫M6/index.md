@@ -2,8 +2,8 @@
 title: Manjaro - 高漫M6
 date: 2023-11-18 20:47:35
 tags:
-  - manjaro
-  - drawing
+  - [manjaro]
+  - [drawing]
 ---
 
 ## Preface
