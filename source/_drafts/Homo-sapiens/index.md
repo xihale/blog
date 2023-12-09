@@ -2,7 +2,7 @@
 title: Homo sapiens
 # date: 2023-10-04 21:58:09
 tags:
-  - philosophy
+  - [philosophy]
 ---
 
 ## Preface

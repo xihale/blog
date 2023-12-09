@@ -2,8 +2,8 @@
 title: react-hooks
 # date: 2023-10-04 14:50:11
 tags:
-  - learn
-  - react
+  - [learn]
+  - [react]
 ---
 
 ## Preface
