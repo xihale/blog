@@ -16,7 +16,7 @@ menu:
   分类: /categories/ || fas fa-folder-open
   杂页||fas fa-list:
     暑假总纲: /23暑假总纲/ || fas fa-sun
-    番谈: /番谈/ || fas fa-comment
+    作品评论: /作品评论/ || fas fa-comment
   # Home: / || fas fa-home
   # Archives: /archives/ || fas fa-archive
   # Tags: /tags/ || fas fa-tags
@@ -652,7 +652,7 @@ tag_ui: # 留空或 index
 # Website Background (設置網站背景)
 # can set it to color or image (可設置圖片 或者 顔色)
 # The formal of image: url(http://xxxxxx.com/xxx.jpg)
-background: "linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"
+# background: "linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)"
 
 # Footer Background
 footer_bg: false
