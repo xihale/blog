@@ -1,0 +1,91 @@
+// variables
+$bg: #1b1b1b;
+$title-color: #ddcfcf;
+$desc-color: #ddcfcf;
+$ref-color: rgb(47, 218, 248);
+$radius: 8px;
+
+// Fira Code
+// @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+.xcard{
+  width: 100%;
+  max-width: 800px;
+  height: fit-content;
+  padding: 20px;
+  margin: 10px 0px;
+  box-sizing: border-box;
+  background: $bg;
+  border-radius: $radius;
+  line-height: normal;
+
+  // display: flex;
+  // flex-direction: row;
+
+  .cover{
+    width: 30%;
+    border-radius: $radius;
+    object-fit: contain; // ?
+    margin-right: 10px !important;
+    user-select: none;
+    height: fit-content;
+    float: left;
+  }
+
+  .content{
+    width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
+
+    .head{
+      font-family: 'Fira Code';
+
+      display: flex;
+      justify-content: space-between;
+
+      padding-bottom: 7px;
+
+      .title{
+        color: $title-color;
+        font-size: 2rem;
+
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .ref{
+        font-size: small;
+        align-self: flex-end;
+
+        :visited, :active{
+          color: $ref-color;
+        }
+        
+        user-select: none;
+      }
+    }
+  
+    .desc{
+      color: $desc-color;
+      font-family: monospace, 'Fira Code';
+      // margin: 10px 0px 0px 10px; // top right bottom left
+      overflow: hidden;
+      text-indent: 2rem;
+    }
+  }
+
+  ::selection{
+    background-color: saddlebrown;
+  }
+
+}
+
+body{
+  margin: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}

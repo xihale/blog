@@ -1,0 +1,62 @@
+.xcard {
+  width: 100%;
+  /* max-width: 800px; */
+  height: fit-content;
+  padding: 20px;
+  margin: 10px 0px;
+  box-sizing: border-box;
+  background: #1b1b1b;
+  border-radius: 8px;
+  line-height: normal;
+}
+.xcard .cover {
+  width: 30%;
+  border-radius: 8px;
+  object-fit: contain;
+  margin-right: 16px !important;
+  user-select: none;
+  height: fit-content;
+  float: left;
+}
+.xcard .content {
+  width: 100%;
+}
+.xcard .content .head {
+  font-family: "Fira Code";
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 7px;
+}
+.xcard .content .head .title {
+  color: #ddcfcf;
+  font-size: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.xcard .content .head .ref {
+  font-size: small;
+  align-self: flex-end;
+  user-select: none;
+}
+.xcard .content .head .ref :visited, .xcard .content .head .ref :active {
+  color: rgb(47, 218, 248);
+}
+.xcard .content .desc {
+  color: #ddcfcf;
+  font-family: monospace, "Fira Code";
+  overflow: hidden;
+}
+.xcard ::selection {
+  background-color: saddlebrown;
+}
+
+body {
+  margin: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/*# sourceMappingURL=s.css.map */
