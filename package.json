@@ -14,7 +14,7 @@
   "dependencies": {
     "@renbaoshuo/markdown-it-katex": "^2.0.2",
     "deasync": "^0.1.28",
-    "hexo": "^6.3.0",
+    "hexo": "^7.1.0",
     "hexo-asset-img": "git://github.com/yiyungent/hexo-asset-img.git",
     "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
