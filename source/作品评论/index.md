@@ -77,7 +77,7 @@ date: 2023-09-02 07:51:25
 <div class="content">
   <span class="head">
     <span class="title">幼女战记</span>
-    <span class="ref"><a href="https://mzh.moegirl.org.cn/%E5%B9%BC%E5%A5%B3%E6%88%98%E8%AE%B0" target="_blank">moeWiki</a></span>
+    <span class="ref"><a href="https://mzh.moegirl.org.cn/幼女战记" target="_blank">moeWiki</a></span>
   </span>
   <span class="desc"></span>
 </div>
@@ -88,7 +88,28 @@ date: 2023-09-02 07:51:25
 Ref: https://mzh.moegirl.org.cn/File:Yojo_Senki_Movie_Teaser.jpg  
 {% endnote %}
 
+### 进击的巨人
+
+<div class="xcard">
+<img src="./index/进击的巨人.png" alt="" class="cover">
+<div class="content">
+  <span class="head">
+    <span class="title">进击的巨人</span>
+    <span class="ref"><a href="https://mzh.moegirl.org.cn/进击的巨人" target="_blank">moeWiki</a></span>
+  </span>
+  <span class="desc">大量的圆形人物刻画加上复杂又有深意的剧情，给人一种割裂感，这是自己念想的基石被打碎后的感觉，一次次左右为难，他没有给出答案，甚至逃避了一切，即便如此，这庞大世界观还是令我惊异！
+改版后的结尾，我印象十分深刻，他还真是把一切都涵盖在了这个结尾啊！
+感觉他根本不是讽刺, 而是无力地揭示, 但这无力实在是很有力!</span>
+</div>
+<div style="clear: both"></div>
+</div>
+
+{% note info modern %}
+Ref: https://mzh.moegirl.org.cn/File:Attack_on_Titan_final_Season_kv17.jpg  
+{% endnote %}
+
 ## 成文分析计划
 
+- [ ] 进击的巨人
 - [ ] 人类衰退之后
 - [ ] 幼女战记
