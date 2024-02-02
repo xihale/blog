@@ -13,6 +13,32 @@ date: 2023-09-02 07:51:25
 
 ## Start up
 
+### 86 - 不存在的战区
+
+<div class="xcard">
+<img src="./index/86 - 不存在的战区.jpg" alt="" class="cover">
+<div class="content">
+  <span class="head">
+    <span class="title">86 - 不存在的战区</span>
+    <span class="ref"><a href="https://zh.moegirl.org.cn/86_-不存在的战区-" target="_blank">moeWiki</a></span>
+  </span>
+  <span class="desc">
+  对世间一切残酷的思考, 究竟如何做到被如此传神地刻画入一个如此奇迹的作品?<br/>
+  一切刻画, 皆水到渠成般自然, 眼泪也随声应下(已经不知究竟混杂了多少复杂的情愫)<br/>
+  最使人动容, 理想与现实的交融! 太多了, 多到数不过来, 然而这都是我不知道期盼了多少个日日夜夜的事情! 不知道多少次为这悲惨的无救的世界呼喊! <br/>
+  放下那极端的理想主义和现实主义, 交融吧, 理想和现实都是不可分割的! 去打碎这个世界? 去拯救这个世界? 水到渠成罢了! <br/>
+  放下那无趣的阻碍历史车轮之木, 别忘却了, 你们曾是车轮的原料, 无论如何阻碍, 都会被那一声声的呐喊打碎的! 呐喊! 呐喊! 打碎! 打碎!<br/>
+  究竟还是无法将一切情愫一并抒发出来, 暂时只能以 「这世界上没有任何国家，会因为国内饲养的猪未获得人权而受到谴责」 作结语了!<br/>
+  (Avid 与它真是绝配! 那呐喊的力量点点滴滴打在我身上, 无时无刻不在敲打着我, 提醒着我, 究竟如何才能再次整装出发?)<br/>
+  </span>
+</div>
+<div style="clear: both"></div>
+</div>
+
+{% note info modern %}
+Ref: https://zh.moegirl.org.cn/File:86_Vol1.jpg
+{% endnote %}
+
 ### Charlotte
 
 我对拯救世界无感, 但是使命感责任感则是我这个阶段的主要思想  
@@ -110,6 +136,22 @@ Ref: https://mzh.moegirl.org.cn/File:Attack_on_Titan_final_Season_kv17.jpg
 
 ## 成文分析计划
 
+- [ ] 86 - 不存在的战区 (大概是目前来说最喜欢的作品吧)
+
+- [ ] 心理测量者
+- [ ] 人狼村之谜
+
 - [ ] 进击的巨人
 - [ ] 人类衰退之后
 - [ ] 幼女战记
+
+## likely
+
+1. 86 - 不存在的战区
+1. 进击的巨人
+1. 心理测量者
+1. 人类衰退之后
+1. 来自新世界
+1. 幼女战记
+1. Re: Creators
+1. 
