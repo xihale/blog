@@ -136,7 +136,7 @@ Ref: https://mzh.moegirl.org.cn/File:Attack_on_Titan_final_Season_kv17.jpg
 
 ## 成文分析计划
 
-- [ ] 86 - 不存在的战区 (大概是目前来说最喜欢的作品吧)
+- [ ] 86 - 不存在的战区
 
 - [ ] 心理测量者
 - [ ] 人狼村之谜
@@ -147,11 +147,12 @@ Ref: https://mzh.moegirl.org.cn/File:Attack_on_Titan_final_Season_kv17.jpg
 
 ## likely
 
-1. 86 - 不存在的战区
-1. 进击的巨人
-1. 心理测量者
-1. 人类衰退之后
-1. 来自新世界
-1. 幼女战记
-1. Re: Creators
-1. 
+ - 86 - 不存在的战区
+ - 重启咲良田
+ - 进击的巨人
+ - 心理测量者
+ - 人类衰退之后
+ - 来自新世界
+ - 幼女战记
+ - Re: Creators
+ 

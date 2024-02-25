@@ -1,0 +1,9 @@
+class:
+  class_name: 友人帐
+  link_list:
+    1:
+      name: 醉月酿星河
+      link: https://blog.catrol.cn/
+      avatar: https://img.catrol.cn/avatar/avatar-head-only.jpg
+      descr: 就在这里发电
+

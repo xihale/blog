@@ -10,8 +10,9 @@ nav:
 # Menu 目錄
 menu:
   主页: / || fas fa-home
-  关于: /about/ || fas fa-heart
+  # 关于: /about/ || fas fa-heart
   时光机: /archives/ || fas fa-archive
+  友人帐: /link/ || fas fa-link
   标签: /tags/ || fas fa-tags
   分类: /categories/ || fas fa-folder-open
   杂页||fas fa-list:
