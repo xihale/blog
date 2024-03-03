@@ -738,7 +738,7 @@ beautify:
 font:
   global-font-size: 19px
   code-font-size: 21px
-  font-family:
+  font-family: sans-serif
   code-font-family: "FiraCode-Light"
 
 # Font settings for the site title and site subtitle
