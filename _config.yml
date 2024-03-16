@@ -127,3 +127,9 @@ markdown:
 hotreloader:
   enable: true
   port: 3007
+
+archive_generator:
+  per_page: 15
+  yearly: true
+  monthly: true
+  daily: false
