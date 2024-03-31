@@ -8,13 +8,14 @@ tags:
 
 ## Preface
 
-`Kindle` 的 `Clippings` 的处理真是令我大开眼界, 一大堆重复的(子集关系), 并且还有很多无用的冗余信息!
+`Kindle` 的 `Clippings.txt` 里面有一大堆重复的(子集关系)标记, 并且还有很多无用的冗余信息!
+所以写了一个简单的脚本去处理。
 
 ## Content
 
-> TODO: 书籍分类
+### todo
 
-没写有关书籍分类的内容, 所以使用前应去[Kindle 批注导出](https://clippings.io/)导出具体书籍的批注然后使用脚本, 仅仅是去除空行以及把每句话的无效字符去掉.
+- [ ] 书籍分类
 
 ```typescript
 
