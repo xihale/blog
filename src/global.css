@@ -6,15 +6,17 @@ body{
 :root{
   --text-color: #000;
   --title-color: #000;
+  --link-color: #0a6161;
 }
 
 @media (prefers-color-scheme: dark){
   body{
-    background-color: #000;
+    background-color: #151515;
   }
 
   :root{
     --text-color: #fff;
     --title-color: #fff;
+    --link-color: #42d9d9;
   }
 }
