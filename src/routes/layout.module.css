@@ -25,4 +25,5 @@
 
 .body {
   color: var(--text-color);
+  font-size: larger;
 }
