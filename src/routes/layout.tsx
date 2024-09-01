@@ -19,7 +19,6 @@ export default component$(() => {
     <div class={styles.header}>
       <a class={styles.title} href="/">Home</a>
       <a href="/about">About</a>
-      <a href="/archive">Archive</a>
     </div>
     <div class={styles.body}><Slot /></div>
   </div>;
