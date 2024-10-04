@@ -12,3 +12,7 @@
   content: "·";
   padding: 0 4px;
 }
+
+.post_author a{
+  color: inherit;
+}
