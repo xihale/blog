@@ -46,8 +46,10 @@
     "vite-tsconfig-paths": "^4.2.1"
   },
   "dependencies": {
+    "@types/remark-hint": "^1.0.6",
     "katex": "^0.16.11",
     "rehype-katex": "^7.0.1",
+    "remark-hint": "^1.0.10",
     "remark-math": "^6.0.0"
   }
 }

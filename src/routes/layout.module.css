@@ -30,7 +30,7 @@
 }
 
 .footer{
-  padding-top: 5px;
+  padding: 7px 0;
   border-top: 1px solid var(--hr-color);
   display: flex;
   justify-content: space-between;

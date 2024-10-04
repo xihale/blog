@@ -10,6 +10,7 @@ import pkg from "./package.json";
 
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import remarkHint from "remark-hint";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -26,7 +27,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
   return {
     plugins: [qwikCity({
       mdx:{
-        remarkPlugins: [remarkMath],
+        remarkPlugins: [remarkMath, remarkHint],
         rehypePlugins: [rehypeKatex],
       }
     }), qwikVite(), tsconfigPaths()],

@@ -27,3 +27,38 @@ body{
     --hr-color: #505659;
   }
 }
+
+
+/* @Reference https://brevzin.github.io/ */
+.hint {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.hint::before {
+  content: "\f06a";
+  margin: 0 10px;
+  font-size: 1.8em;
+}
+
+.hint.warn{
+  background-color: #ffae1795;
+}
+.hint.info{
+  background-color: #09477dcc;
+}
+.hint.danger{
+  background-color: #682109cc
+}
+
+
+.hint.warn::before {
+  color: #ffff27cc;
+}
+.hint.info::before {
+  color: #77ffff;
+}
+.hint.danger::before {
+  color: #ff5c5c;
+}
