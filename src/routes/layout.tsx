@@ -1,5 +1,5 @@
 import { component$, Slot } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { Link, type RequestHandler } from "@builder.io/qwik-city";
 
 import styles from "./layout.module.css";
 
@@ -17,9 +17,11 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 export default component$(() => {
   return <div class={styles.layout}>
     <div class={styles.header}>
-      <a class={styles.title} href="/">Home</a>
-      <a href="/about">About</a>
+      <Link class={styles.title} href="/">Home</Link>
+      <Link href="/about">About</Link>
     </div>
-    <div class={styles.body}><Slot /></div>
+    <div class={styles.body}>
+      <Slot />
+    </div>
   </div>;
 });
