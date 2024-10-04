@@ -5,8 +5,7 @@
 
 .header{
   padding-bottom: 5px;
-  border-bottom: 1px solid #eee;
-  border-bottom-color: var(--header-border-color);
+  border-bottom: 1px solid var(--hr-color);
   display: flex;
   align-items: center;
   user-select: none;
@@ -27,4 +26,12 @@
 .body {
   color: var(--text-color);
   font-size: larger;
+  margin-bottom: 24px;
+}
+
+.footer{
+  padding-top: 5px;
+  border-top: 1px solid var(--hr-color);
+  display: flex;
+  justify-content: space-between;
 }

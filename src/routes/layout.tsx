@@ -23,5 +23,13 @@ export default component$(() => {
     <div class={styles.body}>
       <Slot />
     </div>
-  </div>;
+    <div class={styles.footer}>
+      <div class={styles.copyright}>
+        Copyright &copy; 2024
+      </div>
+      <div class={styles.powered}>
+        Powered by&nbsp;<a href="https://qwik.builder.io/" target="_blank">Qwik</a>
+      </div>
+    </div>
+  </div>
 });

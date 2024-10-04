@@ -12,7 +12,7 @@ body{
   --text-color: #000;
   --title-color: #000;
   --link-color: #0a6161;
-  /* --header-border-color: ; */
+  --header-border-color: #505659;
 }
 
 @media (prefers-color-scheme: dark){
@@ -24,6 +24,6 @@ body{
     --text-color: #fff;
     --title-color: #fff;
     --link-color: #42d9d9;
-    --header-border-color: #505659;
+    --hr-color: #505659;
   }
 }
