@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
   return {
     plugins: [qwikCity({
       mdx:{
-        remarkPlugins: [remarkMath, remarkHint],
+        remarkPlugins: [remarkMath, remarkHint as any],
         rehypePlugins: [rehypeKatex],
       }
     }), qwikVite(), tsconfigPaths()],
