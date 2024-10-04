@@ -1,18 +1,18 @@
-.title{
+.title {
   margin-top: 1em;
   margin-bottom: 5px;
 }
 
-.post_meta{
+.post_meta {
   font-size: smaller;
   margin-bottom: 3em;
 }
 
-.update_date::before{
+.update_date::before {
   content: "·";
   padding: 0 4px;
 }
 
-.post_author a{
+.post_author a {
   color: inherit;
 }

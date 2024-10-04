@@ -15,21 +15,26 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 };
 
 export default component$(() => {
-  return <div class={styles.layout}>
-    <div class={styles.header}>
-      <Link class={styles.title} href="/">Home</Link>
-      <Link href="/about">About</Link>
-    </div>
-    <div class={styles.body}>
-      <Slot />
-    </div>
-    <div class={styles.footer}>
-      <div class={styles.copyright}>
-        Copyright &copy; 2024
+  return (
+    <div class={styles.layout}>
+      <div class={styles.header}>
+        <Link class={styles.title} href="/">
+          Home
+        </Link>
+        <Link href="/about">About</Link>
       </div>
-      <div class={styles.powered}>
-        Powered by&nbsp;<a href="https://qwik.builder.io/" target="_blank">Qwik</a>
+      <div class={styles.body}>
+        <Slot />
+      </div>
+      <div class={styles.footer}>
+        <div class={styles.copyright}>Copyright &copy; 2024</div>
+        <div class={styles.powered}>
+          Powered by&nbsp;
+          <a href="https://qwik.builder.io/" target="_blank">
+            Qwik
+          </a>
+        </div>
       </div>
     </div>
-  </div>
+  );
 });

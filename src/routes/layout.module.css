@@ -1,25 +1,25 @@
-.layout{
+.layout {
   max-width: 60rem;
   margin: 0 auto;
 }
 
-.header{
+.header {
   padding-bottom: 5px;
   border-bottom: 1px solid var(--hr-color);
   display: flex;
   align-items: center;
   user-select: none;
 }
-.header :first-child{
+.header :first-child {
   font-size: 1.75rem;
   margin-right: auto;
 }
-.header *{
+.header * {
   text-decoration: none;
   color: var(--title-color);
   cursor: pointer;
 }
-.header *:not(:last-child){
+.header *:not(:last-child) {
   padding-right: 16px;
 }
 
@@ -29,7 +29,7 @@
   margin-bottom: 24px;
 }
 
-.footer{
+.footer {
   padding: 7px 0;
   border-top: 1px solid var(--hr-color);
   display: flex;
