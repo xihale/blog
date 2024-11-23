@@ -3,6 +3,12 @@ import PostCard from "~/components/PostCard";
 
 import styles from "./index.module.css";
 
+// metadata
+export const head = {
+  title: "@xihale",
+  description: "xihale's latest handcraft blog",
+};
+
 export default component$(() => {
   const posts = import.meta.glob("./post/*/*.{md,mdx}", { eager: true });
 
@@ -34,8 +40,6 @@ export default component$(() => {
         if (a.date[i] !== b.date[i]) return b.date[i] - a.date[i];
       return 0;
     });
-
-  // console.log(posts);
 
   let current_year : number | undefined = Number.MAX_VALUE;
 

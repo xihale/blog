@@ -12,8 +12,6 @@ export default component$<ItemProps>((props) => {
 
   const { href, title, desc, date } = post;
 
-  console.log(date);
-
   return (
     <Link class={styles.card} href={href}>
       <div class={styles.head}>
