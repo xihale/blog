@@ -7,12 +7,23 @@ html {
 body {
   margin: none;
   overflow-y: scroll;
+  color: var(--text-color);
+  font-size: large;
+}
+
+a{
+  color: var(--link-color);
+}
+
+a:hover{
+  color: var(--link-hover-color);
 }
 
 :root {
   --text-color: #000;
   --title-color: #000;
   --link-color: #0a6161;
+  --link-hover-color: #3bf382;
   --header-border-color: #505659;
 }
 
@@ -32,32 +43,29 @@ body {
 /* @Reference https://brevzin.github.io/ */
 .hint {
   padding: 10px;
-  display: flex;
-  align-items: center;
 }
 
 .hint::before {
   content: "\f06a";
   margin: 0 10px;
-  font-size: 1.8em;
 }
 
 .hint.warn {
   background-color: #ffae1795;
 }
-.hint.info {
+.hint.tip {
   background-color: #09477dcc;
 }
-.hint.danger {
+.hint.error {
   background-color: #682109cc;
 }
 
 .hint.warn::before {
   color: #ffff27cc;
 }
-.hint.info::before {
+.hint.tip::before {
   color: #77ffff;
 }
-.hint.danger::before {
+.hint.error::before {
   color: #ff5c5c;
 }
