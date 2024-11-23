@@ -1,10 +1,12 @@
 .layout {
-  max-width: 60rem;
-  margin: 0 auto;
+  max-width: 55rem;
+  margin: 0 auto 1rem auto;
+  border-bottom: 1px solid var(--hr-color);
 }
 
 .header {
   padding-bottom: 5px;
+  margin-bottom: 1rem;
   border-bottom: 1px solid var(--hr-color);
   display: flex;
   align-items: center;
@@ -21,17 +23,4 @@
 }
 .header *:not(:last-child) {
   padding-right: 16px;
-}
-
-.body {
-  color: var(--text-color);
-  font-size: larger;
-  margin-bottom: 24px;
-}
-
-.footer {
-  padding: 7px 0;
-  border-top: 1px solid var(--hr-color);
-  display: flex;
-  justify-content: space-between;
 }
