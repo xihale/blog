@@ -1,7 +1,14 @@
 .layout {
   max-width: 55rem;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto;
+}
+
+.body{
   border-bottom: 1px solid var(--hr-color);
+}
+.layout::after{
+  content: "";
+  margin: 1px;
 }
 
 .header {
