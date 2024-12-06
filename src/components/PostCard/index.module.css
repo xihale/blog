@@ -3,7 +3,7 @@
   text-decoration: none;
   color: var(--text-color);
   display: block;
-  padding: 1em;
+  padding: 1em 1em 0 1em;
   border: 1px solid var(--hr-color);
   margin-bottom: 1em;
 }
