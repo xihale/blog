@@ -1,5 +1,5 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { Link, useDocumentHead } from "@builder.io/qwik-city";
+import { useDocumentHead } from "@builder.io/qwik-city";
 
 import styles from "./layout.module.css";
 
@@ -21,12 +21,6 @@ export default component$(() => {
           ) : (
             <></>
           )}
-        </div>
-        <div class={styles.post_author}>
-          By{" "}
-          <Link href={frontmatter.author_link ?? "/about"}>
-            {frontmatter.author ?? "xihale"}
-          </Link>
         </div>
       </div>
       <Slot />
