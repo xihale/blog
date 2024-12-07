@@ -1,0 +1,43 @@
+---
+title: 绕过 SNI 阻断(Accesser)
+date: 12.6.2024
+category: 
+  - 实践
+tags:
+  - [Network]
+---
+
+import Hint from "@/components/Hint";
+
+## 前言
+
+`https` 协议理论上是很安全的，但由于在 `sni` 上的设计有些缺漏（虽然后来推出了补救措施），导致可以通过 `sni` 阻断的方式实现网域黑名单，但又由于宽松的 `sni` 策略，这在大多是情况是可以绕过的。
+
+## 实现
+
+基于 [`Accesser`](https://github.com/Urenko/Accesser)
+
+对于 windows 的安装说明在 main page 已经提及, linux 的简略说明在[issue 9](https://github.com/URenko/Accesser/issues/9)，而 `arch` 系 可以使用 aur [python-accesser](https://aur.archlinux.org/packages/python-accesser)
+
+```
+paru -S python-accesser
+```
+
+使用 `systemctl` 管理 `accesser.service`
+```
+systemctl start accesser
+```
+
+对于 `arch` 系，使用以下命令信任证书(ref: [arch wiki](https://wiki.archlinux.org/title/User:Grawity/Adding_a_trusted_CA_certificate))
+```
+curl -O http://localhost:7654/CERT/root.crt && sudo trust anchor --store root.crt ; rm root.crt
+```
+
+最后，在系统代理中配置 `pac` 即可
+```
+http://localhost:7654/pac/?t=1
+```
+
+<Hint type="info">
+`t` 是随机数
+</Hint>
