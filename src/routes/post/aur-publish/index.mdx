@@ -7,12 +7,18 @@ tags:
   - [arch]
 ---
 
+import Hint from "@/components/Hint";
+
 ## Preface
 I had a terrible experience due to my unfamiliarity with the rules [Arch package guidelines](https://wiki.archlinux.org/title/Arch_package_guidelines)!
 
 ## Important
 ### [package_naming](https://wiki.archlinux.org/title/Arch_package_guidelines#Package_naming)
-x> Only LOWERCASE!
+
+Choose a wonderful name.
+<Hint type="error">
+LOWERCASE!
+</Hint>
 
 ## Start
 ### Prepare
@@ -28,7 +34,9 @@ x> The error such as `git-upload-pack: invalid repository name` means that you h
 All well!
 Now just crafting the PKGBUILD!
 
-?> A long time later...
+<Hint type="info">
+A long time later...
+</Hint>
 
 ### End
 Publishing!

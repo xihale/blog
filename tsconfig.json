@@ -17,7 +17,8 @@
     "outDir": "tmp",
     "noEmit": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "files": ["./.eslintrc.cjs"],

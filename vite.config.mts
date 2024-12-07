@@ -1,7 +1,9 @@
 /**
  * This is the base config for vite.
  * When building, the adapter config is used which loads this file and extends it.
- */
+*/
+
+import { resolve } from "path";
 import { defineConfig, type UserConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
@@ -10,7 +12,6 @@ import pkg from "./package.json";
 
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import remarkHint from "remark-hint";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -27,7 +28,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
   return {
     plugins: [qwikCity({
       mdx:{
-        remarkPlugins: [remarkMath, remarkHint as any],
+        remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
       }
     }), qwikVite(), tsconfigPaths()],
@@ -68,6 +69,11 @@ export default defineConfig(({ command, mode }): UserConfig => {
         "Cache-Control": "public, max-age=600",
       },
     },
+    resolve:{
+      alias: {
+        '@': resolve(__dirname, 'src'), // 将 @ 指向 src 目录
+      },
+    }
   };
 });
 
