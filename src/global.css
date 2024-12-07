@@ -7,7 +7,7 @@ body {
   margin: none;
   overflow-y: scroll;
   color: var(--text-color);
-  font-size: large;
+  font-size: x-large;
   font-family: monospace;
 }
 
