@@ -12,3 +12,11 @@
   content: "·";
   padding: 0 4px;
 }
+
+.category, .tags {
+  display: inline-block;
+}
+
+.category, .tags > span:not(:last-child)::after {
+  content: ", ";
+}
