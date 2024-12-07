@@ -19,8 +19,12 @@
   justify-content: space-between;
 }
 
-.title, .date{
+.title{
   margin: 0;
-  width: fit-content;
-  
+}
+
+.date{
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  padding-top: 0.3rem;
 }
