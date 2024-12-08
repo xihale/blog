@@ -19,9 +19,9 @@ export default component$(() => {
     <div class={styles.layout}>
       <div class={styles.header}>
         <Link class={styles.title} href="/">
-          Home
+          主页
         </Link>
-        <Link href="/about">About</Link>
+        <Link href="/about">於</Link>
       </div>
       <div class={styles.body}>
         <Slot />
