@@ -19,12 +19,24 @@ a:hover{
   color: var(--link-hover-color);
 }
 
+pre {
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 :root {
   --text-color: #000;
   --title-color: #000;
   --link-color: #0a6161;
   --link-hover-color: #3bf382;
   --hr-color: #4d4646;
+  --code-bg: #f9fdfb;
+  --code-border: #c7c3bd;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,16 +48,7 @@ a:hover{
     --text-color: #fff;
     --title-color: #fff;
     --link-color: #42d9d9;
+    --code-bg: #1c1e1f;
+    --code-border: #3e4446;
   }
-}
-
-/* code block */
-pre {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }

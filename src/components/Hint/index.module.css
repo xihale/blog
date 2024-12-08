@@ -21,3 +21,18 @@
   background-color: #f8d7da;
   color: #842029;
 }
+
+@media (prefers-color-scheme: dark) {
+  .warning{
+    background-color: #3d2e00;
+    color: #fbde86;
+  }
+  .info{
+    background-color: #143b43;
+    color: #8ee3f1;
+  }
+  .error{
+    background-color: #430c11;
+    color: #df7a83;
+  }
+}
