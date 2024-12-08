@@ -28,6 +28,6 @@
   color: var(--title-color);
   cursor: pointer;
 }
-.header *:not(:last-child) {
-  padding-right: 16px;
+.header *:not(:first-child) {
+  margin-left: 16px;
 }
