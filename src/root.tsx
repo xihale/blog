@@ -8,9 +8,9 @@ import { RouterHead } from "./components/router-head/router-head";
 import { isDev } from "@builder.io/qwik/build";
 
 import katexStyles from "katex/dist/katex.min.css?inline";
+import shikiStyles from "./shiki.scss?inline";
 
 import "./global.css";
-import "./shiki.scss";
 
 export default component$(() => {
   /**
@@ -21,6 +21,7 @@ export default component$(() => {
    */
 
   useStyles$(katexStyles);
+  useStyles$(shikiStyles);
 
   return (
     <QwikCityProvider>
