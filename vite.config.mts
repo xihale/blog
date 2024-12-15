@@ -1,7 +1,7 @@
 /**
  * This is the base config for vite.
  * When building, the adapter config is used which loads this file and extends it.
-*/
+ */
 
 import { resolve } from "path";
 import { defineConfig, type UserConfig } from "vite";
@@ -12,6 +12,17 @@ import pkg from "./package.json";
 
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeShiki from "@shikijs/rehype";
+import { transformerTwoslash } from "@shikijs/twoslash";
+import {
+  transformerNotationDiff,
+  transformerNotationFocus,
+  transformerNotationHighlight,
+  transformerNotationErrorLevel,
+  transformerMetaHighlight,
+  transformerMetaWordHighlight,
+  transformerRemoveLineBreak,
+} from "@shikijs/transformers";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -24,14 +35,36 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
-export default defineConfig(({ command, mode }): UserConfig => {
+export default defineConfig((): UserConfig => {
   return {
-    plugins: [qwikCity({
-      mdx:{
-        remarkPlugins: [remarkMath],
-        rehypePlugins: [rehypeKatex],
-      }
-    }), qwikVite(), tsconfigPaths()],
+    plugins: [
+      qwikCity({
+        mdx: {
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [
+            rehypeKatex,
+            [
+              rehypeShiki,
+              {
+                theme: "github-dark-default",
+                transformers: [
+                  transformerTwoslash(),
+                  transformerNotationDiff(),
+                  transformerNotationHighlight(),
+                  transformerNotationFocus(),
+                  transformerNotationErrorLevel(),
+                  transformerMetaHighlight(),
+                  transformerMetaWordHighlight(),
+                  transformerRemoveLineBreak(),
+                ],
+              },
+            ],
+          ],
+        },
+      }),
+      qwikVite(),
+      tsconfigPaths(),
+    ],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
       // Put problematic deps that break bundling here, mostly those with binaries.
@@ -61,7 +94,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
         // Don't cache the server response in dev mode
         "Cache-Control": "public, max-age=0",
       },
-      host: '0.0.0.0',
+      host: "0.0.0.0",
     },
     preview: {
       headers: {
@@ -69,11 +102,11 @@ export default defineConfig(({ command, mode }): UserConfig => {
         "Cache-Control": "public, max-age=600",
       },
     },
-    resolve:{
+    resolve: {
       alias: {
-        '@': resolve(__dirname, 'src'), // 将 @ 指向 src 目录
+        "@": resolve(__dirname, "src"), // 将 @ 指向 src 目录
       },
-    }
+    },
   };
 });
 
@@ -86,18 +119,18 @@ export default defineConfig(({ command, mode }): UserConfig => {
  */
 function errorOnDuplicatesPkgDeps(
   devDependencies: PkgDep,
-  dependencies: PkgDep,
+  dependencies: PkgDep
 ) {
   let msg = "";
   // Create an array 'duplicateDeps' by filtering devDependencies.
   // If a dependency also exists in dependencies, it is considered a duplicate.
   const duplicateDeps = Object.keys(devDependencies).filter(
-    (dep) => dependencies[dep],
+    (dep) => dependencies[dep]
   );
 
   // include any known qwik packages
   const qwikPkg = Object.keys(dependencies).filter((value) =>
-    /qwik/i.test(value),
+    /qwik/i.test(value)
   );
 
   // any errors for missing "qwik-city-plan"

@@ -39,4 +39,13 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
   },
+  overrides: [
+    {
+      files: ['.mdx'],
+      extends: 'plugin:mdx/recommended',
+      parserOptions:{
+        project: ["./tsconfig.json"],
+      }
+    },
+  ],
 };

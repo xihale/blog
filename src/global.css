@@ -19,16 +19,6 @@ a:hover{
   color: var(--link-hover-color);
 }
 
-pre {
-  background-color: var(--code-bg);
-  border: 1px solid var(--code-border);
-  padding: 10px;
-  border-radius: 5px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
 :root {
   --text-color: #000;
   --title-color: #000;
