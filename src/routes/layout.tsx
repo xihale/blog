@@ -21,7 +21,7 @@ export default component$(() => {
         <Link class={styles.title} href="/">
           主页
         </Link>
-        <Link href="/about">於</Link>
+        <Link href="/about">关于</Link>
       </div>
       <div class={styles.body}>
         <Slot />

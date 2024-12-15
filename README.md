@@ -1,1 +1,1 @@
-## [於](https://xihale.top/about)
+## [关于](https://xihale.top/about)
