@@ -1,0 +1,54 @@
+---
+title: Mdx 接入 shiki.js + twoslash
+date: 12.15.2024
+---
+
+import Hint from "@/components/Hint";
+
+## 前言
+
+之前做过 `hexo-shiki`, 知道 `shiki` 的代码高亮效果是很不错的.
+
+## 安装
+
+<Hint type="error">
+  不要使用 `remark-shiki-twoslash`, 因为在 `mdx` 上, 这个库的支持性不好,
+  我们使用官方的 `rehype-shiki` 解决方案
+</Hint>
+
+```bash
+bun i -D @shikijs/rehype @shikijs/twoslash @shikijs/transformers
+```
+
+```json
+{
+  rehypePlugins: [
+    [
+      rehypeShiki,
+      {
+        theme: "github-dark-default", // you can use any theme from https://github.com/shikijs/textmate-grammars-themes/tree/main/packages/tm-themes or https://shiki.style/themes
+        transformers: [
+          transformerTwoslash(),
+          // ... other transformers
+        ],
+      },
+    ],
+  ],
+}
+```
+
+## Styles
+
+https://github.com/xihale/blog/blob/master/src/shiki.scss
+
+## 已知问题 / TODO
+
+1. 某些情况会出现 `div` 块包含于 `pre` 中 [#60](https://github.com/twoslashes/twoslash/issues/60)
+2. `transformerStyleToClass` 不知道怎么 fix 进 vite.config & Qwik component
+
+## reference
+
+https://shiki.style/packages/transformers  
+https://shiki.style/packages/twoslash  
+https://shiki.style/packages/rehype  
+https://expressive-code.com/
