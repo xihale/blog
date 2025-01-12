@@ -23,6 +23,7 @@ import {
   transformerMetaWordHighlight,
   transformerRemoveLineBreak,
 } from "@shikijs/transformers";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -59,8 +60,14 @@ export default defineConfig((): UserConfig => {
                 ],
               },
             ],
+            [rehypeAutolinkHeadings, { behavior: "wrap" }]
           ],
         },
+        mdxPlugins: {
+          rehypeAutolinkHeadings: false,
+          rehypeSyntaxHighlight: false,
+          remarkGfm: true,
+        }
       }),
       qwikVite(),
       tsconfigPaths(),
