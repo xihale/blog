@@ -1,5 +1,15 @@
 ---
-title: 404
+title: Nothing Here
 ---
 
-<div style="color: red; font-size: 3rem; text-align: center;">404</div>
+import { Link } from '@builder.io/qwik-city';
+
+export default function NotFound() {
+  return (
+    <div>
+      <h1>404 - Page Not Found</h1>
+      <p>Sorry, the page you are looking for does not exist.</p>
+      <Link to="/">Go back to the homepage</Link>
+    </div>
+  );
+}
