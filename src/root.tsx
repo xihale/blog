@@ -5,7 +5,7 @@ import {
   ServiceWorkerRegister,
 } from "@builder.io/qwik-city";
 import { RouterHead } from "./components/router-head/router-head";
-import { isDev } from "@builder.io/qwik/build";
+import { isDev } from "@qwik.dev/core";
 
 import katexStyles from "katex/dist/katex.min.css?inline";
 import shikiStyles from "./shiki.scss?inline";
@@ -25,6 +25,7 @@ export default component$(() => {
 
   return (
     <QwikCityProvider>
+    <ServiceWorkerRegister />
       <head>
         <meta charset="utf-8" />
         {!isDev && (
