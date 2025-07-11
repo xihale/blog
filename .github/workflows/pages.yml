@@ -21,6 +21,6 @@ jobs:
     steps:
     - name: Qwik Build
       id: qwik-build
-      uses: danielbayley/qwik-build@v1
+      uses: danielbayley/qwik-build@v1.0.0
       with:
         branch: master
