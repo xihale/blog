@@ -1,5 +1,5 @@
 ---
-title: 绕过 SNI 阻断(基于 Accesser)
+title: 绕过 SNI 阻断 (基于 Accesser)
 date: 12.6.2024
 category: 
   - 实践
@@ -18,7 +18,7 @@ import Hint from "@/components/Hint";
 
 基于 [`Accesser`](https://github.com/Urenko/Accesser)
 
-对于 windows 的安装说明在 main page 已经提及, linux 的简略说明在[issue 9](https://github.com/URenko/Accesser/issues/9)，而 `arch` 系 可以使用 aur [python-accesser](https://aur.archlinux.org/packages/python-accesser)
+对于 windows 的安装说明在 main page 已经提及，linux 的简略说明在[issue 9](https://github.com/URenko/Accesser/issues/9)，而 `arch` 系 可以使用 aur [python-accesser](https://aur.archlinux.org/packages/python-accesser)
 
 ```shell
 paru -S python-accesser
@@ -29,7 +29,7 @@ paru -S python-accesser
 systemctl start accesser
 ```
 
-对于 `arch` 系，使用以下命令信任证书(ref: [arch wiki](https://wiki.archlinux.org/title/User:Grawity/Adding_a_trusted_CA_certificate))
+对于 `arch` 系，使用以下命令信任证书 (ref: [arch wiki](https://wiki.archlinux.org/title/User:Grawity/Adding_a_trusted_CA_certificate))
 ```shell
 curl -O http://localhost:7654/CERT/root.crt && sudo trust anchor --store root.crt ; rm root.crt
 ```
