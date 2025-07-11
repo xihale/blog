@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 
 import styles from "./index.module.css";
 import { Link } from "@builder.io/qwik-city";
@@ -18,7 +18,7 @@ export default component$<ItemProps>((props) => {
         <h2 class={styles.title}>{title}</h2>
         {date && (
           <div class={styles.date}>
-            {Array.isArray(date) ? `${date[1]}-${date[2]}` : date}
+            {Array.isArray(date) ? `${date[1].toString().padStart(2, '0')}-${date[2].toString().padStart(2, '0')}` : date}
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$, Slot } from "@qwik.dev/core";
 import { Link, type RequestHandler } from "@builder.io/qwik-city";
 
 import styles from "./layout.module.css";

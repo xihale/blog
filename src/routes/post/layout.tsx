@@ -1,4 +1,4 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$, Slot } from "@qwik.dev/core";
 import { useDocumentHead } from "@builder.io/qwik-city";
 
 import styles from "./layout.module.css";
@@ -7,7 +7,7 @@ export default component$(() => {
   const { title, frontmatter } = useDocumentHead();
 
   return (
-    <div>
+    <article>
       <h1 class={styles.title}>{title}</h1>
       <div class={styles.post_meta}>
         <div class={styles.license}>license: CC BY 4.0</div>
@@ -44,10 +44,10 @@ export default component$(() => {
             ))}
           </div>
         )}
-        <div>
+        <div class={styles.content}>
           <Slot />
         </div>
       </div>
-    </div>
+    </article>
   );
 });
