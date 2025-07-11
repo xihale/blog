@@ -1,0 +1,25 @@
+on:
+  push:
+    branches: main
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.qwik-build.outputs.page-url }}
+
+    steps:
+    - name: Qwik Build
+      id: qwik-build
+      uses: danielbayley/qwik-build@v1
+      with:
+        branch: main
