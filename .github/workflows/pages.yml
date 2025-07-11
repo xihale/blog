@@ -1,6 +1,6 @@
 on:
   push:
-    branches: main
+    branches: master
   workflow_dispatch:
 
 permissions:
@@ -23,4 +23,4 @@ jobs:
       id: qwik-build
       uses: danielbayley/qwik-build@v1
       with:
-        branch: main
+        branch: master
