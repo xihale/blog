@@ -6,6 +6,9 @@ pre {
   overflow-x: auto;
 }
 
+.line{
+  display: block;
+}
 
 /* reference: https://siaofei.github.io/note/demo-shiki-syntax-highlighting/ */
 
@@ -24,7 +27,7 @@ pre {
       &::after {
         float: right;
         margin-right: 0.625rem; /* mr-2.5 */
-        content: '+';
+        content: "+";
       }
     }
     .line.diff.remove {
@@ -32,7 +35,7 @@ pre {
       &::after {
         float: right;
         margin-right: 0.625rem; /* mr-2.5 */
-        content: '-';
+        content: "-";
       }
     }
   }
@@ -59,20 +62,22 @@ pre {
   }
 
   code {
-    counter-reset: step;
-    counter-increment: step 0;
-    & > .line {
-      display: block;
-      width: fit-content;
-      padding: 0 .75rem;
-      &::before {
-        content: counter(step);
-        counter-increment: step;
-        margin-right: 1.5rem; /* mr-6 */
-        display: inline-block;
-        width: 1rem;
-        text-align: right;
-        color: #9d7cd8; /* text-[#9d7cd8] */
+    @media screen and (min-width: 820px) {
+      counter-reset: step;
+      counter-increment: step 0;
+      & > .line {
+        display: block;
+        width: fit-content;
+        padding: 0 0.75rem;
+        &::before {
+          content: counter(step);
+          counter-increment: step;
+          margin-right: 1.5rem; /* mr-6 */
+          display: inline-block;
+          width: 1rem;
+          text-align: right;
+          color: #9d7cd8; /* text-[#9d7cd8] */
+        }
       }
     }
 
@@ -90,6 +95,6 @@ pre::-webkit-scrollbar {
   height: 0.5rem;
 }
 pre::-webkit-scrollbar-thumb {
-  background-color: #9d7cd8; /* bg-gray-300 */
+  background-color: #21272f; /* bg-gray-300 */
   border-radius: 0.25rem;
 }

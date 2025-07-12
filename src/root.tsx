@@ -4,7 +4,7 @@ import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
 
-import shikiStyle from "@/shiki.css?inline";
+import shikiStyle from "@/shiki.scss?inline";
 import katexStyle from "katex/dist/katex.min.css?inline";
 
 export default component$(() => {

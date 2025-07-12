@@ -15,6 +15,7 @@ node_modules
 .mf
 .rollup.cache
 tsconfig.tsbuildinfo
+bun.lock
 
 # Logs
 logs

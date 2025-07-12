@@ -4,3 +4,19 @@
   margin: 0.4em 0;
   text-align: center;
 }
+
+.header {
+  padding-bottom: 5px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--hr-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  font-size: large;
+}
+.header * {
+  text-decoration: none;
+  color: var(--title-color);
+  cursor: pointer;
+}
