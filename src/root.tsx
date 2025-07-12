@@ -1,8 +1,11 @@
-import { component$, isDev } from "@qwik.dev/core";
+import { component$, isDev, useStyles$ } from "@qwik.dev/core";
 import { QwikRouterProvider, RouterOutlet } from "@qwik.dev/router";
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
+
+import shikiStyle from "@/shiki.css?inline";
+import katexStyle from "katex/dist/katex.min.css?inline";
 
 export default component$(() => {
   /**
@@ -11,6 +14,9 @@ export default component$(() => {
    *
    * Don't remove the `<head>` and `<body>` elements.
    */
+
+  useStyles$(shikiStyle);
+  useStyles$(katexStyle);
 
   return (
     <QwikRouterProvider>

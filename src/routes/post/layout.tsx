@@ -1,18 +1,10 @@
-import { component$, Slot, useStyles$ } from "@qwik.dev/core";
+import { component$, Slot } from "@qwik.dev/core";
 import { useDocumentHead } from "@builder.io/qwik-city";
 
 import styles from "./layout.module.css";
 
-import shikiStyle from "@/shiki.css?inline";
-import katexStyle from "katex/dist/katex.min.css?inline";
-
 export default component$(() => {
   const { title, frontmatter } = useDocumentHead();
-  
-  // TODO: 检测 文档中是否包含代码块
-
-  useStyles$(shikiStyle);
-  useStyles$(katexStyle);
 
   return (
     <article>

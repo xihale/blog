@@ -2,7 +2,9 @@ body {
   margin: none;
   overflow-y: scroll;
   color: var(--text-color);
-  font-size: 1.3rem;
+  @media screen and (min-width: 860px){
+    font-size: 1.3rem;
+  }
   font-family: serif;
 }
 
