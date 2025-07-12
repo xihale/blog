@@ -1,0 +1,33 @@
+.layout {
+  max-width: 55rem;
+  margin: 0 auto;
+}
+
+.body{
+  border-bottom: 1px solid var(--hr-color);
+}
+.layout::after{
+  content: "";
+  margin: 1px;
+}
+
+.header {
+  padding-bottom: 5px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--hr-color);
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.header :first-child {
+  font-size: 1.75rem;
+  margin-right: auto;
+}
+.header * {
+  text-decoration: none;
+  color: var(--title-color);
+  cursor: pointer;
+}
+.header *:not(:first-child) {
+  margin-left: 16px;
+}

@@ -1,0 +1,30 @@
+
+.card{
+  text-decoration: none;
+  color: var(--text-color);
+  display: block;
+  padding: 1em 1em 0 1em;
+  border: 1px solid var(--hr-color);
+  margin-bottom: 1em;
+}
+
+.card:hover{
+  border-color: var(--link-hover-color);
+  background-color: rgba(0, 0, 0, 0.1);
+  color: inherit;
+}
+
+.head{
+  display: flex;
+  justify-content: space-between;
+}
+
+.title{
+  margin: 0;
+}
+
+.date{
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  padding-top: 0.3rem;
+}

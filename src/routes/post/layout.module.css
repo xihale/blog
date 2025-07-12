@@ -1,0 +1,25 @@
+.content{
+  line-height: 1.4;
+}
+
+.title {
+  margin-bottom: 5px;
+}
+
+.post_meta {
+  font-size: smaller;
+  margin-bottom: 1em;
+}
+
+.update_date::before {
+  content: "·";
+  padding: 0 4px;
+}
+
+.category, .tags {
+  display: inline-block;
+}
+
+.category, .tags > span:not(:last-child)::after {
+  content: ", ";
+}

@@ -1,0 +1,38 @@
+
+.hint{
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+  padding: 0.1rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--hr-color);
+  color: var(--text-color);
+}
+
+.warning{
+  background-color: #fff3cd;
+  color: #664d03;
+}
+.info{
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+.error{
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+@media (prefers-color-scheme: dark) {
+  .warning{
+    background-color: #3d2e00;
+    color: #fbde86;
+  }
+  .info{
+    background-color: #143b43;
+    color: #8ee3f1;
+  }
+  .error{
+    background-color: #430c11;
+    color: #df7a83;
+  }
+}
