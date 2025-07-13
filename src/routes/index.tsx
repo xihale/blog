@@ -2,7 +2,7 @@ import { component$ } from "@qwik.dev/core";
 import PostCard from "~/components/PostCard";
 
 import styles from "./index.module.css";
-import { Link, routeLoader$ } from "@qwik.dev/router";
+import { routeLoader$ } from "@qwik.dev/router";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
@@ -59,12 +59,6 @@ export default component$(() => {
 
   return (
     <div>
-      <div class={styles.header}>
-        <Link class={styles.title} href="/">
-          主页
-        </Link>
-        <Link href="/about">关于</Link>
-      </div>
       {posts.value.map((info: Post, idx: number) => {
         if (info.date) {
           return (
