@@ -20,6 +20,10 @@ export const RouterHead = component$(() => {
 
       <meta name="description" content={desc} />
 
+      {head.frontmatter.math && <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" type="text/css" rel="stylesheet" /> }
+
+      {head.frontmatter.twoslash && <link href="/twoslash.css" type="text/css" rel="stylesheet" />}
+
       {head.meta.map((m) => (
         <meta key={m.key} {...m} />
       ))}
