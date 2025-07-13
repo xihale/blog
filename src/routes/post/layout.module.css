@@ -10,6 +10,7 @@
 .post_meta {
   font-size: smaller;
   margin-bottom: 1em;
+  line-height: 1.3rem;
 }
 
 .update_date::before {
