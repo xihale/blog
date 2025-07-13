@@ -6,7 +6,7 @@ pre {
   overflow-x: auto;
 }
 
-.line{
+.line {
   display: block;
 }
 
@@ -65,20 +65,21 @@ pre {
     @media screen and (min-width: 820px) {
       counter-reset: step;
       counter-increment: step 0;
-      & > .line {
-        display: block;
-        width: fit-content;
-        padding: 0 0.75rem;
-        &::before {
-          content: counter(step);
-          counter-increment: step;
-          margin-right: 1.5rem; /* mr-6 */
-          display: inline-block;
-          width: 1rem;
-          text-align: right;
-          color: #9d7cd8; /* text-[#9d7cd8] */
-        }
+      & > .line::before {
+        content: counter(step);
+        counter-increment: step;
+        margin-right: 1.5rem; /* mr-6 */
+        display: inline-block;
+        width: 1rem;
+        text-align: right;
+        color: #9d7cd8; /* text-[#9d7cd8] */
       }
+    }
+
+    & > .line {
+      display: block;
+      width: fit-content;
+      padding-right: 0.75rem;
     }
 
     .highlighted-word {
