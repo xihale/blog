@@ -8,6 +8,8 @@ export const RouterHead = component$(() => {
   const head = useDocumentHead();
   const loc = useLocation();
 
+  const desc = loc.url.pathname === "/" ? "a blog full of yume" :head.frontmatter?.desc;
+
   return (
     <>
       <title>{head.title}</title>
@@ -15,6 +17,8 @@ export const RouterHead = component$(() => {
       <link rel="canonical" href={loc.url.href} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" type="image/png" href="/favicon.jpg" />
+
+      <meta name="description" content={desc} />
 
       {head.meta.map((m) => (
         <meta key={m.key} {...m} />
