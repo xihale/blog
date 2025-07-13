@@ -13,12 +13,12 @@ export default component$(() => {
         <div class={styles.license}>license: CC BY 4.0</div>
         <div class={styles.date}>
           {frontmatter.date ? (
-            <span class={styles.post_date}>Posted {frontmatter.date}</span>
+            <span class={styles.post_date}>posted {frontmatter.date}</span>
           ) : (
             <></>
           )}
           {frontmatter.update ? (
-            <span class={styles.update_date}>Updated {frontmatter.update}</span>
+            <span class={styles.update_date}>updated {frontmatter.update}</span>
           ) : (
             <></>
           )}
