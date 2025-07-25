@@ -31,11 +31,8 @@ export const usePosts = routeLoader$(async () => {
         href: `/post/${dir}`,
         title: data.title || dir,
         date: (() => {
-          const arr = String(data.date).match(/\d+/g);
-          if (!arr) return undefined;
-          return Number(arr[0]) > 2e3
-            ? [Number(arr[0]), Number(arr[1]), Number(arr[2])]  // 2023.01.01
-            : [Number(arr[2]), Number(arr[0]), Number(arr[1])]; // 01.01.2023
+          const date = new Date(data.date);
+          return [date.getFullYear(), date.getMonth() + 1, date.getDate()];
         })(),
         desc: data.desc || "",
       });
