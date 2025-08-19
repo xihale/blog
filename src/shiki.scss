@@ -69,12 +69,11 @@ pre {
         /* TODO */
         content: counter(step);
         counter-increment: step;
-        margin-right: 1.6rem; /* mr-6 */
+        margin-right: 1rem; /* mr-6 */
         display: inline-block;
-        width: 1rem;
+        width: 2.5rem;
         text-align: right;
         color: #57555a; /* text-[#9d7cd8] */
-        text-align: left;
       }
     }
 
