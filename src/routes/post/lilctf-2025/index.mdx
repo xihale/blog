@@ -104,7 +104,7 @@ b.tpl
 所以想办法通过这里的 api 备份一次数据库
 
 我们搜索 发现 method `export` 可以用来备份数据库，
-回溯 $get 发现是由 $code 生成的
+回溯 `$get` 发现是由 `$code` 推导生成的
 
 ```php
 parse_str(_authcode($code, 'DECODE', UC_KEY), $get);
