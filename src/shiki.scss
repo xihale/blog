@@ -66,13 +66,14 @@ pre {
       counter-reset: step;
       counter-increment: step 0;
       & > .line::before {
+        /* TODO */
         content: counter(step);
         counter-increment: step;
-        margin-right: 1.5rem; /* mr-6 */
+        margin-right: 1.6rem; /* mr-6 */
         display: inline-block;
         width: 1rem;
         text-align: right;
-        color: #9d7cd8; /* text-[#9d7cd8] */
+        color: #57555a; /* text-[#9d7cd8] */
         text-align: left;
       }
     }

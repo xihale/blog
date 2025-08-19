@@ -2,23 +2,34 @@ body {
   margin: none;
   overflow-y: scroll;
   color: var(--text-color);
-  @media screen and (min-width: 860px){
+  @media screen and (min-width: 860px) {
     font-size: 1.3rem;
   }
   font-family: serif;
 }
 
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+@media screen and (max-width: 860px) {
+  span.line {
+    height: 1.2rem;
+  }
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
   text-decoration: none;
   color: inherit;
 }
 
-a{
+a {
   color: var(--link-color);
   line-break: anywhere;
 }
 
-a:hover{
+a:hover {
   color: var(--link-hover-color);
 }
 
