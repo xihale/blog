@@ -26,15 +26,18 @@
   "devDependencies": {
     "@builder.io/qwik-city": "^1.14.1",
     "@eslint/js": "latest",
-    "@qwik.dev/core": "^2.0.0-beta.5",
-    "@qwik.dev/router": "^2.0.0-beta.5",
+    "@qwik.dev/core": "^2.0.0-beta.11",
+    "@qwik.dev/router": "^2.0.0-beta.11",
+    "@shikijs/rehype": "^3.7.0",
+    "@shikijs/transformers": "^3.7.0",
     "@types/node": "24.0.4",
     "add": "^2.0.6",
     "eslint": "9.25.1",
-    "eslint-plugin-qwik": "^2.0.0-beta.5",
+    "eslint-plugin-qwik": "^2.0.0-beta.11",
     "globals": "16.0.0",
-    "prettier": "3.5.3",
+    "prettier": "3.6.2",
     "sass": "^1.89.2",
+    "shiki": "^3.7.0",
     "typescript": "5.8.3",
     "typescript-eslint": "8.26.1",
     "typescript-plugin-css-modules": "latest",
@@ -42,14 +45,11 @@
     "vite-tsconfig-paths": "^4.2.1"
   },
   "dependencies": {
-    "@shikijs/rehype": "^3.7.0",
-    "@shikijs/transformers": "^3.7.0",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.11",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.0",
-    "remark-math": "^6.0.0",
-    "shiki": "^3.7.0"
+    "remark-math": "^6.0.0"
   }
 }
