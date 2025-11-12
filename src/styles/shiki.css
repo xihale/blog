@@ -1,0 +1,17 @@
+/* Code language indicator */
+pre[data-language]::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 11px;
+  color: var(--code-lang-text);
+  text-transform: uppercase;
+  font-family: var(--font-monospace);
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
