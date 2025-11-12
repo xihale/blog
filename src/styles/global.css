@@ -33,8 +33,9 @@
   --article-link-hover: #b8cce8;
 
   /* Typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-lxgw: "LXGW WenKai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-lxgw);
+  --font-serif: "Times New Roman", "LXGW WenKai";
   --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
 
   /* Code styling - unified across themes */
@@ -669,6 +670,18 @@ th {
   .friend-card {
     padding: var(--space-md);
   }
+}
+
+/* Inline code styling - light green theme */
+:not(pre) code {
+  background-color: var(--inline-code-bg);
+  color: var(--inline-code-color);
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  display: inline;
+  white-space: nowrap;
 }
 
 /* Reduced motion support */

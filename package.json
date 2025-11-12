@@ -4,10 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "bun run subset-font && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "new": "node scripts/new-post.js"
+    "new": "node scripts/new-post.js",
+    "subset-font": "bun scripts/subset-font.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.10",
