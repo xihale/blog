@@ -1,0 +1,70 @@
+---
+title: "SNI 阻断的原理与绕过"
+pubDate: "2024-12-06"
+updatedDate: "2025-09-10"
+description: "sni 的设计缺陷导致阻断攻击变得很轻松，而 sni 的宽松设计也致使我们有绕过阻断的方法，我们同时获得了矛和盾。"
+tags: ["Network"]
+category: ["实践"]
+draft: false
+---
+
+
+
+## 原理
+
+https 流量在 `Client Hello` 阶段会携带一个 SNI(Server Name Indicator) 字段，
+告诉服务器我要访问这个服务器的哪个域名的内容，
+好让服务器那边自动切换到那个域名对应的 handler 然后发送公钥给客户端，
+接着就可以建立 https 请求线路了。
+
+不过，不好的一点是，这个 sni 报文是明文的，
+导致可以很方便地实现中间人攻击。
+GFW 在多数情况就是基于这个原理阻断 https 的流量的。
+
+我们可以看出，SNI 不是必要的，如果一个 IP 只对应一个 域名，
+那么服务器直接返回那个域名的证书即可，无需检查 SNI 字段。
+（通配符证书+handler 相同 也可以起到这种效果，
+比如 @ 与 www 域名往往绑定到同一个 handler 和主机）
+并且，sni 的设计比较宽松，有几个安全级别，
+现实是，有很多服务器对 SNI 的检查非常宽松，
+很多比较知名的网站都可以通过这个方法访问，
+包括 Pixiv, Google(未封 IP 的“边缘”节点), DuckDuckGo, etc.
+
+## 实现
+
+### 推荐 Sheas-Cealer
+
+Windows: [https://github.com/SpaceTimee/Sheas-Cealer](https://github.com/SpaceTimee/Sheas-Cealer)  
+Wiki: [https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation)  
+Android: [https://github.com/SpaceTimee/Sheas-Cealer-Droid](https://github.com/SpaceTimee/Sheas-Cealer-Droid)  
+Wiki: [https://github.com/SpaceTimee/Sheas-Cealer-Droid/wiki/Cealer-Docs](https://github.com/SpaceTimee/Sheas-Cealer-Droid/wiki/Cealer-Docs)
+
+### 基于 [Accesser](https://github.com/Urenko/Accesser)
+
+对于 windows 的安装说明在 main page 已经提及，linux 的简略说明在[issue 9](https://github.com/URenko/Accesser/issues/9)，而 `arch` 系 可以使用 aur [python-accesser](https://aur.archlinux.org/packages/python-accesser)
+
+```shell
+paru -S python-accesser
+```
+
+使用 `systemctl` 管理 `accesser.service`
+
+```shell
+systemctl start accesser
+```
+
+对于 `arch` 系，使用以下命令信任证书 (ref: [arch wiki](https://wiki.archlinux.org/title/User:Grawity/Adding_a_trusted_CA_certificate))
+
+```shell
+curl -O http://localhost:7654/CERT/root.crt && sudo trust anchor --store root.crt ; rm root.crt
+```
+
+最后，在系统代理中配置 `pac` 即可
+
+```plain
+http://localhost:7654/pac/?t=1
+```
+
+<div class="hint hint-info">`t` 是随机数</div>
+
+<div class="hint hint-info">对于手机，在系统设置中安装证书，使用相应的软件进行 HTTP 链接，配置可以参考 pac 文件。</div>
