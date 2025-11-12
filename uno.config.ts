@@ -97,6 +97,13 @@ export default defineConfig({
     ["nav-link", "text-sm text-secondary hover:text-primary font-light"],
     ["nav-menu", "flex items-center space-x-8"],
 
+    // Mobile navigation specific styles
+    ["mobile-menu-button", "flex flex-col justify-center items-center w-8 h-8 bg-transparent border-none cursor-pointer p-1 rd-0.25 transition-colors hover:bg-block focus-visible:outline-2 focus-visible:outline-secondary focus-visible:outline-offset-2 md:hidden"],
+    ["hamburger-line", "w-5 h-0.5 bg-text rd-0.5 transition-all duration-300 origin-center"],
+    ["mobile-nav", "fixed top-full left-0 right-0 bg-background border-b border-border shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto transition-all duration-300 z-40"],
+    ["mobile-nav-open", "top-16"],
+    ["mobile-nav-closed", "top-full"],
+
     // GitHub-style minimal admonitions with better dark mode support
     ["admonition", "my-4 p-4 border-l-4 text-[var(--color-text)]"],
     ["admonition-note", "border-l-blue-500 bg-blue-100 dark:border-blue-400 dark:bg-blue-950/50 dark:text-blue-300"],
