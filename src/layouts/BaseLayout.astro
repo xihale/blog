@@ -1,0 +1,40 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body class="flex flex-col min-h-screen">
+		<Header />
+		<div class="flex flex-col mx-auto px-4 w-full max-w-4xl flex-grow pt-20">
+			<main class="flex-grow py-8">
+				<slot />
+			</main>
+		</div>
+
+		<!-- Global Footer -->
+		<footer class="bg-[var(--color-background)] border-t border-[var(--color-border)]">
+			<div class="mx-auto px-4 w-full max-w-4xl py-3">
+				<div class="flex items-center justify-between text-sm">
+					<p class="text-[var(--color-text-muted)]">
+						Built with <a href="https://astro.build/" class="text-[var(--color-text-secondary)]">Astro</a> •
+						Minimal by design
+					</p>
+					<a href="/rss.xml" class="text-[var(--color-text-muted)]" title="RSS Feed">
+						RSS
+					</a>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
