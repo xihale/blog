@@ -17,7 +17,7 @@ A curated collection of interesting websites, blogs, and resources from around t
         teru
       </div>
       <div class="friend-desc">
-        modern C++ & PL 大佬，AutoLang 创始人
+        心有所向，日复一日，必有精进
       </div>
     </div>
   </a>
@@ -31,7 +31,7 @@ A curated collection of interesting websites, blogs, and resources from around t
         hill
       </div>
       <div class="friend-desc">
-        AveMujica 大佬
+        Just Forward
       </div>
     </div>
   </a>
@@ -46,10 +46,10 @@ A curated collection of interesting websites, blogs, and resources from around t
     </div>
     <div class="friend-info">
       <div class="friend-name">
-        评论尸的自留地
+          评论尸
       </div>
       <div class="friend-desc">
-        个人博客，分享日常想法和技术感悟
+        评论尸的自留地
       </div>
     </div>
   </a>

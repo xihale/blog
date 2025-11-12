@@ -4,7 +4,21 @@ interface Props {
 	description?: string;
 }
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+const { title: frontmatterTitle, description = SITE_DESCRIPTION } = Astro.props;
+
+// For markdown files, try to get title from frontmatter or use pathname-based title
+let title = frontmatterTitle;
+if (!title && Astro.url.pathname !== '/') {
+  // Extract title from pathname for markdown files
+  const pathName = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
+  if (pathName) {
+    title = pathName.charAt(0).toUpperCase() + pathName.slice(1).replace(/-/g, ' ');
+  }
+}
+
+// If title is not provided, use SITE_TITLE (for homepage)
+// If title is provided and it's not SITE_TITLE, use "title | SITE_TITLE"
+const pageTitle = title ? (title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_TITLE}`) : SITE_TITLE;
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
@@ -12,7 +26,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 <!DOCTYPE html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={pageTitle} description={description} />
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<Header />

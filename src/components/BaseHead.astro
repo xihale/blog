@@ -27,3 +27,22 @@ const { title, description } = Astro.props;
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+
+<!-- Font Preload -->
+<link rel="preload" href="/fonts/lxgw.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- Page-specific Metadata -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Font Face -->
+<style>
+  @font-face {
+    font-family: "LXGW WenKai";
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: url("/fonts/lxgw.woff2") format("woff2");
+  }
+</style>
