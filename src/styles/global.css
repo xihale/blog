@@ -368,6 +368,10 @@ th {
   font-style: italic;
 }
 
+.article-content blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
 .article-content img {
   display: block;
   max-width: 100%;
