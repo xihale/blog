@@ -30,9 +30,7 @@ const years = Object.keys(postsByYear)
       <h1 class="mb-4">
         Writing
       </h1>
-      <p class="meta-text">
         Thoughts on code, design, and the creative process.
-      </p>
     </header>
 
     <main class="space-y-16">
@@ -43,7 +41,7 @@ const years = Object.keys(postsByYear)
           </h2>
           <div class="content-spacing">
             {postsByYear[year].map((post, index) => (
-              <article class="post-card">
+              <div class="post-card">
                 <a href={`/blog/${post.id}/`} class="block">
                   <div class="blog-post-item">
                     <time
@@ -81,7 +79,7 @@ const years = Object.keys(postsByYear)
                     </div>
                   </div>
                 </a>
-              </article>
+              </div>
             ))}
           </div>
         </section>
