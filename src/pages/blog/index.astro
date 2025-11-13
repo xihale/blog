@@ -25,7 +25,7 @@ const years = Object.keys(postsByYear)
 ---
 
 <BaseLayout title={`Blog`} description="All blog posts">
-  <div class="container-wide">
+  <div class="container-center">
     <header class="responsive-margin">
       <h1 class="heading-large mb-4">
         Writing
@@ -43,7 +43,7 @@ const years = Object.keys(postsByYear)
           </h2>
           <div class="content-spacing">
             {postsByYear[year].map((post, index) => (
-              <article class="group post-card">
+              <article class="post-card">
                 <a href={`/blog/${post.id}/`} class="block">
                   <div class="blog-post-item">
                     <time
