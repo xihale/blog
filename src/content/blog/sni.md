@@ -65,6 +65,10 @@ curl -O http://localhost:7654/CERT/root.crt && sudo trust anchor --store root.cr
 http://localhost:7654/pac/?t=1
 ```
 
-<div class="hint hint-info">`t` 是随机数</div>
+:::info
+`t` 是随机数
+:::
 
-<div class="hint hint-info">对于手机，在系统设置中安装证书，使用相应的软件进行 HTTP 链接，配置可以参考 pac 文件。</div>
+:::info
+对于手机，在系统设置中安装证书，使用相应的软件进行 HTTP 链接，配置可以参考 pac 文件。
+:::

@@ -9,8 +9,10 @@ draft: false
 
 
 
-<div class="hint hint-error">Duplicated post.  
-TODO: notes for aur.</div>
+:::error
+Duplicated post.
+TODO: notes for aur.
+:::
 
 ## Preface
 I had a terrible experience due to my unfamiliarity with the rules [Arch package guidelines](https://wiki.archlinux.org/title/Arch_package_guidelines)!
@@ -19,7 +21,9 @@ I had a terrible experience due to my unfamiliarity with the rules [Arch package
 ### [package_naming](https://wiki.archlinux.org/title/Arch_package_guidelines#Package_naming)
 
 Choose a wonderful name.
-<div class="hint hint-error">LOWERCASE!</div>
+:::error
+LOWERCASE!
+:::
 
 ## Start
 ### Prepare
@@ -29,13 +33,17 @@ Before the jounal, just follow the wiki for authority first: [AUR_submission_gui
 git -c init.defaultbranch=master clone ssh://aur@aur.archlinux.org/$ThePackageNameYouWant.git
 ```
 
-<div class="hint hint-warning">The error such as `git-upload-pack: invalid repository name` means that you have to go back to [AUR_submission_guidelines](https://wiki.archlinux.org/title/AUR_submission_guidelines)!</div>
+:::warning
+The error such as `git-upload-pack: invalid repository name` means that you have to go back to [AUR_submission_guidelines](https://wiki.archlinux.org/title/AUR_submission_guidelines)!
+:::
 
 ### Beginning
 All well!
 Now just crafting the PKGBUILD!
 
-<div class="hint hint-info">A long time later...</div>
+:::info
+A long time later...
+:::
 
 ### End
 Publishing!

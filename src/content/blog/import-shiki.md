@@ -13,8 +13,10 @@ draft: false
 
 ## 安装
 
-<div class="hint hint-error">不要使用 `remark-shiki-twoslash`, 因为在 `mdx` 上，这个库的支持性不好，
-  我们使用官方的 `rehype-shiki` 解决方案</div>
+:::error
+不要使用 `remark-shiki-twoslash`, 因为在 `mdx` 上，这个库的支持性不好，
+我们使用官方的 `rehype-shiki` 解决方案
+:::
 
 ```bash
 bun i -D @shikijs/rehype @shikijs/twoslash @shikijs/transformers
