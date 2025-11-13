@@ -32,13 +32,11 @@ const { title, description } = Astro.props;
 <link rel="preload" href="/fonts/lxgw.woff2" as="font" type="font/woff2" crossorigin />
 
 <!-- Critical CSS for immediate font application -->
-<style>
-  /* Hide content initially to prevent flash */
+<style is:global>
   html {
     visibility: hidden;
   }
 
-  /* Font definition with fallback-first strategy */
   @font-face {
     font-family: "LXGW WenKai";
     font-style: normal;
@@ -47,45 +45,16 @@ const { title, description } = Astro.props;
     src: local("Times New Roman"), local("serif"), url("/fonts/lxgw.woff2") format("woff2");
   }
 
-  /* System font stack for immediate rendering using CSS variables */
-  body {
-    font-family: var(--font-sans);
-    color: var(--color-text, #333);
-    background-color: var(--color-background, #fff);
-    line-height: 1.6;
-    font-size: 16px;
-    min-height: 100vh;
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/jbmono.woff2') format('woff2');
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 0.5em;
-    scroll-margin-top: 5rem;
-  }
-
-  code, pre {
-    font-family: var(--font-mono);
-  }
-
-  /* Show content when everything is ready */
   html.wf-active {
-    visibility: visible;
-  }
-
-  /* Apply custom font when loaded */
-  html.wf-active body {
-    font-family: var(--font-sans);
-  }
-
-  html.wf-active h1,
-  html.wf-active h2,
-  html.wf-active h3,
-  html.wf-active h4,
-  html.wf-active h5,
-  html.wf-active h6 {
-    font-family: var(--font-serif);
+    visibility: unset;
   }
 </style>
 
