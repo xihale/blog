@@ -1,0 +1,159 @@
+---
+interface Props {
+  headings: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
+}
+
+const { headings } = Astro.props;
+
+// Filter for h2-h4 and ensure minimum count
+const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4);
+---
+
+
+{tocItems.length >= 2 && (
+  <div class="toc" id="toc">
+    {tocItems.map(({ depth, slug, text }) => (
+      <div class={`toc-item toc-level-${depth}`} style={`padding-left: ${Math.max(0, depth - 2) * 2}ch`}>
+        - <a href={`#${slug}`} class="toc-link" data-toc-id={slug}>{text}</a>
+      </div>
+    ))}
+  </div>
+)}
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+    // Early mobile check - skip all TOC interactions on mobile
+    if (window.innerWidth <= 768) return;
+
+    const toc = document.getElementById('toc');
+    if (!toc) return;
+
+    const links = toc.querySelectorAll('.toc-link');
+
+    function updateCurrentHeading() {
+      const headings = Array.from(document.querySelectorAll('.article-content h2, .article-content h3, .article-content h4'));
+
+      if (headings.length === 0) return;
+
+      // Find current heading based on scroll position
+      const scrollPosition = window.scrollY + 100;
+      let currentHeading = null;
+
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i];
+        if (heading.offsetTop <= scrollPosition) {
+          currentHeading = heading;
+          break;
+        }
+      }
+
+      if (!currentHeading && headings.length > 0) {
+        currentHeading = headings[0];
+      }
+
+      if (currentHeading) {
+        const headingId = currentHeading.id;
+
+        // Update active states
+        links.forEach(link => {
+          const linkId = link.getAttribute('data-toc-id');
+          if (linkId === headingId) {
+            link.style.fontWeight = 'bold';
+            link.style.color = 'var(--color-text)';
+          } else {
+            link.style.fontWeight = '';
+            link.style.color = '';
+          }
+        });
+      }
+    }
+
+    // Update on scroll with throttling
+    let scrollTimer: number | null = null;
+    function handleScroll() {
+      if (scrollTimer) {
+        window.cancelAnimationFrame(scrollTimer);
+      }
+      scrollTimer = window.requestAnimationFrame(updateCurrentHeading);
+    }
+
+    updateCurrentHeading();
+    window.addEventListener('scroll', handleScroll);
+  });
+</script>
+
+<style>
+  /* TOC embedded in content with sticky positioning */
+  .toc {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    position: sticky;
+    top: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    max-width: 160px;
+    z-index: 10;
+    float: right;
+    margin-left: var(--space-xl);
+    margin-right: -220px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+
+  .toc-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-base);
+    margin-left: 2px;
+  }
+
+  .toc-link:hover {
+    color: var(--color-text);
+  }
+
+  /* Current heading is bold and full color */
+  .toc-link[style*="font-weight: bold"] {
+    color: var(--color-text);
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .toc {
+      position: relative;
+      top: auto;
+      max-width: none;
+      float: none;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: var(--space-lg);
+      font-size: 0.875rem;
+    }
+
+    /* Hide current heading highlight on mobile */
+    .toc-link[style*="font-weight: bold"] {
+      font-weight: normal !important;
+      color: inherit !important;
+    }
+
+    /* Show all links with same opacity on mobile */
+    .toc:not(:hover) .toc-link:not([style*="font-weight: bold"]) {
+      opacity: 1 !important;
+    }
+  }
+
+  /* Hide on hover effect - always visible now */
+  .toc:not(:hover) .toc-link:not([style*="font-weight: bold"]) {
+    opacity: 0.6;
+  }
+
+  </style>
