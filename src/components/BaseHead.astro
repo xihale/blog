@@ -28,21 +28,91 @@ const { title, description } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font Preload -->
+<!-- Font Preload with highest priority -->
 <link rel="preload" href="/fonts/lxgw.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- Critical CSS for immediate font application -->
+<style>
+  /* Hide content initially to prevent flash */
+  html {
+    visibility: hidden;
+  }
+
+  /* Font definition with fallback-first strategy */
+  @font-face {
+    font-family: "LXGW WenKai";
+    font-style: normal;
+    font-weight: normal;
+    font-display: fallback;
+    src: local("Times New Roman"), local("serif"), url("/fonts/lxgw.woff2") format("woff2");
+  }
+
+  /* System font stack for immediate rendering */
+  body {
+    font-family: "Times New Roman", serif !important;
+    color: var(--color-text, #333);
+    background-color: var(--color-background, #fff);
+    line-height: 1.6;
+    font-size: 16px;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Times New Roman", serif !important;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+    scroll-margin-top: 5rem;
+  }
+
+  code, pre {
+    font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace !important;
+  }
+
+  /* Show content when everything is ready */
+  html.wf-active {
+    visibility: visible;
+  }
+
+  /* Apply custom font when loaded */
+  html.wf-active body {
+    font-family: "LXGW WenKai", "Times New Roman", serif !important;
+  }
+
+  html.wf-active h1,
+  html.wf-active h2,
+  html.wf-active h3,
+  html.wf-active h4,
+  html.wf-active h5,
+  html.wf-active h6 {
+    font-family: "LXGW WenKai", "Times New Roman", serif !important;
+  }
+</style>
+
+<!-- Font loading script -->
+<script>
+  // Immediate font loading detection
+  (function() {
+    const html = document.documentElement;
+    const font = new FontFace('LXGW WenKai', 'url("/fonts/lxgw.woff2")');
+
+    // Load font and apply when ready
+    font.load().then(function() {
+      document.fonts.add(font);
+      html.classList.add('wf-active');
+    }).catch(function() {
+      // Fallback: show content even if font fails to load
+      html.classList.add('wf-active');
+    });
+
+    // Fallback timeout: show content after 1 second even if font not loaded
+    setTimeout(function() {
+      html.classList.add('wf-active');
+    }, 1000);
+  })();
+</script>
 
 <!-- Page-specific Metadata -->
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
-
-<!-- Font Face -->
-<style>
-  @font-face {
-    font-family: "LXGW WenKai";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/fonts/lxgw.woff2") format("woff2");
-  }
-</style>
