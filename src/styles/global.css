@@ -127,7 +127,7 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  /* Font styles are handled in BaseHead.astro to prevent flashing */
   color: var(--color-text);
   background-color: var(--color-background);
   line-height: 1.6;
@@ -137,7 +137,7 @@ body {
 
 /* Typography base */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+  /* Font styles are handled in BaseHead.astro to prevent flashing */
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5em;
@@ -151,6 +151,8 @@ a {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   transition: color var(--transition-base);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 a:hover {
@@ -309,6 +311,12 @@ th {
   font-size: 1.0625rem;
 }
 
+/* Remove spacing from first element in article content */
+.article-content > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
 .article-content h1,
 .article-content h2,
 .article-content h3,
@@ -330,7 +338,6 @@ th {
 
 .article-content h2 {
   font-size: 1.75rem;
-  border-bottom: 1px solid var(--color-surface);
   padding-bottom: var(--space-sm);
 }
 
@@ -676,16 +683,75 @@ th {
   }
 }
 
-/* Inline code styling - light green theme */
+/* Inline code styling */
 :not(pre) code {
-  background-color: var(--inline-code-bg);
-  color: var(--inline-code-color);
+  color: var(--accent-color);
   padding: 0.1em 0.4em;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
   font-size: 0.85em;
   display: inline;
-  white-space: nowrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Expressive Code customizations */
+@media (max-width: 768px) {
+  .expressive-code .ec-line > .gutter {
+    display: none;
+  }
+
+  /* Extend code blocks to page edges on mobile */
+  .expressive-code {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0 !important;
+  }
+
+  .expressive-code pre {
+    border-radius: 0 !important;
+  }
+
+  /* Hide copy button by default on mobile, only show on code block hover/focus */
+  .expressive-code .copy button {
+    opacity: 0 !important;
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  /* Show copy button when code block is focused or hovered */
+  .expressive-code .frame:focus-within .copy button:not(:hover),
+  .expressive-code .frame:hover .copy button:not(:hover) {
+    opacity: 0.75 !important;
+  }
+
+  /* Keep copy button visible when hovering over it or when feedback is shown */
+  .expressive-code .copy button:hover,
+  .expressive-code .copy button:focus,
+  .expressive-code .copy .feedback.show ~ button {
+    opacity: 1 !important;
+  }
+}
+
+/* Remove left outline from .code elements */
+.expressive-code .ec-line .code {
+  border-inline-start: none !important;
+}
+
+/* Remove border radius and shadow from all code blocks */
+.expressive-code,
+.expressive-code pre,
+.expressive-code .frame {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Disable wrapping for code blocks on mobile only */
+@media (max-width: 768px) {
+  .expressive-code pre.wrap .ec-line .code {
+    white-space: pre !important;
+    overflow-wrap: normal !important;
+  }
 }
 
 /* Reduced motion support */
