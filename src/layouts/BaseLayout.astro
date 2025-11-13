@@ -30,7 +30,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<Header />
-		<div class="flex flex-col mx-auto px-4 w-full max-w-4xl flex-grow pt-20">
+		<div class="flex flex-col container-wide flex-grow pt-20">
 			<main class="flex-grow py-8">
 				<slot />
 			</main>
@@ -38,7 +38,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 		<!-- Global Footer -->
 		<footer class="bg-[var(--color-background)] border-t border-[var(--color-border)]">
-			<div class="mx-auto px-4 w-full max-w-4xl py-3">
+			<div class="container-wide py-3">
 				<div class="flex items-center justify-between text-sm">
 					<p class="text-[var(--color-text-muted)]">
 						Built with <a href="https://astro.build/" class="text-[var(--color-text-secondary)]">Astro</a> •

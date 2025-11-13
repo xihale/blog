@@ -33,7 +33,7 @@
   --article-link-hover: #b8cce8;
 
   /* Typography */
-  --font-lxgw: "LXGW WenKai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-lxgw: "Times New Roman", "LXGW WenKai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-lxgw);
   --font-serif: "Times New Roman", "LXGW WenKai";
   --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;

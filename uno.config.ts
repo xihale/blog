@@ -41,8 +41,8 @@ export default defineConfig({
     ["article-content", "font-sans text-[var(--color-text)] leading-7 text-[1.0625rem]"],
 
     // Layout utilities
-    ["container-center", "max-w-3xl mx-auto px-4"],
-    ["container-wide", "max-w-6xl mx-auto px-4"],
+    ["container-center", "max-w-3xl mx-auto px-4 md:px-4"],
+    ["container-wide", "max-w-6xl mx-auto px-4 md:px-4"],
     ["flex-center", "flex items-center justify-center"],
     ["flex-center-col", "flex flex-col items-center justify-center"],
     ["section-spacing", "space-y-8"],
@@ -76,7 +76,7 @@ export default defineConfig({
 
     // Navigation and header
     ["hero-section", "min-h-[80vh] flex-center"],
-    ["content-wrapper", "text-center section-spacing max-w-3xl mx-auto"],
+    ["content-wrapper", "text-center section-spacing container-wide"],
 
     // Border and section dividers
     ["section-border", "border-t border-block pt-8"],
@@ -92,7 +92,7 @@ export default defineConfig({
 
     // Navigation and header utilities
     ["nav-header", "fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-lg z-50 border-b border-block/30 shadow-sm"],
-    ["nav-container", "container-wide px-6 py-4 flex items-center justify-between"],
+    ["nav-container", "container-wide px-4 md:px-6 py-4 flex items-center justify-between"],
     ["nav-logo", "text-xl font-serif font-extralight tracking-tight"],
     ["nav-link", "text-sm text-secondary hover:text-primary font-light"],
     ["nav-menu", "flex items-center space-x-8"],
