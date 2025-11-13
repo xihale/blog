@@ -18,7 +18,10 @@ export default defineConfig({
         expressiveCode({
             themes: ['vitesse-dark', 'vitesse-light'],
             defaultProps:{
-                wrap: true
+                wrap: true,
+                overridesByLang: {
+                  'bash,ps,sh': { preserveIndent: false },
+                },
             },
             plugins: [
                 pluginLineNumbers()
