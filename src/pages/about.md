@@ -32,6 +32,5 @@ However, until now, I haven't achieved them; these are still just future goals t
 ## Technology Stack
 
 - [Astro](https://astro.build/) — Fast, content-first framework
-- [UnoCSS](https://unocss.dev/) — Instant on-demand atomic CSS
 
 Feel free to reach out with questions or suggestions.
