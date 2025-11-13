@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 格式化日期为 YYYY-MM-DD (frontmatter格式)
+// 格式化日期为 YYYY-MM-DD (frontmatter 格式)
 function formatDateForFrontmatter(date) {
   return date.toISOString().split('T')[0];
 }

