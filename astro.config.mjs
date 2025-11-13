@@ -2,7 +2,6 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import UnoCSS from 'unocss/astro';
 import { defineConfig } from 'astro/config';
 import { remarkCustomDirectives } from './lib/remark/custom-directives';
 import remarkDirective from 'remark-directive';
@@ -28,8 +27,7 @@ export default defineConfig({
             ]
         }),
         mdx(),
-        sitemap(),
-        UnoCSS()
+        sitemap()
     ],
     markdown: {
         remarkPlugins: [remarkDirective, remarkCustomDirectives],
