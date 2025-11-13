@@ -200,7 +200,6 @@ img {
 }
 
 blockquote {
-  border-left: 3px solid var(--color-text-secondary);
   padding-left: var(--space-md);
   margin: var(--space-md) 0;
   color: var(--color-text-secondary);
@@ -416,13 +415,36 @@ th {
 }
 
 .article-content blockquote {
-  border-left: 2px solid var(--color-text-secondary);
-  padding: var(--space-sm) var(--space-lg);
+  display: inline-block;
+  padding: var(--space-lg) var(--space-xl) var(--space-lg) var(--space-lg);
   margin: var(--space-xl) 0;
-  background: var(--color-surface);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--color-text-secondary);
   font-style: italic;
+  position: relative;
+}
+
+.article-content blockquote::before {
+  content: "\201c";
+  position: absolute;
+  top: -0.2em;
+  left: -0.1em;
+  font-size: 3em;
+  color: var(--color-text-secondary);
+  opacity: 0.3;
+  font-style: normal;
+  line-height: 1;
+}
+
+.article-content blockquote::after {
+  content: "\201d";
+  position: absolute;
+  bottom: -0.3em;
+  right: 0.1em;
+  font-size: 3em;
+  color: var(--color-text-secondary);
+  opacity: 0.3;
+  font-style: normal;
+  line-height: 1;
 }
 
 .article-content blockquote > *:last-child {
