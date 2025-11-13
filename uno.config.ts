@@ -37,12 +37,12 @@ export default defineConfig({
     ["hover-lift", "hover:animate-[lift_0.15s_ease_forwards]"],
     ["skeleton", "bg-gradient-to-r from-[var(--color-surface)] via-[var(--color-border)] to-[var(--color-surface)] bg-[length:200px_100%] animate-[shimmer_1.5s_infinite]"],
     ["line-clamp-2", "overflow-hidden text-ellipsis line-clamp-2"],
-    ["sr-only", "absolute w-1 h-1 p-0 m-[-1px] overflow-hidden clip-rect-[0_0_0_0] whitespace-nowrap border-0"],
-    ["article-content", "font-sans text-[var(--color-text)] leading-7 text-[1.0625rem]"],
+    ["sr-only", "absolute w-1 h-1 p-0 m-[-1px] overflow-hidden whitespace-nowrap border-0"],
+    ["article-content", "font-sans text-[var(--color-text)] leading-7"],
 
     // Layout utilities
-    ["container-center", "max-w-3xl mx-auto px-4 md:px-4"],
-    ["container-wide", "max-w-6xl mx-auto px-4 md:px-4"],
+    ["container-center", "max-w-3xl mx-auto"],
+    ["container-wide", "max-w-6xl mx-auto px-4"],
     ["flex-center", "flex items-center justify-center"],
     ["flex-center-col", "flex flex-col items-center justify-center"],
     ["section-spacing", "space-y-8"],
@@ -55,19 +55,19 @@ export default defineConfig({
     ["heading-medium", "text-2xl md:text-3xl font-serif font-light text-weak tracking-wide py-2"],
     ["heading-small", "text-lg font-serif font-light text-primary"],
     ["heading-section", "text-sm font-serif font-light text-weak mb-6 tracking-wide"],
-    ["body-text", "text-lg leading-relaxed"],
+    ["body-text", "leading-relaxed"],
     ["meta-text", "text-sm text-secondary"],
     ["weak-text", "text-xs text-weak"],
     ["mono-text", "font-mono"],
 
     // Card/post utilities
-    ["post-card", "group hover-lift block text-left"],
-    ["post-title", "font-serif text-lg font-light mb-1 text-primary group-hover:text-[var(--article-link-color)]"],
+    ["post-card", "hover-lift block text-left"],
+    ["post-title", "font-serif text-lg font-light mb-1 text-primary hover:text-[var(--article-link-color)]"],
     ["post-meta", "text-xs text-weak mt-1 block"],
     ["post-description", "text-sm text-weak line-clamp-2"],
 
     // Blog post components
-    ["article-header", "mb-12 md:mb-16"],
+    ["article-header", "mb-2"],
     ["article-meta-container", "flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-secondary"],
     ["tag-container", "flex flex-wrap gap-2 justify-center"],
     ["tag", "text-xs text-weak bg-block/50 px-3 py-1 rounded-full"],
@@ -76,7 +76,7 @@ export default defineConfig({
 
     // Navigation and header
     ["hero-section", "min-h-[80vh] flex-center"],
-    ["content-wrapper", "text-center section-spacing container-wide"],
+    ["content-wrapper", "text-center section-spacing max-w-3xl mx-auto"],
 
     // Border and section dividers
     ["section-border", "border-t border-block pt-8"],
@@ -91,8 +91,8 @@ export default defineConfig({
     ["blog-content", "flex-grow"],
 
     // Navigation and header utilities
-    ["nav-header", "fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-lg z-50 border-b border-block/30 shadow-sm"],
-    ["nav-container", "container-wide px-4 md:px-6 py-4 flex items-center justify-between"],
+    ["nav-header", "bg-background border-b border-block/30 shadow-sm"],
+    ["nav-container", "max-w-4xl mx-auto px-4 py-4 flex items-center justify-between"],
     ["nav-logo", "text-xl font-serif font-extralight tracking-tight"],
     ["nav-link", "text-sm text-secondary hover:text-primary font-light"],
     ["nav-menu", "flex items-center space-x-8"],
