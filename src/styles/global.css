@@ -2,6 +2,29 @@
 
 @import "./shiki.css";
 
+/* JetBrains Mono Font Face */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/jbmono.woff2') format('woff2');
+}
+
+/* Georgia Font Face */
+@font-face {
+  font-family: 'Georgia';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/georgia.woff2') format('woff2');
+}
+
+/* Smooth scrolling for hash navigation */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Unified Theme System - eliminates redundancy */
 :root {
   /* Light theme (default) */
@@ -36,7 +59,7 @@
   --font-lxgw: "Times New Roman", "LXGW WenKai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-lxgw);
   --font-serif: "Times New Roman", "LXGW WenKai";
-  --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+  --font-mono: "JetBrains Mono", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace, "LXGW WenKai";
 
   /* Code styling - unified across themes */
   --inline-code-bg: rgba(103, 179, 160, 0.12);
@@ -310,6 +333,15 @@ th {
   font-size: 1.0625rem;
 }
 
+/* TOC positioning adjustments */
+@media (min-width: 769px) {
+  .toc {
+    position: sticky;
+    top: var(--space-xl);
+  }
+}
+
+
 /* Remove spacing from first element in article content */
 .article-content > *:first-child {
   margin-top: 0 !important;
@@ -557,19 +589,9 @@ th {
   margin-bottom: 4px;
 }
 
-.admonition code {
-  font-size: 0.85em;
-  padding: 0.1em 0.3em;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.05);
-}
 
 /* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
-  .admonition code {
-    background: rgba(255, 255, 255, 0.1);
-    color: inherit;
-  }
 
   /* Ensure admonition text has proper contrast in dark mode */
   .admonition {
@@ -759,7 +781,7 @@ th {
 /* Inline code styling */
 :not(pre) code {
   color: var(--accent-color);
-  padding: 0.1em 0.4em;
+  padding: 0;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
   font-size: 0.85em;

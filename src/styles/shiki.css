@@ -7,7 +7,7 @@ pre[data-language]::before {
   font-size: 11px;
   color: var(--code-lang-text);
   text-transform: uppercase;
-  font-family: var(--font-monospace);
+  font-family: var(--font-mono);
   z-index: 1;
   pointer-events: none;
   white-space: nowrap;
