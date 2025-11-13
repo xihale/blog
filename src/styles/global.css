@@ -332,21 +332,71 @@ th {
 }
 
 .article-content h1 {
-  font-size: 2.25rem;
+  font-size: 3rem;
   margin-top: 0;
 }
 
 .article-content h2 {
-  font-size: 1.75rem;
+  font-size: 2.25rem;
   padding-bottom: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+.article-content h2::before {
+  content: "#";
+  color: var(--color-text-secondary);
+  margin-right: var(--space-sm);
+  font-weight: 300;
+  opacity: 0.6;
 }
 
 .article-content h3 {
-  font-size: 1.375rem;
+  font-size: 1.75rem;
+  margin-top: var(--space-xl);
+}
+
+.article-content h3::before {
+  content: "##";
+  color: var(--color-text-secondary);
+  margin-right: var(--space-sm);
+  font-weight: 300;
+  opacity: 0.5;
 }
 
 .article-content h4 {
+  font-size: 1.5rem;
+}
+
+.article-content h4::before {
+  content: "###";
+  color: var(--color-text-secondary);
+  margin-right: var(--space-sm);
+  font-weight: 300;
+  opacity: 0.4;
+}
+
+.article-content h5 {
+  font-size: 1.25rem;
+}
+
+.article-content h5::before {
+  content: "####";
+  color: var(--color-text-secondary);
+  margin-right: var(--space-sm);
+  font-weight: 300;
+  opacity: 0.3;
+}
+
+.article-content h6 {
   font-size: 1.125rem;
+}
+
+.article-content h6::before {
+  content: "#####";
+  color: var(--color-text-secondary);
+  margin-right: var(--space-sm);
+  font-weight: 300;
+  opacity: 0.2;
 }
 
 .article-content p {
@@ -426,9 +476,10 @@ th {
     line-height: 1.6;
   }
 
-  .article-content h1 { font-size: 1.875rem; }
-  .article-content h2 { font-size: 1.5rem; }
-  .article-content h3 { font-size: 1.25rem; }
+  .article-content h1 { font-size: 2.5rem; }
+  .article-content h2 { font-size: 2rem; }
+  .article-content h3 { font-size: 1.5rem; }
+  .article-content h4 { font-size: 1.25rem; }
 
   .article-content h1,
   .article-content h2,
