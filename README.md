@@ -16,3 +16,7 @@ bun build              # 构建生产版本
 bun run lint           # 调用 autocorrect 格式化内容
 bun run subset-font    # 提取字体子集
 ```
+
+## License
+
+MIT
