@@ -3,10 +3,13 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import { formatDate, formatDateISO } from '../utils/date';
+import TableOfContents from '../components/TableOfContents.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & {
+  headings?: Array<{ depth: number; slug: string; text: string }>;
+};
 
-const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags, headings = [] } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -55,6 +58,9 @@ const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.prop
           />
         </div>
       )}
+
+      <!-- Table of Contents outside article -->
+      <TableOfContents headings={headings} />
 
       <!-- Article Content -->
       <main class="article-content section-spacing body-text">
