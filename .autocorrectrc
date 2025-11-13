@@ -1,0 +1,13 @@
+{
+  "fix": true,
+  "format": true,
+  "lint": true,
+  "rules": {
+    "all": true
+  },
+  "exclude": [
+    "node_modules/**",
+    "dist/**",
+    ".git/**"
+  ]
+}
