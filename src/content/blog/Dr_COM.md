@@ -9,7 +9,6 @@ draft: false
 ## Reference
 
 - [UA3F 与 Clash 从零开始的部署教程](https://sunbk201public.notion.site/UA3F-Clash-16d60a7b5f0e457a9ee97a3be7cbf557)
-
 - [使用友善 R2S 打造 GDUT 专属软路由 不再受学校设备限制](https://bili33.top/posts/Openwrt-on-friendlyarm-R2S/)
 
 ## 引入
