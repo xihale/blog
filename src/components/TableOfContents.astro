@@ -57,14 +57,14 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 
       for (let i = headings.length - 1; i >= 0; i--) {
         const heading = headings[i];
-        if (heading.offsetTop <= scrollPosition) {
+        if (heading && heading.offsetTop <= scrollPosition) {
           currentHeading = heading;
           break;
         }
       }
 
       if (!currentHeading && headings.length > 0) {
-        currentHeading = headings[0];
+        currentHeading = headings[0] ?? null;
       }
 
       if (currentHeading) {

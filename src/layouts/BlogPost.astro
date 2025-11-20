@@ -6,8 +6,8 @@ import { formatDate, formatDateISO } from "../utils/date";
 import TableOfContents from "../components/TableOfContents.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
-  headings?: Array<{ depth: number; slug: string; text: string }>;
-  tags?: string[];
+  headings?: Array<{ depth: number; slug: string; text: string }> | undefined;
+  tags?: string[] | undefined;
 };
 
 const {

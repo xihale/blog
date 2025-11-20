@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { SITE_TITLE } from "../../consts";
 import { formatDate, formatDateISO } from "../../utils/date";
 
 const posts = await getCollection("blog", ({ data }) => data.draft !== true);
@@ -40,7 +39,7 @@ const years = Object.keys(postsByYear)
           <section class="section-spacing">
             <h2 class="heading-medium">{year}</h2>
             <div class="content-spacing">
-              {postsByYear[year].map((post, index) => (
+              {postsByYear[year]?.map((post) => (
                 <div class="post-card">
                   <a href={`/blog/${post.id}/`} class="block">
                     <div class="blog-post-item">
@@ -62,7 +61,7 @@ const years = Object.keys(postsByYear)
 
                         {post.data.tags && post.data.tags.length > 0 && (
                           <div class="tag-container mt-3">
-                            {post.data.tags.slice(0, 3).map((tag) => (
+                            {post.data.tags.slice(0, 3).map((tag: string) => (
                               <span class="tag-small">#{tag}</span>
                             ))}
                             {post.data.tags.length > 3 && (
