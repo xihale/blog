@@ -56,9 +56,9 @@ import { SITE_TITLE } from "../consts";
 
     function toggleMenu() {
       isMenuOpen = !isMenuOpen;
-      mobileMenu.classList.toggle("hidden");
-      mobileMenuButton.classList.toggle("active");
-      mobileMenuButton.setAttribute("aria-expanded", isMenuOpen.toString());
+      mobileMenu!.classList.toggle("hidden");
+      mobileMenuButton!.classList.toggle("active");
+      mobileMenuButton!.setAttribute("aria-expanded", isMenuOpen.toString());
 
       // Prevent body scroll when menu is open
       if (isMenuOpen) {
@@ -84,8 +84,8 @@ import { SITE_TITLE } from "../consts";
     document.addEventListener("click", (e) => {
       if (
         isMenuOpen &&
-        !mobileMenuButton.contains(e.target) &&
-        !mobileMenu.contains(e.target)
+        !mobileMenuButton!.contains(e.target as Node) &&
+        !mobileMenu!.contains(e.target as Node)
       ) {
         toggleMenu();
       }

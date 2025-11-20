@@ -31,7 +31,7 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 }
 
 <script>
-  let tocScrollHandler = null;
+  let tocScrollHandler: (() => void) | null = null;
 
   function initTableOfContents() {
     // Early mobile check - skip all TOC interactions on mobile
@@ -47,13 +47,13 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
         document.querySelectorAll(
           ".article-content h2, .article-content h3, .article-content h4",
         ),
-      );
+      ) as HTMLElement[];
 
       if (headings.length === 0) return;
 
       // Find current heading based on scroll position
       const scrollPosition = window.scrollY + 100;
-      let currentHeading = null;
+      let currentHeading: HTMLElement | null = null;
 
       for (let i = headings.length - 1; i >= 0; i--) {
         const heading = headings[i];
@@ -73,19 +73,20 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
         // Update active states
         links.forEach((link) => {
           const linkId = link.getAttribute("data-toc-id");
+          const htmlLink = link as HTMLElement;
           if (linkId === headingId) {
-            link.style.fontWeight = "bold";
-            link.style.color = "var(--color-text)";
+            htmlLink.style.fontWeight = "bold";
+            htmlLink.style.color = "var(--color-text)";
           } else {
-            link.style.fontWeight = "";
-            link.style.color = "";
+            htmlLink.style.fontWeight = "";
+            htmlLink.style.color = "";
           }
         });
       }
     }
 
     // Update on scroll with throttling
-    let scrollTimer = null;
+    let scrollTimer: number | null = null;
     function handleScroll() {
       if (scrollTimer) {
         window.cancelAnimationFrame(scrollTimer);
