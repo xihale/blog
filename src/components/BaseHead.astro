@@ -1,13 +1,13 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import '../styles/global.css';
-import type { ImageMetadata } from 'astro';
-import { SITE_TITLE } from '../consts';
+import "../styles/global.css";
+import type { ImageMetadata } from "astro";
+import { SITE_TITLE } from "../consts";
 
 interface Props {
-	title: string;
-	description: string;
+  title: string;
+  description: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -21,19 +21,26 @@ const { title, description } = Astro.props;
 <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 <link rel="sitemap" href="/sitemap.xml" />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL("rss.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font Preload with highest priority -->
-<link rel="preload" href="/fonts/lxgw.woff2" as="font" type="font/woff2" crossorigin />
+<link
+  rel="preload"
+  href="/fonts/lxgw.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 
 <!-- Critical CSS for immediate font application -->
 <style is:global>
-  html {
+  /* Only hide on initial page load, not during view transitions */
+  html:not(.wf-active):not([data-astro-transition]) {
     visibility: hidden;
   }
 
@@ -42,15 +49,18 @@ const { title, description } = Astro.props;
     font-style: normal;
     font-weight: normal;
     font-display: fallback;
-    src: local("Times New Roman"), local("serif"), url("/fonts/lxgw.woff2") format("woff2");
+    src:
+      local("Times New Roman"),
+      local("serif"),
+      url("/fonts/lxgw.woff2") format("woff2");
   }
 
   @font-face {
-    font-family: 'JetBrains Mono';
+    font-family: "JetBrains Mono";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('/fonts/jbmono.woff2') format('woff2');
+    src: url("/fonts/jbmono.woff2") format("woff2");
   }
 
   html.wf-active {
@@ -59,26 +69,41 @@ const { title, description } = Astro.props;
 </style>
 
 <!-- Font loading script -->
-<script>
-  // Immediate font loading detection
-  (function() {
+<script is:inline>
+  // Font loading function that works with view transitions
+  function ensureFontsLoaded() {
     const html = document.documentElement;
-    const font = new FontFace('LXGW WenKai', 'url("/fonts/lxgw.woff2")');
+
+    // If already active, no need to reload
+    if (html.classList.contains("wf-active")) {
+      return;
+    }
+
+    const font = new FontFace("LXGW WenKai", 'url("/fonts/lxgw.woff2")');
 
     // Load font and apply when ready
-    font.load().then(function() {
-      document.fonts.add(font);
-      html.classList.add('wf-active');
-    }).catch(function() {
-      // Fallback: show content even if font fails to load
-      html.classList.add('wf-active');
-    });
+    font
+      .load()
+      .then(function () {
+        document.fonts.add(font);
+        html.classList.add("wf-active");
+      })
+      .catch(function () {
+        // Fallback: show content even if font fails to load
+        html.classList.add("wf-active");
+      });
 
     // Fallback timeout: show content after 1 second even if font not loaded
-    setTimeout(function() {
-      html.classList.add('wf-active');
+    setTimeout(function () {
+      html.classList.add("wf-active");
     }, 1000);
-  })();
+  }
+
+  // Run on initial page load
+  ensureFontsLoaded();
+
+  // Run on every page navigation with view transitions
+  document.addEventListener("astro:page-load", ensureFontsLoaded);
 </script>
 
 <!-- Page-specific Metadata -->

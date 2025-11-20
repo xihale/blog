@@ -1,74 +1,79 @@
 ---
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE } from "../consts";
 ---
 
 <header class="nav-header">
-	<nav class="nav-container">
-		<!-- Logo/Title -->
-		<div class="flex items-center">
-			<h1 class="nav-logo">
-				<a href="/">
-					{SITE_TITLE}
-				</a>
-			</h1>
-		</div>
+  <nav class="nav-container">
+    <!-- Logo/Title -->
+    <div class="flex items-center">
+      <h1 class="nav-logo">
+        <a href="/">
+          {SITE_TITLE}
+        </a>
+      </h1>
+    </div>
 
-		<!-- Desktop Navigation (hidden on mobile) -->
-		<div class="nav-menu hidden md:flex">
-			<a href="/" class="nav-link">Home</a>
-			<a href="/blog" class="nav-link">Blog</a>
-			<a href="/links" class="nav-link">Links</a>
-			<a href="/about" class="nav-link">About</a>
-		</div>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="nav-menu hidden md:flex">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/blog" class="nav-link">Blog</a>
+      <a href="/links" class="nav-link">Links</a>
+      <a href="/about" class="nav-link">About</a>
+    </div>
 
-		<!-- Mobile menu button (shown on mobile, hidden on desktop) -->
-		<button
-			class="mobile-menu-toggle"
-			aria-label="Toggle navigation menu"
-			aria-expanded="false"
-			id="mobile-menu-button"
-		>
-			<span class="mobile-menu-line"></span>
-			<span class="mobile-menu-line"></span>
-			<span class="mobile-menu-line"></span>
-		</button>
-	</nav>
+    <!-- Mobile menu button (shown on mobile, hidden on desktop) -->
+    <button
+      class="mobile-menu-toggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      id="mobile-menu-button"
+    >
+      <span class="mobile-menu-line"></span>
+      <span class="mobile-menu-line"></span>
+      <span class="mobile-menu-line"></span>
+    </button>
+  </nav>
 
-	<!-- Mobile Navigation (hidden on desktop) -->
-	<div class="md:hidden fixed top-16 left-0 right-0 bg-background border-b border-border shadow-lg p-4 z-40 hidden" id="mobile-menu">
-		<a href="/" class="nav-link">Home</a>
-		<a href="/blog" class="nav-link">Blog</a>
-		<a href="/links" class="nav-link">Links</a>
-		<a href="/about" class="nav-link">About</a>
-	</div>
+  <!-- Mobile Navigation (hidden on desktop) -->
+  <div
+    class="md:hidden fixed top-16 left-0 right-0 bg-background border-b border-border shadow-lg p-4 z-40 hidden"
+    id="mobile-menu"
+  >
+    <a href="/" class="nav-link">Home</a>
+    <a href="/blog" class="nav-link">Blog</a>
+    <a href="/links" class="nav-link">Links</a>
+    <a href="/about" class="nav-link">About</a>
+  </div>
 </header>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+  function initMobileMenu() {
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    if (!mobileMenuButton || !mobileMenu) return;
+
     let isMenuOpen = false;
 
     function toggleMenu() {
       isMenuOpen = !isMenuOpen;
-      mobileMenu.classList.toggle('hidden');
-      mobileMenuButton.classList.toggle('active');
-      mobileMenuButton.setAttribute('aria-expanded', isMenuOpen);
+      mobileMenu.classList.toggle("hidden");
+      mobileMenuButton.classList.toggle("active");
+      mobileMenuButton.setAttribute("aria-expanded", isMenuOpen.toString());
 
       // Prevent body scroll when menu is open
       if (isMenuOpen) {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = "hidden";
       } else {
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
       }
     }
 
-    mobileMenuButton.addEventListener('click', toggleMenu);
+    mobileMenuButton.addEventListener("click", toggleMenu);
 
     // Close menu when clicking on links
-    const navLinks = mobileMenu.querySelectorAll('a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
+    const navLinks = mobileMenu.querySelectorAll("a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
         if (isMenuOpen) {
           toggleMenu();
         }
@@ -76,26 +81,33 @@ import { SITE_TITLE } from '../consts';
     });
 
     // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (isMenuOpen && !mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+    document.addEventListener("click", (e) => {
+      if (
+        isMenuOpen &&
+        !mobileMenuButton.contains(e.target) &&
+        !mobileMenu.contains(e.target)
+      ) {
         toggleMenu();
       }
     });
 
     // Close menu on escape key
-    document.addEventListener('keydown', (e) => {
-      if (isMenuOpen && e.key === 'Escape') {
+    document.addEventListener("keydown", (e) => {
+      if (isMenuOpen && e.key === "Escape") {
         toggleMenu();
       }
     });
 
     // Handle window resize
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       if (isMenuOpen && window.innerWidth >= 768) {
         toggleMenu();
       }
     });
-  });
+  }
+
+  // Run on initial page load and every navigation
+  document.addEventListener("astro:page-load", initMobileMenu);
 </script>
 
 <style>
