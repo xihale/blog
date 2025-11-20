@@ -38,7 +38,9 @@ const {
 
             {
               updatedDate && (
-                <span class="weak-text">Updated {formatDate(updatedDate)}</span>
+                <time datetime={formatDateISO(updatedDate)} class="mono-text">
+                  | {formatDate(updatedDate)}
+                </time>
               )
             }
           </div>
