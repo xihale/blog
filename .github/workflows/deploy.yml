@@ -43,6 +43,9 @@ jobs:
     - name: Run Autocorrect
       run: bun run lint
 
+    - name: Subset font
+      run: bun run subset-font
+
     - name: Build
       run: bun run build
 
