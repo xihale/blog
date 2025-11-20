@@ -176,14 +176,9 @@
   font-family: var(--font-mono);
 }
 .tag {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-text-muted);
-  background: rgba(238, 238, 238, 0.5);
   padding: var(--space-1) var(--space-2);
-  border-radius: 9999px;
-}
-@media (prefers-color-scheme: dark) {
-  .tag { background: rgba(30, 30, 30, 0.5); }
 }
 
 /* Article utilities */
