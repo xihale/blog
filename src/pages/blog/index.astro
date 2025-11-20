@@ -1,95 +1,94 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { SITE_TITLE } from '../../consts';
-import { formatDate, formatDateISO } from '../../utils/date';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../../consts";
+import { formatDate, formatDateISO } from "../../utils/date";
 
-const posts = await getCollection('blog', ({ data }) => data.draft !== true);
+const posts = await getCollection("blog", ({ data }) => data.draft !== true);
 const sortedPosts = posts.sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 // Group posts by year
-const postsByYear = sortedPosts.reduce((acc, post) => {
-	const year = post.data.pubDate.getFullYear();
-	if (!acc[year]) {
-		acc[year] = [];
-	}
-	acc[year].push(post);
-	return acc;
-}, {} as Record<number, typeof posts>);
+const postsByYear = sortedPosts.reduce(
+  (acc, post) => {
+    const year = post.data.pubDate.getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof posts>,
+);
 
 const years = Object.keys(postsByYear)
-	.map(Number)
-	.sort((a, b) => b - a);
+  .map(Number)
+  .sort((a, b) => b - a);
 ---
 
 <BaseLayout title={`Blog`} description="All blog posts">
   <div class="container-center">
     <header class="responsive-margin">
-      <h1 class="mb-4">
-        Writing
-      </h1>
-        Thoughts on code, design, and the creative process.
+      <h1 class="mb-4">Writing</h1>
+      Thoughts on code, design, and the creative process.
     </header>
 
     <main class="space-y-16">
-      {years.map((year) => (
-        <section class="section-spacing">
-          <h2 class="heading-medium">
-            {year}
-          </h2>
-          <div class="content-spacing">
-            {postsByYear[year].map((post, index) => (
-              <div class="post-card">
-                <a href={`/blog/${post.id}/`} class="block">
-                  <div class="blog-post-item">
-                    <time
-                      datetime={formatDateISO(post.data.pubDate)}
-                      class="blog-date"
-                    >
-                      {formatDate(post.data.pubDate)}
-                    </time>
+      {
+        years.map((year) => (
+          <section class="section-spacing">
+            <h2 class="heading-medium">{year}</h2>
+            <div class="content-spacing">
+              {postsByYear[year].map((post, index) => (
+                <div class="post-card">
+                  <a href={`/blog/${post.id}/`} class="block">
+                    <div class="blog-post-item">
+                      <time
+                        datetime={formatDateISO(post.data.pubDate)}
+                        class="blog-date"
+                      >
+                        {formatDate(post.data.pubDate)}
+                      </time>
 
-                    <div class="blog-content">
-                      <h3 class="post-title">
-                        {post.data.title}
-                      </h3>
+                      <div class="blog-content">
+                        <h3 class="post-title">{post.data.title}</h3>
 
-                      {post.data.description && (
-                        <p class="post-description">
-                          {post.data.description}
-                        </p>
-                      )}
+                        {post.data.description && (
+                          <p class="post-description">
+                            {post.data.description}
+                          </p>
+                        )}
 
-                      {post.data.tags && post.data.tags.length > 0 && (
-                        <div class="tag-container mt-3">
-                          {post.data.tags.slice(0, 3).map((tag) => (
-                            <span class="tag-small">
-                              #{tag}
-                            </span>
-                          ))}
-                          {post.data.tags.length > 3 && (
-                            <span class="weak-text">
-                              +{post.data.tags.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      )}
+                        {post.data.tags && post.data.tags.length > 0 && (
+                          <div class="tag-container mt-3">
+                            {post.data.tags.slice(0, 3).map((tag) => (
+                              <span class="tag-small">#{tag}</span>
+                            ))}
+                            {post.data.tags.length > 3 && (
+                              <span class="weak-text">
+                                +{post.data.tags.length - 3} more
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))
+      }
     </main>
 
-    {sortedPosts.length === 0 && (
-      <div class="flex-center-col py-20">
-        <p class="meta-text">No posts yet. Check back soon!</p>
-      </div>
-    )}
+    {
+      sortedPosts.length === 0 && (
+        <div class="flex-center-col py-20">
+          <p class="meta-text">No posts yet. Check back soon!</p>
+        </div>
+      )
+    }
   </div>
 </BaseLayout>

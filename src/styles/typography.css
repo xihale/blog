@@ -15,8 +15,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-text-secondary);
-  text-decoration-color: var(--color-text-secondary);
+  text-decoration: underline !important;
 }
 
 a.block { text-decoration: none; }

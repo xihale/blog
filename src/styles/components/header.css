@@ -47,10 +47,6 @@
   color: inherit !important;
 }
 
-.nav-link:hover {
-  text-decoration: underline !important;
-}
-
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
   display: none;
