@@ -122,11 +122,18 @@
   text-align: left;
   transition: transform var(--transition);
 }
+.post-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-1);
+}
 .post-title {
   font-family: var(--font-serif);
   font-size: 1.125rem;
   font-weight: 300;
-  margin-bottom: var(--space-1);
+  margin-bottom: 0;
 }
 .blog-content:hover .post-title { color: var(--article-link-color); }
 .post-meta {
@@ -156,7 +163,18 @@
 }
 
 /* Tags */
-.tag-container { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; }
+.tag-container { 
+  display: inline-flex; 
+  flex-wrap: wrap; 
+  gap: var(--space-1); 
+  align-items: baseline;
+}
+.tag-small {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  font-family: var(--font-mono);
+}
 .tag {
   font-size: 0.75rem;
   color: var(--color-text-muted);

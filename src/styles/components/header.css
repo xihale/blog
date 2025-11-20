@@ -43,8 +43,12 @@
 .nav-link {
   font-size: 0.875rem;
   font-weight: 300;
-  text-decoration: none !important;
-  color: inherit !important;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
 }
 
 /* Mobile Menu Toggle Button */

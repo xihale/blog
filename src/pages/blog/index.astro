@@ -51,25 +51,26 @@ const years = Object.keys(postsByYear)
                       </time>
 
                       <div class="blog-content">
-                        <h3 class="post-title">{post.data.title}</h3>
+                        <div class="post-title-row">
+                          <h3 class="post-title">{post.data.title}</h3>
+                          {post.data.tags && post.data.tags.length > 0 && (
+                            <div class="tag-container">
+                              {post.data.tags.slice(0, 3).map((tag: string) => (
+                                <span class="tag-small">#{tag}</span>
+                              ))}
+                              {post.data.tags.length > 3 && (
+                                <span class="weak-text">
+                                  +{post.data.tags.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
 
                         {post.data.description && (
                           <p class="post-description">
                             {post.data.description}
                           </p>
-                        )}
-
-                        {post.data.tags && post.data.tags.length > 0 && (
-                          <div class="tag-container mt-3">
-                            {post.data.tags.slice(0, 3).map((tag: string) => (
-                              <span class="tag-small">#{tag}</span>
-                            ))}
-                            {post.data.tags.length > 3 && (
-                              <span class="weak-text">
-                                +{post.data.tags.length - 3} more
-                              </span>
-                            )}
-                          </div>
                         )}
                       </div>
                     </div>

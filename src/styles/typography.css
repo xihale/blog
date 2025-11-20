@@ -14,10 +14,6 @@ a {
   word-wrap: break-word;
 }
 
-a:hover {
-  text-decoration: underline !important;
-}
-
 a.block { text-decoration: none; }
 
 p { margin-bottom: var(--space-3); }
