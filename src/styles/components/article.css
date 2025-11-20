@@ -11,12 +11,12 @@
   scroll-margin-top: 6rem;
 }
 
-.article-content h1 { font-size: 3rem; }
-.article-content h2 { font-size: 2.25rem; }
-.article-content h3 { font-size: 1.75rem; }
-.article-content h4 { font-size: 1.5rem; }
-.article-content h5 { font-size: 1.25rem; }
-.article-content h6 { font-size: 1.125rem; }
+.article-content h1 { font-size: 3.5rem; }
+.article-content h2 { font-size: 2.75rem; }
+.article-content h3 { font-size: 2.125rem; }
+.article-content h4 { font-size: 1.875rem; }
+.article-content h5 { font-size: 1.5rem; }
+.article-content h6 { font-size: 1.375rem; }
 
 /* Heading markers */
 .article-content h2::before { content: "#"; margin-right: var(--space-2); opacity: 0.6; }
@@ -87,7 +87,7 @@
 
 .article-content table {
   margin: var(--space-6) 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .article-content th, .article-content td {
@@ -131,19 +131,19 @@
 }
 .post-title {
   font-family: var(--font-serif);
-  font-size: 1.125rem;
+  font-size: 1.375rem;
   font-weight: 300;
   margin-bottom: 0;
 }
 .blog-content:hover .post-title { color: var(--article-link-color); }
 .post-meta {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin-top: var(--space-1);
   display: block;
 }
 .post-description {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-text-muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -157,7 +157,7 @@
   left: 0;
   top: 0;
   width: 70px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-text-muted);
   font-family: var(--font-mono);
 }
@@ -170,13 +170,13 @@
   align-items: baseline;
 }
 .tag-small {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   opacity: 0.5;
   font-family: var(--font-mono);
 }
 .tag {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   background: rgba(238, 238, 238, 0.5);
   padding: var(--space-1) var(--space-2);
@@ -194,7 +194,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
 }
 @media (min-width: 640px) { .article-meta-container { flex-direction: row; } }
