@@ -1,0 +1,95 @@
+/* Navigation */
+.nav-header {
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.nav-container {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-size: 1.25rem;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  letter-spacing: -0.025em;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.nav-logo:hover { text-decoration: underline !important; }
+.nav-link {
+  font-size: 0.875rem;
+  font-weight: 300;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.nav-link:hover { text-decoration: underline !important; }
+.nav-menu { display: flex; align-items: center; gap: var(--space-6); }
+
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--space-1);
+  transition: background-color var(--transition);
+}
+.mobile-menu-toggle:hover { background: var(--color-surface); }
+.mobile-menu-toggle:focus-visible {
+  outline: 2px solid var(--color-text-secondary);
+  outline-offset: 2px;
+}
+
+.mobile-menu-line {
+  width: 1.25rem;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 1px;
+  transition: all var(--transition);
+  transform-origin: center;
+}
+.mobile-menu-line:not(:last-child) { margin-bottom: var(--space-1); }
+
+/* Mobile menu active state animations */
+#mobile-menu-button.active .mobile-menu-line:nth-child(1) {
+  transform: rotate(45deg) translate(0.125rem, 0.125rem);
+}
+
+#mobile-menu-button.active .mobile-menu-line:nth-child(2) {
+  opacity: 0;
+  transform: scale(0);
+}
+
+#mobile-menu-button.active .mobile-menu-line:nth-child(3) {
+  transform: rotate(-45deg) translate(0.125rem, -0.125rem);
+}
+
+/* Mobile menu links */
+#mobile-menu .nav-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-radius: 0.375rem;
+  transition: all var(--transition);
+  color: var(--color-text);
+}
+
+#mobile-menu .nav-link:hover {
+  background-color: var(--color-surface);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+      display: flex;
+  }
+}

@@ -1,15 +1,23 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import BaseLayout from './BaseLayout.astro';
-import { formatDate, formatDateISO } from '../utils/date';
-import TableOfContents from '../components/TableOfContents.astro';
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate, formatDateISO } from "../utils/date";
+import TableOfContents from "../components/TableOfContents.astro";
 
-type Props = CollectionEntry<'blog'>['data'] & {
+type Props = CollectionEntry<"blog">["data"] & {
   headings?: Array<{ depth: number; slug: string; text: string }>;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags, headings = [] } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  tags,
+  headings = [],
+} = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -27,35 +35,39 @@ const { title, description, pubDate, updatedDate, heroImage, tags, headings = []
               {formatDate(pubDate)}
             </time>
 
-            {updatedDate && (
-              <span class="weak-text">
-                Updated {formatDate(updatedDate)}
-              </span>
-            )}
+            {
+              updatedDate && (
+                <span class="weak-text">Updated {formatDate(updatedDate)}</span>
+              )
+            }
           </div>
 
-          {tags && tags.length > 0 && (
-            <div class="tag-container">
-              {tags.map((tag) => (
-                <span class="tag">#{tag}</span>
-              ))}
-            </div>
-          )}
+          {
+            tags && tags.length > 0 && (
+              <div class="tag-container">
+                {tags.map((tag) => (
+                  <span class="tag">#{tag}</span>
+                ))}
+              </div>
+            )
+          }
         </div>
       </header>
 
       <!-- Hero Image -->
-      {heroImage && (
-        <div class="mb-12">
-          <Image
-            width={1200}
-            height={630}
-            src={heroImage}
-            alt={title || ''}
-            class="w-full rounded-lg"
-          />
-        </div>
-      )}
+      {
+        heroImage && (
+          <div class="mb-12">
+            <Image
+              width={1200}
+              height={630}
+              src={heroImage}
+              alt={title || ""}
+              class="w-full rounded-lg"
+            />
+          </div>
+        )
+      }
 
       <!-- Table of Contents outside article -->
       <TableOfContents headings={headings} />
@@ -64,7 +76,6 @@ const { title, description, pubDate, updatedDate, heroImage, tags, headings = []
       <main class="article-content section-spacing body-text">
         <slot />
       </main>
-
-          </article>
+    </article>
   </div>
 </BaseLayout>

@@ -1,0 +1,54 @@
+@import "../shiki.css";
+
+/* Code */
+:not(pre) code {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0 2px;
+}
+
+/* Expressive Code */
+@media (max-width: 768px) {
+  .expressive-code .gutter { display: none; }
+  .expressive-code {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0 !important;
+  }
+  .expressive-code pre { border-radius: 0 !important; }
+  .expressive-code .copy button { opacity: 0 !important; }
+  .expressive-code .frame:focus-within .copy button:not(:hover),
+  .expressive-code .frame:hover .copy button:not(:hover) { opacity: 0.75 !important; }
+  .expressive-code .copy button:hover,
+  .expressive-code .copy button:focus,
+  .expressive-code .copy .feedback.show ~ button { opacity: 1 !important; }
+  .expressive-code pre.wrap .ec-line .code {
+    white-space: pre !important;
+    overflow-wrap: normal !important;
+  }
+}
+
+.expressive-code {
+  margin-bottom: var(--space-4);
+}
+@media(max-width: 768px) {
+  .expressive-code .ec-line .code {
+    border-inline-start: none !important;
+  }
+}
+.expressive-code figcaption.header {
+  border-radius: 0 !important;
+}
+
+/* Remove all rounded corners from code blocks */
+.expressive-code pre,
+.expressive-code figcaption {
+  border-radius: 0 !important;
+}
+
+/* Indent support */
+.indent {
+  display: inline-block;
+  width: 2rem;
+}
