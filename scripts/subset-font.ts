@@ -1,13 +1,16 @@
 #!/usr/bin/env bun
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
+import { readFileSync, existsSync, mkdirSync } from "fs";
+import { join } from "path";
 import { execSync } from "child_process";
 
 const PROJECT_ROOT = process.cwd();
-const SOURCE_FONT = join(PROJECT_ROOT, "LXGWWenKai-Regular.ttf");
+const FONT_CACHE_DIR = join(PROJECT_ROOT, ".fonts");
+const SOURCE_FONT = join(FONT_CACHE_DIR, "LXGWWenKai-Regular.ttf");
 const OUTPUT_DIR = join(PROJECT_ROOT, "public", "fonts");
 const OUTPUT_FONT = join(OUTPUT_DIR, "lxgw.woff2");
+
+const FONT_DOWNLOAD_URL = "https://github.com/lxgw/LxgwWenKai/releases/latest/download/LXGWWenKai-Regular.ttf";
 
 /**
  * 获取项目中使用的所有字符
@@ -71,6 +74,29 @@ function extractProjectChars(): Set<string> {
 }
 
 /**
+ * 下载字体文件
+ */
+function downloadFont(): void {
+  if (!existsSync(FONT_CACHE_DIR)) {
+    mkdirSync(FONT_CACHE_DIR, { recursive: true });
+  }
+
+  if (existsSync(SOURCE_FONT)) {
+    console.log("Using cached font:", SOURCE_FONT);
+    return;
+  }
+
+  console.log(`Downloading font from ${FONT_DOWNLOAD_URL}...`);
+  try {
+    execSync(`curl -L -o "${SOURCE_FONT}" "${FONT_DOWNLOAD_URL}"`, { stdio: "inherit" });
+    console.log("Font downloaded successfully!");
+  } catch (error) {
+    console.error("Error downloading font:", error);
+    process.exit(1);
+  }
+}
+
+/**
  * 使用 fonttools 裁剪字体
  */
 function subsetFont(chars: Set<string>): void {
@@ -106,8 +132,15 @@ function subsetFont(chars: Set<string>): void {
       --drop-tables+=DSIG,LTSH,PCLT,EBSC,MTYP,BASE,GDEF,GPOS,GSUB,JSTF,EBSG,EZDJ,FFTM,OXGS,FEA2,Feat,Silf,Sill,Gloc,Glat \
       --no-hinting`;
 
-    console.log("Running font subsetting command...");
-    execSync(cmd, { stdio: "inherit" });
+    console.log("Running font subsetting command:", cmd);
+    try {
+      execSync(cmd, { stdio: "inherit" });
+    } catch (e: any) {
+       console.error("Command failed.");
+       if (e.stdout) console.log("Stdout:", e.stdout.toString());
+       if (e.stderr) console.error("Stderr:", e.stderr.toString());
+       throw e;
+    }
 
     console.log(`Font subset successfully created at: ${OUTPUT_FONT}`);
 
@@ -138,11 +171,6 @@ function checkTools(): void {
     console.error("pip install fonttools brotli");
     process.exit(1);
   }
-
-  if (!existsSync(SOURCE_FONT)) {
-    console.error(`Error: Source font not found at ${SOURCE_FONT}`);
-    process.exit(1);
-  }
 }
 
 /**
@@ -152,6 +180,7 @@ function main() {
   console.log("🍔 Starting font subsetting process...");
 
   checkTools();
+  downloadFont();
 
   console.log("Extracting characters from project...");
   const chars = extractProjectChars();

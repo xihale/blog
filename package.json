@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "bun run subset-font && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "new": "node scripts/new-post.js",
