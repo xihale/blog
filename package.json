@@ -24,9 +24,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.5",
-    "@unocss/reset": "^66.5.9",
     "autocorrect": "^1.2.0",
-    "autocorrect-node": "^2.14.0",
-    "unocss": "^66.5.9"
+    "autocorrect-node": "^2.14.0"
   }
 }

@@ -27,18 +27,18 @@ const {
       <!-- Article Header -->
       <header class="article-header">
         <div class="text-center section-spacing mb-12">
-          <h1 class="heading-large">
+          <h1>
             {title}
           </h1>
 
           <div class="article-meta-container">
-            <time datetime={formatDateISO(pubDate)} class="mono-text">
+            <time datetime={formatDateISO(pubDate)} class="font-mono">
               {formatDate(pubDate)}
             </time>
 
             {
               updatedDate && (
-                <time datetime={formatDateISO(updatedDate)} class="mono-text">
+                <time datetime={formatDateISO(updatedDate)} class="font-mono">
                   | {formatDate(updatedDate)}
                 </time>
               )

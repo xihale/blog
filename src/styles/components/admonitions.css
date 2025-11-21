@@ -1,180 +1,109 @@
 /* Admonitions */
 .admonition {
   margin: var(--space-4) 0;
-  padding: var(--space-4) var(--space-4) var(--space-2);
+  padding: var(--space-3) var(--space-4);
   background: var(--color-surface);
   position: relative;
-}
 
-.admonition::before {
-  content: attr(data-title);
-  display: block;
-  font-weight: 600;
-  margin-bottom: var(--space-2);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  &::before {
+    content: attr(data-title);
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
 }
 
 .admonition-error {
   background: rgba(220, 53, 69, 0.1);
-}
+  &::before { color: #a02530; }
 
-.admonition-error::before {
-  color: #a02530;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(220, 53, 69, 0.2);
+    &::before { color: #f1aeb5; }
+  }
 }
 
 .admonition-warning {
   background: rgba(255, 193, 7, 0.1);
-}
+  &::before { color: #664d03; }
 
-.admonition-warning::before {
-  color: #664d03;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(255, 193, 7, 0.2);
+    &::before { color: #ffec99; }
+  }
 }
 
 .admonition-info {
   background: rgba(23, 162, 184, 0.1);
-}
+  &::before { color: #055160; }
 
-.admonition-info::before {
-  color: #055160;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(23, 162, 184, 0.2);
+    &::before { color: #99d9ea; }
+  }
 }
 
 .admonition-note {
   background: rgba(0, 123, 255, 0.1);
+  &::before { color: #084298; }
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(0, 123, 255, 0.2);
+    &::before { color: #9ec5fe; }
+  }
 }
 
-.admonition-note::before {
-  color: #084298;
-}
-
-.admonition-tip {
-  background: rgba(40, 167, 69, 0.1);
-}
-
-.admonition-tip::before {
-  color: #0f5132;
-}
-
+.admonition-tip,
 .admonition-success {
   background: rgba(40, 167, 69, 0.1);
-}
+  &::before { color: #0f5132; }
 
-.admonition-success::before {
-  color: #0f5132;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(40, 167, 69, 0.2);
+    &::before { color: #a3cfbb; }
+  }
 }
 
 .admonition-danger {
   background: rgba(220, 53, 69, 0.1);
-}
+  &::before { color: #58151c; }
 
-.admonition-danger::before {
-  color: #58151c;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(220, 53, 69, 0.2);
+    &::before { color: #f1aeb5; }
+  }
 }
 
 .admonition-question {
   background: rgba(111, 66, 193, 0.1);
-}
+  &::before { color: #361975; }
 
-.admonition-question::before {
-  color: #361975;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(111, 66, 193, 0.2);
+    &::before { color: #d0bfff; }
+  }
 }
 
 .admonition-quote {
   background: rgba(108, 117, 125, 0.1);
   font-style: italic;
-}
+  &::before { color: #41464b; }
 
-.admonition-quote::before {
-  color: #41464b;
+  @media (prefers-color-scheme: dark) {
+    background: rgba(108, 117, 125, 0.2);
+    &::before { color: #ced4da; }
+  }
 }
 
 .admonition-future {
   background: rgba(253, 126, 20, 0.1);
-}
+  &::before { color: #663d00; }
 
-.admonition-future::before {
-  color: #663d00;
-}
-
-@media (prefers-color-scheme: dark) {
-  .admonition-error {
-    background: rgba(220, 53, 69, 0.2);
-  }
-
-  .admonition-error::before {
-    color: #f1aeb5;
-  }
-
-  .admonition-warning {
-    background: rgba(255, 193, 7, 0.2);
-  }
-
-  .admonition-warning::before {
-    color: #ffec99;
-  }
-
-  .admonition-info {
-    background: rgba(23, 162, 184, 0.2);
-  }
-
-  .admonition-info::before {
-    color: #99d9ea;
-  }
-
-  .admonition-note {
-    background: rgba(0, 123, 255, 0.2);
-  }
-
-  .admonition-note::before {
-    color: #9ec5fe;
-  }
-
-  .admonition-tip {
-    background: rgba(40, 167, 69, 0.2);
-  }
-
-  .admonition-tip::before {
-    color: #a3cfbb;
-  }
-
-  .admonition-success {
-    background: rgba(40, 167, 69, 0.2);
-  }
-
-  .admonition-success::before {
-    color: #a3cfbb;
-  }
-
-  .admonition-danger {
-    background: rgba(220, 53, 69, 0.2);
-  }
-
-  .admonition-danger::before {
-    color: #f1aeb5;
-  }
-
-  .admonition-question {
-    background: rgba(111, 66, 193, 0.2);
-  }
-
-  .admonition-question::before {
-    color: #d0bfff;
-  }
-
-  .admonition-quote {
-    background: rgba(108, 117, 125, 0.2);
-  }
-
-  .admonition-quote::before {
-    color: #ced4da;
-  }
-
-  .admonition-future {
+  @media (prefers-color-scheme: dark) {
     background: rgba(253, 126, 20, 0.2);
-  }
-
-  .admonition-future::before {
-    color: #ffd8a8;
+    &::before { color: #ffd8a8; }
   }
 }

@@ -11,16 +11,15 @@ const { headings } = Astro.props;
 
 // Filter for h2-h4 and ensure minimum count
 const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
+
+import "../styles/components/toc.css";
 ---
 
 {
   tocItems.length >= 2 && (
     <div class="toc" id="toc">
       {tocItems.map(({ depth, slug, text }) => (
-        <div
-          class={`toc-item toc-level-${depth}`}
-          style={`padding-left: ${Math.max(0, depth - 2) * 2}ch`}
-        >
+        <div class={`toc-item toc-level-${depth}`}>
           <a href={`#${slug}`} class="toc-link" data-toc-id={slug}>
             {text}
           </a>
@@ -73,13 +72,10 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
         // Update active states
         links.forEach((link) => {
           const linkId = link.getAttribute("data-toc-id");
-          const htmlLink = link as HTMLElement;
           if (linkId === headingId) {
-            htmlLink.style.fontWeight = "bold";
-            htmlLink.style.color = "var(--color-text)";
+            link.classList.add("active");
           } else {
-            htmlLink.style.fontWeight = "";
-            htmlLink.style.color = "";
+            link.classList.remove("active");
           }
         });
       }
@@ -107,7 +103,3 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
   // Run on initial page load and every navigation
   document.addEventListener("astro:page-load", initTableOfContents);
 </script>
-
-<style>
-  @import "../styles/components/toc.css";
-</style>

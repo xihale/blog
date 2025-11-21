@@ -4,6 +4,11 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-4);
   margin: var(--space-4) 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
 }
 
 .friend-card {
@@ -13,19 +18,24 @@
   padding: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  transition: all var(--transition);
   background: var(--color-background);
   text-decoration: none;
   color: inherit;
-}
 
-.friend-card:hover {
-  border-color: var(--color-text-secondary);
-}
+  &:hover {
+    border-color: var(--color-text-secondary);
 
-.friend-card:has(.friend-avatar) { align-items: center; }
-.friend-card:not(:has(.friend-avatar)) { display: block; }
-.friend-card:hover .friend-name { color: var(--article-link-color); }
+    .friend-name { color: var(--article-link-color); }
+  }
+
+  &:has(.friend-avatar) { align-items: center; }
+  
+  &:not(:has(.friend-avatar)) { 
+    display: block; 
+    
+    .friend-info { min-width: auto; }
+  }
+}
 
 .friend-avatar {
   width: 48px;
@@ -33,38 +43,37 @@
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-}
 
-.friend-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  margin: 0; /* Reset article.css img margin */
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0; /* Reset article.css img margin */
+  }
 }
 
 .friend-info { flex: 1; }
-.friend-card:not(:has(.friend-avatar)) .friend-info { min-width: auto; }
 
 .friend-name {
   font-size: 1.125rem;
   font-weight: 500;
   color: var(--color-text);
   margin: 0 0 var(--space-1) 0;
-}
 
-.friend-name a { color: inherit; text-decoration: none; }
-.friend-name a:hover { color: var(--article-link-color); text-decoration: underline; }
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--article-link-color);
+      text-decoration: underline;
+    }
+  }
+}
 
 .friend-desc {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0;
-}
-
-@media (max-width: 768px) {
-  .friends-cards {
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-  }
 }

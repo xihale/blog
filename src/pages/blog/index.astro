@@ -37,7 +37,7 @@ const years = Object.keys(postsByYear)
       {
         years.map((year) => (
           <section class="section-spacing">
-            <h2 class="heading-medium">{year}</h2>
+            <h2 class="text-weak">{year}</h2>
             <div class="content-spacing">
               {postsByYear[year]?.map((post) => (
                 <div class="post-card">
@@ -85,7 +85,7 @@ const years = Object.keys(postsByYear)
 
     {
       sortedPosts.length === 0 && (
-        <div class="flex-center-col py-20">
+        <div class="empty-state">
           <p class="meta-text">No posts yet. Check back soon!</p>
         </div>
       )
