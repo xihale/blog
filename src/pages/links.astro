@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import '../styles/components/friends.css';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/components/friends.scss";
 
 const title = "Links";
 const description = "Interesting links and resources";
@@ -10,33 +10,38 @@ const description = "Interesting links and resources";
   <div class="article-content">
     <h1>Links</h1>
 
-    <p>A curated collection of interesting websites, blogs, and resources from around the web.</p>
+    <p>
+      A curated collection of interesting websites, blogs, and resources from
+      around the web.
+    </p>
 
     <h2>Friends</h2>
 
     <div class="friends-cards">
-      <a href="https://keqing.moe/" target="_blank" rel="noopener" class="friend-card">
+      <a
+        href="https://keqing.moe/"
+        target="_blank"
+        rel="noopener"
+        class="friend-card"
+      >
         <div class="friend-info">
-          <div class="friend-name">
-            teru
-          </div>
-          <div class="friend-desc">
-            心有所向，日复一日，必有精进
-          </div>
+          <div class="friend-name">teru</div>
+          <div class="friend-desc">心有所向，日复一日，必有精进</div>
         </div>
       </a>
 
-      <a href="https://blog.hill-q.com" target="_blank" rel="noopener" class="friend-card">
+      <a
+        href="https://blog.hill-q.com"
+        target="_blank"
+        rel="noopener"
+        class="friend-card"
+      >
         <div class="friend-avatar">
           <img src="/hill-avatar.webp" alt="hill" />
         </div>
         <div class="friend-info">
-          <div class="friend-name">
-            hill
-          </div>
-          <div class="friend-desc">
-            Just Forward
-          </div>
+          <div class="friend-name">hill</div>
+          <div class="friend-desc">Just Forward</div>
         </div>
       </a>
     </div>
@@ -44,17 +49,18 @@ const description = "Interesting links and resources";
     <h2>Personal Blogs</h2>
 
     <div class="friends-cards">
-      <a href="https://1q43.blog/" target="_blank" rel="noopener" class="friend-card">
+      <a
+        href="https://1q43.blog/"
+        target="_blank"
+        rel="noopener"
+        class="friend-card"
+      >
         <div class="friend-avatar">
           <img src="/personal-avatar.png" alt="评论尸" />
         </div>
         <div class="friend-info">
-          <div class="friend-name">
-              评论尸
-          </div>
-          <div class="friend-desc">
-            评论尸的自留地
-          </div>
+          <div class="friend-name">评论尸</div>
+          <div class="friend-desc">评论尸的自留地</div>
         </div>
       </a>
     </div>

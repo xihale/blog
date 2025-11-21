@@ -26,35 +26,33 @@ const {
     <article class="container-center responsive-padding">
       <!-- Article Header -->
       <header class="article-header">
-        <div class="text-center section-spacing mb-12">
-          <h1>
-            {title}
-          </h1>
+        <h1>
+          {title}
+        </h1>
 
-          <div class="article-meta-container">
-            <time datetime={formatDateISO(pubDate)} class="font-mono">
-              {formatDate(pubDate)}
-            </time>
-
-            {
-              updatedDate && (
-                <time datetime={formatDateISO(updatedDate)} class="font-mono">
-                  | {formatDate(updatedDate)}
-                </time>
-              )
-            }
-          </div>
+        <div class="article-meta-container">
+          <time datetime={formatDateISO(pubDate)} class="font-mono">
+            {formatDate(pubDate)}
+          </time>
 
           {
-            tags && tags.length > 0 && (
-              <div class="tag-container">
-                {tags.map((tag: string) => (
-                  <span class="tag">#{tag}</span>
-                ))}
-              </div>
+            updatedDate && (
+              <time datetime={formatDateISO(updatedDate)} class="font-mono">
+                | {formatDate(updatedDate)}
+              </time>
             )
           }
         </div>
+
+        {
+          tags && tags.length > 0 && (
+            <div class="tag-container">
+              {tags.map((tag: string) => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          )
+        }
       </header>
 
       <!-- Hero Image -->

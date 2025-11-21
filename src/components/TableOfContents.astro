@@ -12,7 +12,7 @@ const { headings } = Astro.props;
 // Filter for h2-h4 and ensure minimum count
 const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 
-import "../styles/components/toc.css";
+import "../styles/components/toc.scss";
 ---
 
 {

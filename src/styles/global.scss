@@ -1,8 +1,8 @@
 /* Import all component and utility styles */
-@import "./components/article.css";
-@import "./components/code.css";
-@import "./components/admonitions.css";
-@import "./utilities.css";
+@use "./components/article.scss";
+@use "./components/code.scss";
+@use "./components/admonitions.scss";
+@use "./utilities.scss";
 
 /* Global unified link styling - applied to all links by default */
 a {
@@ -100,6 +100,7 @@ a:hover {
 
 * {
   margin: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Global overrides */
@@ -120,9 +121,6 @@ ul {
   margin-bottom: 1.5rem;
 }
 
-p:last-child{
-  margin-bottom: 0;
-}
 
 @media (max-width: 768px) {
   body {

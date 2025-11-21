@@ -15,3 +15,11 @@ pre[data-language]::before {
   letter-spacing: 0.5px;
   opacity: 0.8;
 }
+
+.expressive-code .frame.has-title .title::after{
+  border-top: none !important;
+}
+
+.expressive-code .frame.has-title .title{
+  font-family: var(--font-mono);
+}
