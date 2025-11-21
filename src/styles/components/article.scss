@@ -31,80 +31,76 @@ h6 { font-size: 1.125rem; }
     font-weight: 300;
   }
 
-  p {
-    margin-bottom: var(--space-4);
+}
+
+p {
+  margin-bottom: var(--space-4);
+}
+
+ul, ol {
+  margin-bottom: var(--space-4);
+  padding-left: var(--space-4);
+}
+
+blockquote {
+  display: inline-block;
+  padding: var(--space-4) var(--space-6) var(--space-4) var(--space-4);
+  margin: var(--space-6) 0;
+  position: relative;
+
+  &::before {
+    content: "\201c";
+    position: absolute;
+    top: -0.2em;
+    left: -0.1em;
+    font-size: 3em;
+    color: var(--color-text-secondary);
+    opacity: 0.3;
+    font-style: normal;
+    line-height: 1;
   }
 
-  ul, ol {
-    margin-bottom: var(--space-4);
-    padding-left: var(--space-4);
+  &::after {
+    content: "\201d";
+    position: absolute;
+    bottom: -0.3em;
+    right: 0.1em;
+    font-size: 3em;
+    color: var(--color-text-secondary);
+    opacity: 0.3;
+    font-style: normal;
+    line-height: 1;
   }
 
-  li {
-    list-style: initial;
-  }
+  > *:last-child { margin-bottom: 0; }
+}
 
-  blockquote {
-    display: inline-block;
-    padding: var(--space-4) var(--space-6) var(--space-4) var(--space-4);
-    margin: var(--space-6) 0;
-    position: relative;
+img {
+  display: block;
+  margin: var(--space-6) auto;
+  border-radius: 6px;
+}
 
-    &::before {
-      content: "\201c";
-      position: absolute;
-      top: -0.2em;
-      left: -0.1em;
-      font-size: 3em;
-      color: var(--color-text-secondary);
-      opacity: 0.3;
-      font-style: normal;
-      line-height: 1;
-    }
+table {
+  margin: var(--space-6) 0;
+  font-size: 1rem;
+}
 
-    &::after {
-      content: "\201d";
-      position: absolute;
-      bottom: -0.3em;
-      right: 0.1em;
-      font-size: 3em;
-      color: var(--color-text-secondary);
-      opacity: 0.3;
-      font-style: normal;
-      line-height: 1;
-    }
+th, td {
+  padding: 0.75em var(--space-3);
+}
 
-    > *:last-child { margin-bottom: 0; }
-  }
+th {
+  background: var(--color-surface);
+}
 
-  img {
-    display: block;
-    margin: var(--space-6) auto;
-    border-radius: 6px;
-  }
+hr {
+  margin: var(--space-12) 0;
+}
 
-  table {
-    margin: var(--space-6) 0;
-    font-size: 1rem;
-  }
-
-  th, td {
-    padding: 0.75em var(--space-3);
-  }
-
-  th {
-    background: var(--color-surface);
-  }
-
-  hr {
-    margin: var(--space-12) 0;
-  }
-
-  strong {
-    font-weight: 600;
-  }
-
-  }
+strong {
+  font-weight: 600;
+}
 
 /* Blog List Items */
 .post-card {
