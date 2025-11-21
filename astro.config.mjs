@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 import { remarkCustomDirectives } from './lib/remark/custom-directives';
 import remarkDirective from 'remark-directive';
+import UnoCSS from 'unocss/astro';
 
 import expressiveCode from 'astro-expressive-code';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
@@ -14,6 +15,7 @@ export default defineConfig({
     site: 'https://xihale.top',
     output: 'static',
     integrations: [
+        UnoCSS(),
         expressiveCode({
             themes: ['vitesse-dark', 'vitesse-light'],
             defaultProps:{

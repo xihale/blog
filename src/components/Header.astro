@@ -2,11 +2,13 @@
 import { SITE_TITLE } from "../consts";
 ---
 
-<header class="nav-header">
-  <div class="nav-container">
+<header class="bg-background border-b border-block shadow-sm">
+  <div
+    class="max-w-4xl mx-auto px-4 flex items-center justify-between relative"
+  >
     <!-- Logo/Title -->
-    <h1 class="nav-logo">
-      <a href="/">
+    <h1 class="text-xl font-serif font-light tracking-tight">
+      <a href="/" class="no-underline! hover:underline">
         {SITE_TITLE}
       </a>
     </h1>
@@ -50,5 +52,112 @@ import { SITE_TITLE } from "../consts";
 </script>
 
 <style>
-  @import "../styles/components/header.css";
+  /* Navigation Menu */
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .nav-link {
+    font-size: 0.875rem;
+    font-weight: 300;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Mobile Menu Toggle Button */
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-1);
+    border-radius: var(--space-1);
+    transition: background-color var(--transition);
+    z-index: 50;
+  }
+
+  .mobile-menu-toggle:hover {
+    background: var(--color-surface);
+  }
+
+  .mobile-menu-toggle:focus-visible {
+    outline: 2px solid var(--color-text-secondary);
+    outline-offset: 2px;
+  }
+
+  .mobile-menu-line {
+    width: 1.25rem;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 1px;
+    transition: all var(--transition);
+    transform-origin: center;
+  }
+
+  .mobile-menu-line:not(:last-child) {
+    margin-bottom: var(--space-1);
+  }
+
+  /* Mobile menu button active state animations */
+  .mobile-menu-toggle.active .mobile-menu-line:nth-child(1) {
+    transform: rotate(45deg) translate(0.375rem, 0.375rem);
+  }
+
+  .mobile-menu-toggle.active .mobile-menu-line:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .mobile-menu-toggle.active .mobile-menu-line:nth-child(3) {
+    transform: rotate(-45deg) translate(0.375rem, -0.375rem);
+  }
+
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: var(--color-background);
+      border-bottom: 1px solid var(--color-surface);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: var(--space-4);
+      z-index: 40;
+    }
+
+    .nav-menu.nav-menu--open {
+      display: flex;
+    }
+
+    .nav-menu .nav-link {
+      padding: 0.75rem 1rem;
+      text-align: center;
+      border-radius: 0.375rem;
+      transition: all var(--transition);
+    }
+
+    .nav-menu .nav-link:hover {
+      background-color: var(--color-surface);
+    }
+  }
 </style>
