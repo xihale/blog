@@ -8,6 +8,8 @@ import remarkDirective from 'remark-directive';
 
 import expressiveCode from 'astro-expressive-code';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,6 +32,7 @@ export default defineConfig({
         sitemap()
     ],
     markdown: {
-        remarkPlugins: [remarkDirective, remarkCustomDirectives],
+        remarkPlugins: [remarkDirective, remarkCustomDirectives, remarkMath],
+        rehypePlugins: [rehypeKatex]
     },
 });
