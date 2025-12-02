@@ -3,16 +3,16 @@
   font-family: var(--font-sans);
   line-height: 1.6;
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-6);
-  max-width: 160px;
-  z-index: 10;
-  float: right;
-  margin-left: var(--space-8);
-  margin-right: -220px;
 
   @media (min-width: 769px) {
     position: sticky;
     top: var(--space-6);
+    max-height: 100vh;
+    overflow-y: auto;
+    float: right;
+    margin-left: 2rem;
+    width: 300px;
+    margin-right: -350px;
 
     .toc-link:not(.active) {
       opacity: 0.6;
@@ -20,6 +20,25 @@
 
     .toc-link:hover {
       opacity: 1;
+    }
+
+    /* Smooth scrolling behavior */
+    scroll-behavior: smooth;
+
+    /* Hide scrollbar for cleaner look */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
     }
   }
 
@@ -30,6 +49,7 @@
     float: none;
     margin-left: 0;
     margin-right: 0;
+    width: auto;
     margin-bottom: var(--space-6);
     font-size: 0.875rem;
   }

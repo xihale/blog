@@ -47,6 +47,12 @@ a:hover {
   font-size: 0.875rem;
 }
 
+.content-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
 .header-container {
   max-width: 56rem;
   margin-left: auto;

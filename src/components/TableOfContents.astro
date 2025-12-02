@@ -78,6 +78,29 @@ import "../styles/components/toc.scss";
             link.classList.remove("active");
           }
         });
+
+        // Scroll active item into view
+        const activeLink = toc.querySelector('.toc-link.active') as HTMLElement;
+        if (activeLink) {
+          const tocRect = toc.getBoundingClientRect();
+          const activeRect = activeLink.getBoundingClientRect();
+
+          // Calculate the target position (30% from top of TOC)
+          const targetTop = tocRect.height * 0.3;
+
+          // Calculate current position of active link relative to TOC
+          const currentRelativeTop = activeRect.top - tocRect.top;
+
+          // Calculate how much to scroll (current scroll + adjustment)
+          const currentScrollTop = toc.scrollTop;
+          const scrollToPosition = currentScrollTop + (currentRelativeTop - targetTop);
+
+          // Always scroll to keep active item at 30% from top
+          toc.scrollTo({
+            top: scrollToPosition,
+            behavior: 'smooth'
+          });
+        }
       }
     }
 

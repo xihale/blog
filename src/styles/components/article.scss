@@ -16,7 +16,17 @@ h5 { font-size: 1.25rem; }
 h6 { font-size: 1.125rem; }
 
 .article-content {
+  flex: 1;
+  min-width: 0; /* Prevents content from overflowing flex container */
+
   > *:first-child { margin-top: 0 !important; }
+
+  /* Force wrap for long links */
+  a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+  }
 
   /* Heading markers */
   h2::before { content: "#"; margin-right: var(--space-2); opacity: 0.6; }

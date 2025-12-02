@@ -6,6 +6,10 @@
   font-family: var(--font-mono);
   font-size: 0.85em;
   padding: 0 2px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 /* Expressive Code */
