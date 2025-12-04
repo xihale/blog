@@ -2,6 +2,7 @@
 title: "ADCTF25-WP"
 pubDate: "2025-12-02"
 description: ""
+draft: true
 ---
 
 # Crypto
@@ -68,38 +69,38 @@ b'flag{ZIzBw3QjdLty60CYCt}'
 
 深入分析需要理解以下数学概念：
 
-1.  **n维代数 (n-dimensional Algebra)**:
+1. **n维代数 (n-dimensional Algebra)**:
     n维代数是在n维线性空间上定义加法和乘法运算的数学结构。实数构成1维代数，复数构成2维代数，八元数构成8维代数。代数结构保持了基本运算的封闭性和分配律。
 
-2.  **八元数 (Octonions)**:
+2. **八元数 (Octonions)**:
     八元数 $\mathbb{O}$ 是实数域上的8维非结合代数。每个八元数可表示为8个实数分量的线性组合。八元数具有以下代数特征：
     - **非交换性**：$ab \neq ba$
     - **非结合性**：$(ab)c \neq a(bc)$
 
-3.  **幂结合性 (Power Associativity)**:
+3. **幂结合性 (Power Associativity)**:
     八元数代数虽不满足一般结合律，但满足幂结合律。对任意八元数 $x$ 和正整数 $n$，幂运算 $x^n$ 的结果与计算顺序无关，即 $(xx)x = x(xx)$。该性质确保了八元数指数运算的良定义性。
 
-4.  **范数 (Norm)**:
+4. **范数 (Norm)**:
     范数是度量代数元素大小的重要函数。对于八元数 $x = a_0 + a_1e_1 + \cdots + a_7e_7$，其范数定义为：
     $$N(x) = x\bar{x} = a_0^2 + a_1^2 + \cdots + a_7^2$$
     其中 $\bar{x}$ 为 $x$ 的共轭八元数。八元数范数具有关键性质：
     $$N(xy) = N(x)N(y)$$
     该乘性性质将高维八元数运算映射到一维标量域，是解构本题的核心工具。
 
-5.  **循环群和生成元 (Cyclic Group and Generator)**:
+5. **循环群和生成元 (Cyclic Group and Generator)**:
     设 $G$ 为有限群，若存在元素 $g \in G$ 使得 $G = \{g^k \mid k \in \mathbb{Z}\}$，则 $G$ 称为循环群，$g$ 称为生成元。循环群的阶等于其生成元的阶。
 
-6.  **离散对数问题 (Discrete Logarithm Problem, DLP)**:
+6. **离散对数问题 (Discrete Logarithm Problem, DLP)**:
     在循环群 $(G, \cdot)$ 中，给定生成元 $g$ 和元素 $h \in G$，求解整数 $x$ 使得 $g^x = h$ 的问题称为离散对数问题。该问题在密码学中具有重要意义，其计算复杂度随群大小的增长而指数级增加。对于64位模数，该问题可在多项式时间内求解。
 
 ### 分析
 
 #### `gen.py`
 
-1.  **初始化**: 生成一个64位的素数 `m`。
-2.  **数据分块**: 将 Flag 每4个字节分为一块，并将每块转换为整数 `n`（作为指数）。
-3.  **八元数代数 (Octonion Algebra)**: 在有限域 $\mathbb{Z}_m$ 上定义八元数代数。
-4.  **加密过程**:
+1. **初始化**: 生成一个64位的素数 `m`。
+2. **数据分块**: 将 Flag 每4个字节分为一块，并将每块转换为整数 `n`（作为指数）。
+3. **八元数代数 (Octonion Algebra)**: 在有限域 $\mathbb{Z}_m$ 上定义八元数代数。
+4. **加密过程**:
     - 对于每个Flag块（指数 $n$），随机生成一个八元数 $p$。
     - 计算 $q = p^n$。
     - 公开 $m$、$p$ 的向量表示、$q$ 的向量表示。
@@ -118,13 +119,13 @@ $$a^n \equiv b \pmod m$$
 
 ### 攻击策略
 
-1.  从 `output.txt` 中解析出 $m$, $p\_values$, $q\_values$。
-2.  在 SageMath 中重建 $\mathbb{Z}_m$ 上的八元数代数。
-3.  遍历每一对 $(p, q)$：
+1. 从 `output.txt` 中解析出 $m$, $p\_values$, $q\_values$。
+2. 在 SageMath 中重建 $\mathbb{Z}_m$ 上的八元数代数。
+3. 遍历每一对 $(p, q)$：
     - 计算 $p$ 的范数 $N(p)$。
     - 计算 $q$ 的范数 $N(q)$。
     - 求解离散对数 $n = \log_{N(p)} N(q) \pmod {m-1}$。
-4.  将解得的 $n$ 转换为字节并拼接，得到 Flag。
+4. 将解得的 $n$ 转换为字节并拼接，得到 Flag。
 
 ### 核心代码
 
@@ -375,7 +376,7 @@ flag{ce742789f47d667479f6003c32e3b630}
 
 # Forensic
 
-## 原神，启动！
+## 原神，启动
 
 ### 流量分析
 
@@ -397,7 +398,7 @@ tshark -r its-genshin-time.pcap --export-objects http,extracted_files/
 JSON_PAYLOAD="$JSON_PAYLOAD\"challenge.secret.info\": \"$SECRET_INFO\","
 ```
 
-#### `c0nfi9ur@t1on` 的内容被用来生成码表。
+#### `c0nfi9ur@t1on` 的内容被用来生成码表
 
 ```sh
 curl -s -L "$CONFIG_URL" -o "$CONFIG_PATH"
@@ -777,7 +778,7 @@ print_digit_loop:
 
 使用 api 提取 23 年的贡献数据
 
-https://github-contributions-api.jogruber.de/v4/Luminoria
+<https://github-contributions-api.jogruber.de/v4/Luminoria>
 
 筛选+处理得到以下数据
 
@@ -785,7 +786,7 @@ https://github-contributions-api.jogruber.de/v4/Luminoria
 [0, 0, 0, 0, 0, 0, 0, 1, 3, 1, 3, 1, 3, 6, 0, 1, 3, 0, 1, 1, 3, 1, 6, 1, 6, 3, 6, 1, 3, 1, 6, 1, 3, 3, 1, 1, 6, 1, 0, 1, 3, 3, 0, 1, 1, 1, 1, 1, 3, 0, 3, 0, 3, 6, 1, 1, 3, 0, 6, 0, 6, 0, 0, 1, 3, 6, 3, 1, 6, 1, 0, 1, 1, 0, 3, 1, 3, 6, 0, 1, 3, 0, 3, 1, 6, 1, 1, 1, 1, 1, 0, 0, 6, 0, 1, 0, 6, 0, 0, 1, 0, 6, 3, 1, 1, 0, 6, 0, 3, 6, 1, 1, 0, 0, 6, 1, 0, 0, 0, 1, 3, 6, 3, 1, 1, 6, 6, 1, 0, 0, 3, 1, 3, 1, 1, 0, 3, 6, 1, 1, 6, 1, 3, 0, 6, 0, 1, 0, 6, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 6, 0, 1, 0, 6, 0, 1, 1, 3, 1, 0, 3, 6, 1, 1, 1, 0, 6, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 6, 3, 0, 3, 6, 1, 1, 0, 6, 6, 1, 3, 6, 3, 1, 1, 6, 6, 1, 1, 1, 0, 1, 0, 3, 0, 1, 0, 1, 1, 0, 3, 6, 1, 1, 1, 0, 0, 1, 6, 0, 3, 0, 6, 0, 0, 1, 3, 1, 3, 1, 3, 3, 1, 1, 0, 6, 0, 0, 6, 0, 6, 1, 6, 6, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ```
 
-AI 分析：https://grok.com/share/c2hhcmQtMi1jb3B5_07d94dbc-90b6-4318-b27f-51dfcd1761e6
+AI 分析：<https://grok.com/share/c2hhcmQtMi1jb3B5_07d94dbc-90b6-4318-b27f-51dfcd1761e6>
 
 有4个数字（0, 1, 3, 6）
 
@@ -801,21 +802,21 @@ AI 分析：https://grok.com/share/c2hhcmQtMi1jb3B5_07d94dbc-90b6-4318-b27f-51df
 ## Neko Q&A
 
 1. 根据图片内容的标识文字
-  搜索 2025 good smile miku 上海
-  https://x.com/goodsmileracing/status/1968190562525385006
+   搜索 2025 good smile miku 上海
+   <https://x.com/goodsmileracing/status/1968190562525385006>
 
-2. AI 直出: https://gemini.google.com/share/31ba5550cc4c
+2. AI 直出: <https://gemini.google.com/share/31ba5550cc4c>
 
-3. https://baike.baidu.com/item/%E5%9C%86%E8%9E%8D%E6%97%B6%E4%BB%A3%E5%B9%BF%E5%9C%BA/920397
+3. <https://baike.baidu.com/item/%E5%9C%86%E8%9E%8D%E6%97%B6%E4%BB%A3%E5%B9%BF%E5%9C%BA/920397>
 
 ## 广工问答
 
-https://grok.com/share/c2hhcmQtMi1jb3B5_72fa03c3-ecf3-43ac-be0e-6d56f0613ac3
+<https://grok.com/share/c2hhcmQtMi1jb3B5_72fa03c3-ecf3-43ac-be0e-6d56f0613ac3>
 
-1. https://nic.gdut.edu.cn/search_list.jsp?wbtreeid=1322 搜索 广东工业大学网络安全技能大赛
-2. https://bwc.gdut.edu.cn/info/1101/3775.htm
+1. <https://nic.gdut.edu.cn/search_list.jsp?wbtreeid=1322> 搜索 广东工业大学网络安全技能大赛
+2. <https://bwc.gdut.edu.cn/info/1101/3775.htm>
 3. SULCMIS-OPAC 4.01。该信息来源于图书馆OPAC平台的版权声明，可通过以下链接查看页面底部footer确认
-4. https://www.gdut.edu.cn/info/1709/23208.htm
+4. <https://www.gdut.edu.cn/info/1709/23208.htm>
 
 # DS
 
@@ -959,7 +960,7 @@ print(f"用户: {len(users)}, 产品: {len(products)}, 订单: {len(orders)}")
 
 ## checkin
 
-https://grok.com/share/c2hhcmQtMi1jb3B5_07861ba3-cd58-4984-9ddc-8840e3669433
+<https://grok.com/share/c2hhcmQtMi1jb3B5_07861ba3-cd58-4984-9ddc-8840e3669433>
 
 扔进 ninja binary 分析一下发现：
 
@@ -1004,7 +1005,7 @@ payload += p64(get_shell)
 
 ## 井字棋
 
-https://gemini.google.com/share/ecb3495d66a1
+<https://gemini.google.com/share/ecb3495d66a1>
 
 ### 思路
 
@@ -1062,7 +1063,7 @@ zig build-exe main.c -lc
 
 看到 `cors::xxx`、`traits` 了，Ruast 逆向（期间我借助 llvm 反编译工具，成功生成了一个11万行的 c 代码和 ll、bc、dsm 代码（不懂）😭）
 
-https://gemini.google.com/share/7289a5dda03d
+<https://gemini.google.com/share/7289a5dda03d>
 
 主要是找到程序的入口点，然后其实之后可以扔给 AI 简化逻辑，顺便分析一下加密逻辑😋
 
@@ -1124,7 +1125,7 @@ CHARSET = ['0', '1', '3', '4', '5', '6', '8', '9', 'a', 'e', 'i', 'm', 'n', 'p',
 # WARNING: Decompyle incomplete
 ```
 
-https://gemini.google.com/share/4c39c4f18e67
+<https://gemini.google.com/share/4c39c4f18e67>
 
 猜测处理过程是比较平凡的，zip 处的 lambda 采用 XOR；而 base114_encode.py 直接扩展 baseXX_encode
 
@@ -1198,7 +1199,7 @@ if __name__ == '__main__':
 
 ## ez_upload
 
-https://gemini.google.com/share/a3b3a8cc9019
+<https://gemini.google.com/share/a3b3a8cc9019>
 
 ### 分析
 
@@ -1290,7 +1291,7 @@ Table: secret
 
 # tradingPlatform2
 
-https://gemini.google.com/share/62b530c80a44
+<https://gemini.google.com/share/62b530c80a44>
 
 ## 提权分析
 
@@ -1332,7 +1333,6 @@ sqlmap -u "http://$REMOTE/api/candle?symbol=ETH-USDT&start_time=2025-10-29&end_t
 | 2  | flag   | flag{81ecc95b-b406-48f8-b4ff-f380989ec693} | flag     | false       |
 +----+--------+--------------------------------------------+----------+-------------+
 ```
-
 
 ## SlowUGI-Downloader
 
