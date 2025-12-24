@@ -4,6 +4,60 @@ import "../styles/components/friends.scss";
 
 const title = "Links";
 const description = "Interesting links and resources";
+
+interface Friend {
+  name: string;
+  url: string;
+  avatar?: string;
+  desc: string;
+}
+
+const friends: Friend[] = [
+  {
+    name: "teru",
+    url: "https://keqing.moe/",
+    avatar: "/avatars/teru-avatar.png",
+    desc: "心有所向，日复一日，必有精进",
+  },
+  {
+    name: "hill",
+    url: "https://blog.hill-q.com",
+    avatar: "/avatars/hill-avatar.webp",
+    desc: "Just Forward",
+  },
+  {
+    name: "Phrinky",
+    url: "https://blog.rkk.moe/",
+    avatar: "/avatars/phrinky-avatar.webp",
+    desc: "可燃性物質です。",
+  },
+  {
+    name: "CZY",
+    url: "https://iamczy.com/",
+    avatar: "/avatars/czy-avatar.jpg",
+    desc: "只会吃",
+  },
+];
+
+const personalBlogs: Friend[] = [
+  {
+    name: "评论尸",
+    url: "https://1q43.blog/",
+    avatar: "/avatars/personal-avatar.png",
+    desc: "评论尸的自留地",
+  },
+  {
+    name: "最小可读",
+    url: "https://mvread.blog/",
+    desc: "基本无害，可能有用",
+  },
+  {
+    name: "心的道理",
+    url: "https://stephenleng.com/cn/",
+    avatar: "/avatars/stephenleng.jpg",
+    desc: "Intellectual History, Philosophy of History, and Theory of Human Nature",
+  },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -18,51 +72,51 @@ const description = "Interesting links and resources";
     <h2>Friends</h2>
 
     <div class="friends-cards">
-      <a
-        href="https://keqing.moe/"
-        target="_blank"
-        rel="noopener"
-        class="friend-card"
-      >
-        <div class="friend-info">
-          <div class="friend-name">teru</div>
-          <div class="friend-desc">心有所向，日复一日，必有精进</div>
-        </div>
-      </a>
-
-      <a
-        href="https://blog.hill-q.com"
-        target="_blank"
-        rel="noopener"
-        class="friend-card"
-      >
-        <div class="friend-avatar">
-          <img src="/hill-avatar.webp" alt="hill" />
-        </div>
-        <div class="friend-info">
-          <div class="friend-name">hill</div>
-          <div class="friend-desc">Just Forward</div>
-        </div>
-      </a>
+      {
+        friends.map((friend) => (
+          <a
+            href={friend.url}
+            target="_blank"
+            rel="noopener"
+            class="friend-card"
+          >
+            {friend.avatar && (
+              <div class="friend-avatar">
+                <img src={friend.avatar} alt={friend.name} />
+              </div>
+            )}
+            <div class="friend-info">
+              <div class="friend-name">{friend.name}</div>
+              <div class="friend-desc">{friend.desc}</div>
+            </div>
+          </a>
+        ))
+      }
     </div>
 
     <h2>Personal Blogs</h2>
 
     <div class="friends-cards">
-      <a
-        href="https://1q43.blog/"
-        target="_blank"
-        rel="noopener"
-        class="friend-card"
-      >
-        <div class="friend-avatar">
-          <img src="/personal-avatar.png" alt="评论尸" />
-        </div>
-        <div class="friend-info">
-          <div class="friend-name">评论尸</div>
-          <div class="friend-desc">评论尸的自留地</div>
-        </div>
-      </a>
+      {
+        personalBlogs.map((blog) => (
+          <a
+            href={blog.url}
+            target="_blank"
+            rel="noopener"
+            class="friend-card"
+          >
+            {blog.avatar && (
+              <div class="friend-avatar">
+                <img src={blog.avatar} alt={blog.name} />
+              </div>
+            )}
+            <div class="friend-info">
+              <div class="friend-name">{blog.name}</div>
+              <div class="friend-desc">{blog.desc}</div>
+            </div>
+          </a>
+        ))
+      }
     </div>
   </div>
 </BaseLayout>
