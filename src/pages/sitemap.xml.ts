@@ -10,8 +10,8 @@ export const GET: APIRoute = async ({ site }) => {
   const siteUrl = typeof site === 'string' ? site : site.toString();
   const baseUrl = siteUrl.replace(/\/$/, '');
 
-  // Get all blog posts
-  const blogPosts = await getCollection('blog');
+  // Get all blog posts, filter out drafts and unlisted
+  const blogPosts = (await getCollection('blog')).filter(post => !post.data.draft && !post.data.unlisted);
 
   // Define static pages
   const staticPages = [

@@ -8,16 +8,18 @@ import FontLoader from "./FontLoader.astro";
 interface Props {
   title: string;
   description: string;
+  robots?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description } = Astro.props;
+const { title, description, robots } = Astro.props;
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+{robots && <meta name="robots" content={robots} />}
 <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 <link rel="sitemap" href="/sitemap.xml" />
 <link

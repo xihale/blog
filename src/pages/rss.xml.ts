@@ -6,7 +6,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 export async function GET(context: APIContext) {
 	const posts = await getCollection('blog');
 
-	// Filter out drafts and sort by pubDate descending
+	// Filter out drafts, but include unlisted posts. Sort by pubDate descending.
 	const sortedPosts = posts
 		.filter((post) => !post.data.draft)
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());

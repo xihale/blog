@@ -1,11 +1,11 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import { formatDate, formatDateISO } from "../utils/date";
 import TableOfContents from "../components/TableOfContents.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
+  unlisted?: boolean | undefined;
   headings?: Array<{ depth: number; slug: string; text: string }> | undefined;
   tags?: string[] | undefined;
 };
@@ -15,13 +15,15 @@ const {
   description,
   pubDate,
   updatedDate,
-  heroImage,
   tags,
+  unlisted,
   headings = [],
 } = Astro.props;
+
+const robots = unlisted ? "noindex" : undefined;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} robots={robots}>
   <div class="min-h-screen">
     <article class="container-center responsive-padding">
       <!-- Article Header -->
@@ -54,21 +56,6 @@ const {
           )
         }
       </header>
-
-      <!-- Hero Image -->
-      {
-        heroImage && (
-          <div class="mb-12">
-            <Image
-              width={1200}
-              height={630}
-              src={heroImage}
-              alt={title || ""}
-              class="w-full rounded-lg"
-            />
-          </div>
-        )
-      }
 
       <!-- Table of Contents outside container -->
       <TableOfContents headings={headings} />
