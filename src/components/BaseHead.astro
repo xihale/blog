@@ -3,6 +3,7 @@
 // all pages through the use of the <BaseHead /> component.
 import "../styles/global.scss";
 import { SITE_TITLE } from "../consts";
+import FontLoader from "./FontLoader.astro";
 
 interface Props {
   title: string;
@@ -27,85 +28,23 @@ const { title, description } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font Preload with highest priority -->
-<link
-  rel="preload"
-  href="/fonts/lxgw.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
-
-<!-- Critical CSS for immediate font application -->
-<style is:global>
-  /* Only hide on initial page load, not during view transitions */
-  html:not(.wf-active):not([data-astro-transition]) {
-    visibility: hidden;
-  }
-
-  @font-face {
-    font-family: "LXGW WenKai";
-    font-style: normal;
-    font-weight: normal;
-    font-display: fallback;
-    src:
-      local("Times New Roman"),
-      local("serif"),
-      url("/fonts/lxgw.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "JetBrains Mono";
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url("/fonts/jbmono.woff2") format("woff2");
-  }
-
-  html.wf-active {
-    visibility: unset;
-  }
-</style>
-
-<!-- Font loading script -->
-<script is:inline>
-  // Font loading function that works with view transitions
-  function ensureFontsLoaded() {
-    const html = document.documentElement;
-
-    // If already active, no need to reload
-    if (html.classList.contains("wf-active")) {
-      return;
-    }
-
-    const font = new FontFace("LXGW WenKai", 'url("/fonts/lxgw.woff2")');
-
-    // Load font and apply when ready
-    font
-      .load()
-      .then(function () {
-        document.fonts.add(font);
-        html.classList.add("wf-active");
-      })
-      .catch(function () {
-        // Fallback: show content even if font fails to load
-        html.classList.add("wf-active");
-      });
-
-    // Fallback timeout: show content after 1 second even if font not loaded
-    setTimeout(function () {
-      html.classList.add("wf-active");
-    }, 1000);
-  }
-
-  // Run on initial page load
-  ensureFontsLoaded();
-
-  // Run on every page navigation with view transitions
-  document.addEventListener("astro:page-load", ensureFontsLoaded);
-</script>
+<FontLoader />
 
 <!-- Page-specific Metadata -->
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL("/avatars/avatar.jpg", Astro.url)} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL("/avatars/avatar.jpg", Astro.url)} />

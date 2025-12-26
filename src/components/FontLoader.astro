@@ -1,0 +1,92 @@
+---
+/*
+  FontLoader.astro
+  Handles font preloading, critical CSS, and FOUT mitigation.
+*/
+---
+
+<!-- Font Preload with highest priority -->
+<link
+  rel="preload"
+  href="/fonts/lxgw.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+<!-- Critical CSS for immediate font application -->
+<style is:global>
+  /* Only hide on initial page load, not during view transitions */
+  html:not(.wf-active):not([data-astro-transition]) {
+    visibility: hidden;
+  }
+
+  @font-face {
+    font-family: "LXGW WenKai";
+    font-style: normal;
+    font-weight: normal;
+    font-display: fallback;
+    src:
+      local("Times New Roman"),
+      local("serif"),
+      url("/fonts/lxgw.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/jbmono.woff2") format("woff2");
+  }
+
+  html.wf-active {
+    visibility: unset;
+  }
+</style>
+
+<noscript>
+  <style>
+    html {
+      visibility: visible !important;
+    }
+  </style>
+</noscript>
+
+<!-- Font loading script -->
+<script is:inline>
+  // Font loading function that works with view transitions
+  function ensureFontsLoaded() {
+    const html = document.documentElement;
+
+    // If already active, no need to reload
+    if (html.classList.contains("wf-active")) {
+      return;
+    }
+
+    const font = new FontFace("LXGW WenKai", 'url("/fonts/lxgw.woff2")');
+
+    // Load font and apply when ready
+    font
+      .load()
+      .then(function () {
+        document.fonts.add(font);
+        html.classList.add("wf-active");
+      })
+      .catch(function () {
+        // Fallback: show content even if font fails to load
+        html.classList.add("wf-active");
+      });
+
+    // Fallback timeout: show content after 1 second even if font not loaded
+    setTimeout(function () {
+      html.classList.add("wf-active");
+    }, 1000);
+  }
+
+  // Run on initial page load
+  ensureFontsLoaded();
+
+  // Run on every page navigation with view transitions
+  document.addEventListener("astro:page-load", ensureFontsLoaded);
+</script>
