@@ -15,14 +15,23 @@
 
   & :is(pre, figcaption, figcaption.header) { border-radius: 0 !important; }
 
+  /* Fix right padding - add inline-block space after code content */
+  & .ec-line .code::after {
+    content: "";
+    display: inline-block;
+    width: 1.35rem;
+  }
+
+  /* Hide copy button by default, show on interaction */
+  & .copy button { opacity: 0 !important; transition: opacity 0.2s; }
+  & .frame:is(:focus-within, :hover, :active) .copy button { opacity: 0.75 !important; }
+  & .copy :is(button:hover, button:focus, button:active, .feedback.show ~ button) { opacity: 1 !important; }
+
   @media (max-width: 768px) {
     margin-inline: -1rem;
     border-radius: 0 !important;
 
     & .gutter { display: none; }
-    & .copy button { opacity: 0 !important; }
-    & .frame:is(:focus-within, :hover) .copy button:not(:hover) { opacity: 0.75 !important; }
-    & .copy :is(button:hover, button:focus, .feedback.show ~ button) { opacity: 1 !important; }
     & pre.wrap .ec-line .code { white-space: pre !important; overflow-wrap: normal !important; }
     & .ec-line .code { border-inline-start: none !important; }
   }
