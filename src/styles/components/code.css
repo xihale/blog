@@ -1,0 +1,31 @@
+@import "../shiki.css";
+
+/* Inline Code */
+:not(pre) code {
+  color: var(--color-accent);
+  font: 0.85em var(--font-mono);
+  padding: 0 2px;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* Expressive Code */
+.expressive-code {
+  margin-bottom: var(--space-4);
+
+  & :is(pre, figcaption, figcaption.header) { border-radius: 0 !important; }
+
+  @media (max-width: 768px) {
+    margin-inline: -1rem;
+    border-radius: 0 !important;
+
+    & .gutter { display: none; }
+    & .copy button { opacity: 0 !important; }
+    & .frame:is(:focus-within, :hover) .copy button:not(:hover) { opacity: 0.75 !important; }
+    & .copy :is(button:hover, button:focus, .feedback.show ~ button) { opacity: 1 !important; }
+    & pre.wrap .ec-line .code { white-space: pre !important; overflow-wrap: normal !important; }
+    & .ec-line .code { border-inline-start: none !important; }
+  }
+}
+
+.indent { display: inline-block; width: 2rem; }

@@ -1,0 +1,63 @@
+/* Admonitions - using CSS variables for theming */
+.admonition {
+  --adm-bg: var(--color-surface);
+  --adm-color: var(--color-text);
+
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--adm-bg);
+
+  &::before {
+    content: attr(data-title);
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: var(--adm-color);
+  }
+}
+
+.admonition-error,
+.admonition-danger {
+  --adm-bg: light-dark(rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+  --adm-color: light-dark(#a02530, #f1aeb5);
+}
+
+.admonition-warning {
+  --adm-bg: light-dark(rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.2));
+  --adm-color: light-dark(#664d03, #ffec99);
+}
+
+.admonition-info {
+  --adm-bg: light-dark(rgba(23, 162, 184, 0.1), rgba(23, 162, 184, 0.2));
+  --adm-color: light-dark(#055160, #99d9ea);
+}
+
+.admonition-note {
+  --adm-bg: light-dark(rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+  --adm-color: light-dark(#084298, #9ec5fe);
+}
+
+.admonition-tip,
+.admonition-success {
+  --adm-bg: light-dark(rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.2));
+  --adm-color: light-dark(#0f5132, #a3cfbb);
+}
+
+.admonition-question {
+  --adm-bg: light-dark(rgba(111, 66, 193, 0.1), rgba(111, 66, 193, 0.2));
+  --adm-color: light-dark(#361975, #d0bfff);
+}
+
+.admonition-quote {
+  --adm-bg: light-dark(rgba(108, 117, 125, 0.1), rgba(108, 117, 125, 0.2));
+  --adm-color: light-dark(#41464b, #ced4da);
+  font-style: italic;
+}
+
+.admonition-future {
+  --adm-bg: light-dark(rgba(253, 126, 20, 0.1), rgba(253, 126, 20, 0.2));
+  --adm-color: light-dark(#663d00, #ffd8a8);
+}

@@ -1,0 +1,74 @@
+/* Utilities */
+
+/* Flexbox */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-grow { flex-grow: 1; }
+.items-baseline { align-items: baseline; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+
+/* Layout */
+.min-h-screen { min-height: 100vh; }
+.mx-auto { margin-inline: auto; }
+.w-full { width: 100%; }
+.max-w-4xl { max-width: 56rem; }
+.block { display: block; }
+.relative { position: relative; }
+
+/* Spacing */
+.mb-0 { margin-bottom: 0; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.py-3 { padding-block: 0.75rem; }
+.px-2 { padding-inline: 0.5rem; }
+.px-4 { padding-inline: 1rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+
+/* Text */
+.text-center { text-align: center; }
+.text-weak, .weak-text, .meta-text { color: var(--color-text-muted); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Border & Background */
+.bg-background { background: var(--color-background); }
+.border-t { border-top: 1px solid; }
+.border-b { border-bottom: 1px solid; }
+.border-block { border-color: var(--color-border); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+/* Custom layouts */
+.hero-section { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+.content-wrapper { text-align: center; max-width: 48rem; margin-inline: auto; }
+.container-center { max-width: 120rem; margin-inline: auto; }
+.section-spacing { margin-bottom: 2rem; }
+.content-spacing { margin-bottom: 1.5rem; }
+
+.responsive-padding {
+  padding-block: 2rem;
+  @media (min-width: 768px) { padding-block: 3rem; }
+}
+
+.responsive-margin {
+  margin-bottom: 3rem;
+  @media (min-width: 768px) { margin-bottom: 4rem; }
+}
+
+.space-y-16 > * + * { margin-top: 4rem; }
+
+/* Navigation */
+.nav-link {
+  color: var(--color-text);
+  &:hover { color: var(--article-link-color); }
+}
+
+/* Article links */
+.article-content a {
+  color: var(--article-link-color);
+  &:hover { color: var(--article-link-hover); }
+}
+
+/* Hero */
+.heading-hero { font: 300 3rem var(--font-serif); color: var(--color-text); }

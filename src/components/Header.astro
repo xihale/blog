@@ -1,6 +1,6 @@
 ---
 import { SITE_TITLE } from "../consts";
-import "../styles/components/header.scss";
+import "../styles/components/header.css";
 ---
 
 <header class="bg-background border-b border-block shadow-sm">
@@ -45,17 +45,25 @@ import "../styles/components/header.scss";
 </header>
 
 <script>
-  function initMobileMenu() {
+  const initMobileMenu = () => {
     const button = document.getElementById("mobile-menu-button");
     const nav = document.getElementById("nav-menu");
+
     if (!button || !nav) return;
 
-    button.addEventListener("click", () => {
+    // Remove existing listeners to prevent duplicates if any (though unlikely with ViewTransitions replacing DOM)
+    // Actually, simple cloneNode or just one-time setup is tricky with ViewTransitions.
+    // The previous code was fine, just rewriting for style.
+
+    const toggleMenu = () => {
       const isOpen = nav.classList.toggle("nav-menu--open");
       button.classList.toggle("active", isOpen);
       button.setAttribute("aria-expanded", isOpen.toString());
-    });
-  }
+    };
 
+    button.addEventListener("click", toggleMenu);
+  };
+
+  // Runs on initial load and after every View Transition navigation
   document.addEventListener("astro:page-load", initMobileMenu);
 </script>

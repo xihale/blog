@@ -12,7 +12,7 @@ const { headings } = Astro.props;
 // Filter for h2-h4 and ensure minimum count
 const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 
-import "../styles/components/toc.scss";
+import "../styles/components/toc.css";
 ---
 
 {
@@ -30,99 +30,80 @@ import "../styles/components/toc.scss";
 }
 
 <script>
-  let tocScrollHandler: (() => void) | null = null;
-
   function initTableOfContents() {
-    // Early mobile check - skip all TOC interactions on mobile
-    if (window.innerWidth <= 768) return;
-
     const toc = document.getElementById("toc");
     if (!toc) return;
 
-    const links = toc.querySelectorAll(".toc-link");
+    const links = Array.from(toc.querySelectorAll(".toc-link"));
+    if (links.length === 0) return;
 
-    function updateCurrentHeading() {
-      const headings = Array.from(
-        document.querySelectorAll(
-          ".article-content h2, .article-content h3, .article-content h4",
-        ),
-      ) as HTMLElement[];
+    // Use a Map for O(1) lookup
+    const linkMap = new Map();
+    links.forEach((link) => {
+      const id = link.getAttribute("data-toc-id");
+      if (id) linkMap.set(id, link);
+    });
 
-      if (headings.length === 0) return;
+    const headings = Array.from(
+      document.querySelectorAll(
+        ".article-content h2, .article-content h3, .article-content h4",
+      ),
+    );
 
-      // Find current heading based on scroll position
-      const scrollPosition = window.scrollY + 100;
-      let currentHeading: HTMLElement | null = null;
+    if (headings.length === 0) return;
 
-      for (let i = headings.length - 1; i >= 0; i--) {
-        const heading = headings[i];
-        if (heading && heading.offsetTop <= scrollPosition) {
-          currentHeading = heading;
-          break;
-        }
-      }
+    // Intersection Observer setup
+    const observerOptions = {
+      root: null,
+      // Highlight when heading crosses the top area (top 100px to 40% of viewport)
+      // Adjust rootMargin to create a "sensing zone" near the top
+      rootMargin: "-100px 0px -60% 0px",
+      threshold: 0, // Trigger as soon as any part enters the zone
+    };
 
-      if (!currentHeading && headings.length > 0) {
-        currentHeading = headings[0] ?? null;
-      }
+    let activeLink: HTMLElement | null = null;
 
-      if (currentHeading) {
-        const headingId = currentHeading.id;
+    const headingObserver = new IntersectionObserver((entries) => {
+      // Process entries to find the latest intersection
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const headingId = entry.target.id;
+          const link = linkMap.get(headingId);
 
-        // Update active states
-        links.forEach((link) => {
-          const linkId = link.getAttribute("data-toc-id");
-          if (linkId === headingId) {
+          if (link && link !== activeLink) {
+            // Remove active class from previous
+            if (activeLink) activeLink.classList.remove("active");
+
+            // Add to new
             link.classList.add("active");
-          } else {
-            link.classList.remove("active");
+            activeLink = link;
+
+            // Scroll TOC to keep active link in view
+            // We throttle this slightly or just checking offset
+            const tocRect = toc.getBoundingClientRect();
+            const linkRect = link.getBoundingClientRect();
+
+            // Calculate relative position within TOC container
+            // We want the link to be around 30% from top of TOC view, if possible
+            const relativeTop = linkRect.top - tocRect.top;
+            const targetTop = tocRect.height * 0.3;
+
+            // Only scroll if it's far from target position to avoid jitter
+            if (Math.abs(relativeTop - targetTop) > 60) {
+              toc.scrollTo({
+                top: toc.scrollTop + relativeTop - targetTop,
+                behavior: "smooth",
+              });
+            }
           }
-        });
-
-        // Scroll active item into view
-        const activeLink = toc.querySelector('.toc-link.active') as HTMLElement;
-        if (activeLink) {
-          const tocRect = toc.getBoundingClientRect();
-          const activeRect = activeLink.getBoundingClientRect();
-
-          // Calculate the target position (30% from top of TOC)
-          const targetTop = tocRect.height * 0.3;
-
-          // Calculate current position of active link relative to TOC
-          const currentRelativeTop = activeRect.top - tocRect.top;
-
-          // Calculate how much to scroll (current scroll + adjustment)
-          const currentScrollTop = toc.scrollTop;
-          const scrollToPosition = currentScrollTop + (currentRelativeTop - targetTop);
-
-          // Always scroll to keep active item at 30% from top
-          toc.scrollTo({
-            top: scrollToPosition,
-            behavior: 'smooth'
-          });
         }
-      }
-    }
+      });
+    }, observerOptions);
 
-    // Update on scroll with throttling
-    let scrollTimer: number | null = null;
-    function handleScroll() {
-      if (scrollTimer) {
-        window.cancelAnimationFrame(scrollTimer);
-      }
-      scrollTimer = window.requestAnimationFrame(updateCurrentHeading);
-    }
-
-    // Clean up previous handler if exists
-    if (tocScrollHandler) {
-      window.removeEventListener("scroll", tocScrollHandler);
-    }
-
-    tocScrollHandler = handleScroll;
-    updateCurrentHeading();
-    window.addEventListener("scroll", handleScroll);
+    headings.forEach((heading) => {
+      headingObserver.observe(heading);
+    });
   }
 
-  // Run on initial page load and every navigation
   document.addEventListener("astro:page-load", initTableOfContents);
 </script>

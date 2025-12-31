@@ -1,0 +1,51 @@
+/* TOC */
+.toc {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+
+  @media (min-width: 769px) {
+    position: sticky;
+    top: var(--space-6);
+    max-height: 100vh;
+    overflow-y: auto;
+    float: right;
+    margin-left: 2rem;
+    width: 300px;
+    margin-right: -350px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
+    & .toc-link:not(.active) { opacity: 0.6; }
+    & .toc-link:hover { opacity: 1; }
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-track, &::-webkit-scrollbar-thumb { background: transparent; }
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: var(--space-6);
+    font-size: 0.875rem;
+  }
+}
+
+.toc-item { display: flex; align-items: baseline; }
+.toc-level-2 { padding-left: 0; }
+.toc-level-3 { padding-left: 2ch; }
+.toc-level-4 { padding-left: 4ch; }
+
+.toc-link {
+  color: inherit;
+  text-decoration: none;
+  margin-left: 2px;
+
+  &:hover { color: var(--color-text); }
+
+  &.active {
+    font-weight: bold;
+    color: var(--color-text);
+
+    @media (max-width: 768px) { font-weight: normal; color: inherit; }
+  }
+}

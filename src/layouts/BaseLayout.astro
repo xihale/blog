@@ -1,4 +1,9 @@
 ---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { ClientRouter } from "astro:transitions";
+
 interface Props {
 	title?: string;
 	description?: string;
@@ -25,10 +30,6 @@ const pageTitle = title
 		? SITE_TITLE
 		: `${title} | ${SITE_TITLE}`
 	: SITE_TITLE;
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import { ClientRouter } from "astro:transitions";
 ---
 
 <!doctype html>
