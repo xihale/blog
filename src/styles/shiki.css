@@ -14,6 +14,7 @@ pre[data-language]::before {
   font-weight: 500;
   letter-spacing: 0.03em;
   opacity: 0.8;
+  transition: opacity 0.2s ease;
 }
 
 .expressive-code .frame.has-title .title {

@@ -21,37 +21,53 @@
   --space-12: 4rem;
 
   --max-width: 56rem;
-}
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-text: hsl(220 10% 15%);
-    --color-text-secondary: hsl(220 10% 30%);
-    --color-text-muted: hsl(220 10% 50%);
-    --color-accent: #2d7a66;
-    --color-background: #fffffd;
-    --color-surface: #eee;
-    --color-border: #cdcdcc;
-    --selection-color: hsla(220, 70%, 80%, 0.3);
-    --article-link-color: #4d6da6;
-    --article-link-hover: #334971;
-    --code-lang-text: var(--color-text-muted);
-  }
+  --color-text: hsl(220 10% 15%);
+  --color-text-secondary: hsl(220 10% 30%);
+  --color-text-muted: hsl(220 10% 50%);
+  --color-accent: #2d7a66;
+  --color-background: #fffffd;
+  --color-surface: #f3f3f2;
+  --color-surface-elevated: #f8f8f6;
+  --color-border: #cdcdcc;
+  --color-nav-link: hsl(220 11% 24%);
+  --color-nav-link-hover: hsl(220 20% 31%);
+  --color-header-divider: hsl(220 11% 81% / 0.95);
+  --selection-color: hsla(220, 70%, 80%, 0.3);
+  --article-link-color: #4d6da6;
+  --article-link-hover: #334971;
+  --code-lang-text: var(--color-text-muted);
+  --code-copy-bg: hsl(0 0% 100% / 0.92);
+  --code-copy-bg-hover: hsl(0 0% 100% / 0.98);
+  --code-copy-border: hsl(220 11% 72% / 0.85);
+  --code-copy-fg: hsl(220 12% 30%);
+  --interactive-hover-bg: hsl(220 14% 95%);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.06);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-text: hsl(220 10% 85%);
-    --color-text-secondary: hsl(220 10% 60%);
-    --color-text-muted: hsl(220 10% 40%);
-    --color-accent: #4a8b7b;
-    --color-background: #0e0e0c;
-    --color-surface: #1e1e1e;
-    --color-border: #323231;
+    --color-text: hsl(215 13% 88%);
+    --color-text-secondary: hsl(215 10% 72%);
+    --color-text-muted: hsl(215 8% 58%);
+    --color-accent: #78ab9e;
+    --color-background: #17191d;
+    --color-surface: #1f2329;
+    --color-surface-elevated: #262b32;
+    --color-border: #363d47;
+    --color-nav-link: hsl(215 16% 84%);
+    --color-nav-link-hover: hsl(215 18% 88%);
+    --color-header-divider: hsl(215 14% 36% / 0.9);
     --selection-color: hsla(220, 70%, 30%, 0.4);
-    --article-link-color: #8fa7d8;
-    --article-link-hover: #b8cce8;
-    --code-lang-text: rgba(255, 255, 255, 0.4);
+    --article-link-color: #98b0dd;
+    --article-link-hover: #b8caea;
+    --code-lang-text: rgba(232, 238, 252, 0.55);
+    --code-copy-bg: hsl(216 15% 25% / 0.92);
+    --code-copy-bg-hover: hsl(216 16% 30% / 0.96);
+    --code-copy-border: hsl(216 16% 42% / 0.92);
+    --code-copy-fg: hsl(216 21% 88%);
+    --interactive-hover-bg: hsl(216 13% 30% / 0.62);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.35);
   }
 }
 
@@ -59,7 +75,10 @@
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; -webkit-tap-highlight-color: transparent; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  background: var(--color-background);
+}
 
 body {
   color: var(--color-text);
@@ -68,6 +87,20 @@ body {
   min-height: 100vh;
 
   @media (max-width: 768px) { font-size: 1rem; }
+}
+
+::view-transition {
+  background: var(--color-background);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 ul { margin-bottom: 1.5rem; }

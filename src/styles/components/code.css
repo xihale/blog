@@ -4,7 +4,10 @@
 :not(pre) code {
   color: var(--color-accent);
   font: 0.85em var(--font-mono);
-  padding: 0 2px;
+  padding: 0 0.3em;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
   word-break: break-all;
   white-space: pre-wrap;
 }
@@ -23,9 +26,30 @@
   }
 
   /* Hide copy button by default, show on interaction */
-  & .copy button { opacity: 0 !important; transition: opacity 0.2s; }
-  & .frame:is(:focus-within, :hover, :active) .copy button { opacity: 0.75 !important; }
-  & .copy :is(button:hover, button:focus, button:active, .feedback.show ~ button) { opacity: 1 !important; }
+  & .copy button {
+    opacity: 0 !important;
+    transition: opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s;
+    color: var(--code-copy-fg) !important;
+    background: var(--code-copy-bg) !important;
+    border: 1px solid var(--code-copy-border) !important;
+    box-shadow: none !important;
+  }
+
+  & .frame:is(:focus-within, :hover, :active) .copy button { opacity: 0.85 !important; }
+
+  & .frame:is(:focus-within, :hover, :active) pre[data-language]::before { opacity: 0; }
+
+  & .copy :is(button:hover, button:focus-visible, button:active, .feedback.show ~ button) {
+    opacity: 1 !important;
+    color: var(--code-copy-fg) !important;
+    background: var(--code-copy-bg-hover) !important;
+    border-color: var(--code-copy-border) !important;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    & .copy button { opacity: 0.92 !important; }
+    & pre[data-language]::before { opacity: 0; }
+  }
 
   @media (max-width: 768px) {
     margin-inline: -1rem;

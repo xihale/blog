@@ -1,9 +1,25 @@
 ---
 import { SITE_TITLE } from "../consts";
 import "../styles/components/header.css";
+
+const currentPath = Astro.url.pathname;
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/blog", label: "Blog" },
+  { href: "/links", label: "Links" },
+  { href: "/about", label: "About" },
+];
+
+const isCurrent = (href: string) => {
+  if (href === "/") {
+    return currentPath === "/";
+  }
+
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+};
 ---
 
-<header class="bg-background border-b border-block shadow-sm">
+<header class="site-header bg-background border-b border-block shadow-sm">
   <div class="header-container">
     <!-- Logo/Title -->
     <nav class="site-title">
@@ -14,10 +30,13 @@ import "../styles/components/header.css";
 
     <!-- Desktop Navigation Menu -->
     <nav class="nav-menu-desktop">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/blog" class="nav-link">Blog</a>
-      <a href="/links" class="nav-link">Links</a>
-      <a href="/about" class="nav-link">About</a>
+      {
+        navItems.map(({ href, label }) => (
+          <a href={href} class={`nav-link ${isCurrent(href) ? "nav-link-active" : ""}`} aria-current={isCurrent(href) ? "page" : undefined}>
+            {label}
+          </a>
+        ))
+      }
     </nav>
 
     <!-- Mobile menu button -->
@@ -36,10 +55,13 @@ import "../styles/components/header.css";
   <!-- Mobile Navigation Menu -->
   <nav class="nav-menu-mobile" id="nav-menu">
     <div class="nav-menu-container">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/blog" class="nav-link">Blog</a>
-      <a href="/links" class="nav-link">Links</a>
-      <a href="/about" class="nav-link">About</a>
+      {
+        navItems.map(({ href, label }) => (
+          <a href={href} class={`nav-link ${isCurrent(href) ? "nav-link-active" : ""}`} aria-current={isCurrent(href) ? "page" : undefined}>
+            {label}
+          </a>
+        ))
+      }
     </div>
   </nav>
 </header>

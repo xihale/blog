@@ -1,11 +1,14 @@
-/* Admonitions - using CSS variables for theming */
 .admonition {
-  --adm-bg: var(--color-surface);
+  --adm-bg: var(--color-surface-elevated);
   --adm-color: var(--color-text);
+  --adm-border: var(--color-border);
 
   margin: var(--space-4) 0;
   padding: var(--space-3) var(--space-4);
   background: var(--adm-bg);
+  border: 1px solid var(--adm-border);
+  border-left-width: 3px;
+  border-radius: 6px;
 
   &::before {
     content: attr(data-title);
@@ -21,43 +24,103 @@
 
 .admonition-error,
 .admonition-danger {
-  --adm-bg: light-dark(rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
-  --adm-color: light-dark(#a02530, #f1aeb5);
+  --adm-bg: hsl(355 100% 97%);
+  --adm-color: hsl(356 72% 35%);
+  --adm-border: hsl(355 69% 74% / 0.9);
 }
 
 .admonition-warning {
-  --adm-bg: light-dark(rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.2));
-  --adm-color: light-dark(#664d03, #ffec99);
+  --adm-bg: hsl(45 100% 96%);
+  --adm-color: hsl(38 84% 29%);
+  --adm-border: hsl(45 89% 68% / 0.9);
 }
 
 .admonition-info {
-  --adm-bg: light-dark(rgba(23, 162, 184, 0.1), rgba(23, 162, 184, 0.2));
-  --adm-color: light-dark(#055160, #99d9ea);
+  --adm-bg: hsl(191 100% 96%);
+  --adm-color: hsl(194 78% 28%);
+  --adm-border: hsl(193 72% 67% / 0.9);
 }
 
 .admonition-note {
-  --adm-bg: light-dark(rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
-  --adm-color: light-dark(#084298, #9ec5fe);
+  --adm-bg: hsl(215 100% 97%);
+  --adm-color: hsl(216 73% 33%);
+  --adm-border: hsl(216 83% 72% / 0.9);
 }
 
 .admonition-tip,
 .admonition-success {
-  --adm-bg: light-dark(rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.2));
-  --adm-color: light-dark(#0f5132, #a3cfbb);
+  --adm-bg: hsl(138 50% 96%);
+  --adm-color: hsl(145 62% 26%);
+  --adm-border: hsl(145 45% 65% / 0.9);
 }
 
 .admonition-question {
-  --adm-bg: light-dark(rgba(111, 66, 193, 0.1), rgba(111, 66, 193, 0.2));
-  --adm-color: light-dark(#361975, #d0bfff);
+  --adm-bg: hsl(266 100% 97%);
+  --adm-color: hsl(265 56% 32%);
+  --adm-border: hsl(264 63% 75% / 0.9);
 }
 
 .admonition-quote {
-  --adm-bg: light-dark(rgba(108, 117, 125, 0.1), rgba(108, 117, 125, 0.2));
-  --adm-color: light-dark(#41464b, #ced4da);
+  --adm-bg: hsl(220 14% 95%);
+  --adm-color: hsl(220 11% 33%);
+  --adm-border: hsl(220 10% 74% / 0.9);
   font-style: italic;
 }
 
 .admonition-future {
-  --adm-bg: light-dark(rgba(253, 126, 20, 0.1), rgba(253, 126, 20, 0.2));
-  --adm-color: light-dark(#663d00, #ffd8a8);
+  --adm-bg: hsl(31 100% 96%);
+  --adm-color: hsl(31 79% 31%);
+  --adm-border: hsl(31 89% 70% / 0.9);
+}
+
+@media (prefers-color-scheme: dark) {
+  .admonition-error,
+  .admonition-danger {
+    --adm-bg: hsl(353 39% 21% / 0.75);
+    --adm-color: hsl(350 63% 82%);
+    --adm-border: hsl(352 51% 47% / 0.75);
+  }
+
+  .admonition-warning {
+    --adm-bg: hsl(42 55% 20% / 0.7);
+    --adm-color: hsl(47 87% 80%);
+    --adm-border: hsl(42 57% 45% / 0.8);
+  }
+
+  .admonition-info {
+    --adm-bg: hsl(194 42% 20% / 0.72);
+    --adm-color: hsl(192 64% 81%);
+    --adm-border: hsl(193 45% 46% / 0.8);
+  }
+
+  .admonition-note {
+    --adm-bg: hsl(218 45% 20% / 0.72);
+    --adm-color: hsl(217 81% 84%);
+    --adm-border: hsl(217 57% 48% / 0.82);
+  }
+
+  .admonition-tip,
+  .admonition-success {
+    --adm-bg: hsl(145 39% 19% / 0.72);
+    --adm-color: hsl(145 58% 81%);
+    --adm-border: hsl(146 39% 44% / 0.82);
+  }
+
+  .admonition-question {
+    --adm-bg: hsl(266 40% 21% / 0.72);
+    --adm-color: hsl(266 69% 84%);
+    --adm-border: hsl(267 46% 49% / 0.8);
+  }
+
+  .admonition-quote {
+    --adm-bg: hsl(220 9% 20% / 0.74);
+    --adm-color: hsl(220 11% 79%);
+    --adm-border: hsl(220 10% 42% / 0.82);
+  }
+
+  .admonition-future {
+    --adm-bg: hsl(29 50% 20% / 0.72);
+    --adm-color: hsl(31 90% 82%);
+    --adm-border: hsl(30 60% 48% / 0.82);
+  }
 }

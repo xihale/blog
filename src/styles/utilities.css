@@ -37,7 +37,7 @@
 .border-t { border-top: 1px solid; }
 .border-b { border-bottom: 1px solid; }
 .border-block { border-color: var(--color-border); }
-.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
 
 /* Custom layouts */
 .hero-section { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
@@ -60,8 +60,9 @@
 
 /* Navigation */
 .nav-link {
-  color: var(--color-text);
-  &:hover { color: var(--article-link-color); }
+  color: var(--color-nav-link);
+  transition: color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover, &:focus-visible { color: var(--color-nav-link-hover); }
 }
 
 /* Article links */

@@ -37,7 +37,7 @@ const pageTitle = title
 	<head>
 		<BaseHead title={pageTitle} description={description} robots={robots} />
 		<link rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous" />
-		<ClientRouter />
+		<ClientRouter fallback="swap" />
 	</head>
 	<body class="site-layout">
 		<Header />
