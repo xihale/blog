@@ -8,9 +8,15 @@ interface Props {
 	title?: string;
 	description?: string;
 	robots?: string;
+	contentWidth?: "default" | "wide";
 }
 
-const { title: frontmatterTitle, description = SITE_DESCRIPTION, robots } = Astro.props;
+const {
+	title: frontmatterTitle,
+	description = SITE_DESCRIPTION,
+	robots,
+	contentWidth = "default",
+} = Astro.props;
 
 // For markdown files, try to get title from frontmatter or use pathname-based title
 let title = frontmatterTitle;
@@ -30,18 +36,25 @@ const pageTitle = title
 		? SITE_TITLE
 		: `${title} | ${SITE_TITLE}`
 	: SITE_TITLE;
+
+const baseHeadProps = robots
+	? { title: pageTitle, description, robots }
+	: { title: pageTitle, description };
+
+const siteContentClass =
+	contentWidth === "wide" ? "site-content site-content-wide" : "site-content";
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+	<html lang="zh-CN">
 	<head>
-		<BaseHead title={pageTitle} description={description} robots={robots} />
+		<BaseHead {...baseHeadProps} />
 		<link rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous" />
 		<ClientRouter fallback="swap" />
 	</head>
 	<body class="site-layout">
 		<Header />
-		<div class="site-content">
+		<div class={siteContentClass}>
 			<div class="px-2">
 				<main class="site-main">
 					<slot />

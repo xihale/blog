@@ -12,12 +12,78 @@ h4 { font-size: 1.625rem; }
 h5 { font-size: 1.25rem; }
 h6 { font-size: 1.125rem; }
 
+.blog-post-layout {
+  --article-column-max-width: 70ch;
+  --article-shell-max-width: 88rem;
+  --toc-rail-width: 10.75rem;
+  --toc-rail-gap: clamp(1rem, 1.4vw, 1.75rem);
+}
+
+.article-shell {
+  width: 100%;
+  max-width: var(--article-shell-max-width);
+  margin-inline: auto;
+}
+
+.article-main {
+  width: min(100%, var(--article-column-max-width));
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.article-toc-wrap {
+  min-width: 0;
+}
+
+@media (min-width: 1360px) {
+  .article-shell.has-toc {
+    display: grid;
+    grid-template-columns:
+      minmax(0, var(--toc-rail-width))
+      minmax(0, var(--article-column-max-width))
+      minmax(0, var(--toc-rail-width));
+    column-gap: var(--toc-rail-gap);
+    justify-content: center;
+    align-items: start;
+  }
+
+  .article-main {
+    grid-column: 2;
+    max-width: 100%;
+  }
+
+  .article-toc-wrap {
+    grid-column: 1;
+    position: sticky;
+    top: 8.75rem;
+    align-self: start;
+  }
+}
+
 .article-content {
   flex: 1;
   min-width: 0;
 
-  & > *:first-child { margin-top: 0 !important; }
-  & a { word-break: break-all; overflow-wrap: break-word; }
+  & > *:first-child { margin-top: 0; }
+  & a {
+    word-break: normal;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+  }
+
+  & a:hover,
+  & a:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.12em;
+    text-decoration-color: var(--color-header-divider);
+  }
+
+  & .link-card,
+  & .link-card:hover,
+  & .link-card:focus-visible {
+    text-decoration: none;
+  }
 
   & :is(h2, h3, h4, h5, h6)::before {
     color: var(--color-text-secondary);
@@ -37,6 +103,109 @@ h6 { font-size: 1.125rem; }
     & h3 { font-size: 1.5rem; }
     & h4 { font-size: 1.25rem; }
     & :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 5rem; }
+  }
+}
+
+.article-content.body-text {
+  color: var(--color-text);
+  line-height: 1.84;
+  font-size: 1.05rem;
+
+  & > * + * { margin-top: var(--space-4); }
+
+  & :is(p, li) {
+    text-wrap: pretty;
+  }
+
+  & :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--color-text);
+    line-height: 1.28;
+    letter-spacing: -0.012em;
+    margin-bottom: var(--space-3);
+  }
+
+  & h2 {
+    font-size: clamp(1.9rem, 1.6rem + 1vw, 2.2rem);
+  }
+
+  & h3 {
+    font-size: clamp(1.55rem, 1.35rem + 0.7vw, 1.8rem);
+  }
+
+  & h4 {
+    font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.45rem);
+  }
+
+  & h5 { font-size: 1.1rem; }
+  & h6 { font-size: 1rem; }
+
+  & :is(h2, h3, h4, h5, h6)::before {
+    opacity: 0.22;
+  }
+
+  & :is(h2, h3, h4, h5, h6) {
+    margin-top: var(--space-8);
+  }
+
+  & :is(h3, h4, h5, h6) {
+    margin-top: var(--space-6);
+  }
+
+  & p {
+    margin-bottom: 0;
+    color: var(--color-text);
+  }
+
+  & :is(ul, ol) {
+    margin-bottom: 0;
+    padding-left: 1.35em;
+  }
+
+  & li + li {
+    margin-top: 0.45em;
+  }
+
+  & li :is(ul, ol) {
+    margin-top: 0.45em;
+  }
+
+  & :is(pre, .expressive-code, .admonition, table, blockquote) {
+    margin-block: var(--space-6);
+  }
+
+  & .admonition {
+    margin-block: var(--space-4);
+  }
+
+  & blockquote {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    border-left: 2px solid var(--color-header-divider);
+    background: var(--color-surface);
+    border-radius: 2px;
+    color: var(--color-text-secondary);
+  }
+
+  & blockquote::before,
+  & blockquote::after {
+    content: none;
+  }
+
+  & img {
+    margin: var(--space-8) auto;
+  }
+
+  & hr {
+    margin: var(--space-8) 0;
+  }
+
+  @media (max-width: 768px) {
+    line-height: 1.76;
+    font-size: 1rem;
+
+    & :is(h2, h3, h4, h5, h6) {
+      margin-top: var(--space-6);
+    }
   }
 }
 
@@ -152,7 +321,11 @@ blockquote {
 }
 
 /* Article Header */
-.article-header { text-align: center; margin-bottom: 3rem; }
+.article-header {
+  max-width: min(100%, var(--article-column-max-width, var(--max-width)));
+  margin: 0 auto var(--space-8);
+  text-align: center;
+}
 
 .article-meta-container {
   display: flex;

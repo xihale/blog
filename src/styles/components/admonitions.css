@@ -1,126 +1,103 @@
 .admonition {
-  --adm-bg: var(--color-surface-elevated);
-  --adm-color: var(--color-text);
-  --adm-border: var(--color-border);
+  --adm-accent: var(--color-text-muted);
+  --adm-text: var(--color-text-secondary);
 
   margin: var(--space-4) 0;
-  padding: var(--space-3) var(--space-4);
-  background: var(--adm-bg);
-  border: 1px solid var(--adm-border);
-  border-left-width: 3px;
-  border-radius: 6px;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 0;
+  border-left: 1.5px solid var(--adm-accent);
+  border-radius: 0;
+  color: var(--adm-text);
+  line-height: 1.72;
 
-  &::before {
-    content: attr(data-title);
-    display: block;
-    font-weight: 600;
-    margin-bottom: var(--space-2);
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-    color: var(--adm-color);
-  }
+  & > * + * { margin-top: var(--space-2); }
+  & > :last-child { margin-bottom: 0; }
+}
+
+.admonition[data-title]:not([data-title=""])::before {
+  content: attr(data-title);
+  display: block;
+  margin-bottom: 0.35rem;
+  font: 500 0.74rem/1.25 var(--font-mono);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--adm-accent);
+}
+
+.admonition :is(p, li) {
+  color: inherit;
+}
+
+.admonition a {
+  color: var(--article-link-color);
+}
+
+.admonition-note,
+.admonition-info {
+  --adm-accent: hsl(214 26% 52%);
+}
+
+.admonition-warning {
+  --adm-accent: hsl(38 32% 47%);
 }
 
 .admonition-error,
 .admonition-danger {
-  --adm-bg: hsl(355 100% 97%);
-  --adm-color: hsl(356 72% 35%);
-  --adm-border: hsl(355 69% 74% / 0.9);
-}
-
-.admonition-warning {
-  --adm-bg: hsl(45 100% 96%);
-  --adm-color: hsl(38 84% 29%);
-  --adm-border: hsl(45 89% 68% / 0.9);
-}
-
-.admonition-info {
-  --adm-bg: hsl(191 100% 96%);
-  --adm-color: hsl(194 78% 28%);
-  --adm-border: hsl(193 72% 67% / 0.9);
-}
-
-.admonition-note {
-  --adm-bg: hsl(215 100% 97%);
-  --adm-color: hsl(216 73% 33%);
-  --adm-border: hsl(216 83% 72% / 0.9);
+  --adm-accent: hsl(355 35% 50%);
 }
 
 .admonition-tip,
 .admonition-success {
-  --adm-bg: hsl(138 50% 96%);
-  --adm-color: hsl(145 62% 26%);
-  --adm-border: hsl(145 45% 65% / 0.9);
+  --adm-accent: hsl(150 30% 45%);
 }
 
 .admonition-question {
-  --adm-bg: hsl(266 100% 97%);
-  --adm-color: hsl(265 56% 32%);
-  --adm-border: hsl(264 63% 75% / 0.9);
+  --adm-accent: hsl(266 28% 50%);
 }
 
 .admonition-quote {
-  --adm-bg: hsl(220 14% 95%);
-  --adm-color: hsl(220 11% 33%);
-  --adm-border: hsl(220 10% 74% / 0.9);
-  font-style: italic;
+  --adm-accent: hsl(220 9% 52%);
 }
 
 .admonition-future {
-  --adm-bg: hsl(31 100% 96%);
-  --adm-color: hsl(31 79% 31%);
-  --adm-border: hsl(31 89% 70% / 0.9);
+  --adm-accent: hsl(27 35% 49%);
 }
 
 @media (prefers-color-scheme: dark) {
-  .admonition-error,
-  .admonition-danger {
-    --adm-bg: hsl(353 39% 21% / 0.75);
-    --adm-color: hsl(350 63% 82%);
-    --adm-border: hsl(352 51% 47% / 0.75);
+  .admonition {
+    background: transparent;
+    color: var(--adm-text);
+  }
+
+  .admonition-note,
+  .admonition-info {
+    --adm-accent: hsl(214 22% 68%);
   }
 
   .admonition-warning {
-    --adm-bg: hsl(42 55% 20% / 0.7);
-    --adm-color: hsl(47 87% 80%);
-    --adm-border: hsl(42 57% 45% / 0.8);
+    --adm-accent: hsl(40 42% 67%);
   }
 
-  .admonition-info {
-    --adm-bg: hsl(194 42% 20% / 0.72);
-    --adm-color: hsl(192 64% 81%);
-    --adm-border: hsl(193 45% 46% / 0.8);
-  }
-
-  .admonition-note {
-    --adm-bg: hsl(218 45% 20% / 0.72);
-    --adm-color: hsl(217 81% 84%);
-    --adm-border: hsl(217 57% 48% / 0.82);
+  .admonition-error,
+  .admonition-danger {
+    --adm-accent: hsl(355 45% 70%);
   }
 
   .admonition-tip,
   .admonition-success {
-    --adm-bg: hsl(145 39% 19% / 0.72);
-    --adm-color: hsl(145 58% 81%);
-    --adm-border: hsl(146 39% 44% / 0.82);
+    --adm-accent: hsl(150 34% 66%);
   }
 
   .admonition-question {
-    --adm-bg: hsl(266 40% 21% / 0.72);
-    --adm-color: hsl(266 69% 84%);
-    --adm-border: hsl(267 46% 49% / 0.8);
+    --adm-accent: hsl(266 39% 68%);
   }
 
   .admonition-quote {
-    --adm-bg: hsl(220 9% 20% / 0.74);
-    --adm-color: hsl(220 11% 79%);
-    --adm-border: hsl(220 10% 42% / 0.82);
+    --adm-accent: hsl(220 9% 63%);
   }
 
   .admonition-future {
-    --adm-bg: hsl(29 50% 20% / 0.72);
-    --adm-color: hsl(31 90% 82%);
-    --adm-border: hsl(30 60% 48% / 0.82);
+    --adm-accent: hsl(31 45% 68%);
   }
 }

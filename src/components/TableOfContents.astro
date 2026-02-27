@@ -17,93 +17,17 @@ import "../styles/components/toc.css";
 
 {
   tocItems.length >= 2 && (
-    <div class="toc" id="toc">
-      {tocItems.map(({ depth, slug, text }) => (
-        <div class={`toc-item toc-level-${depth}`}>
-          <a href={`#${slug}`} class="toc-link" data-toc-id={slug}>
-            {text}
-          </a>
-        </div>
-      ))}
-    </div>
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">目录</p>
+      <div class="toc-list">
+        {tocItems.map(({ depth, slug, text }) => (
+          <div class={`toc-item toc-level-${depth}`}>
+            <a href={`#${slug}`} class="toc-link" title={text}>
+              {text}
+            </a>
+          </div>
+        ))}
+      </div>
+    </nav>
   )
 }
-
-<script>
-  function initTableOfContents() {
-    const toc = document.getElementById("toc");
-    if (!toc) return;
-
-    const links = Array.from(toc.querySelectorAll(".toc-link"));
-    if (links.length === 0) return;
-
-    // Use a Map for O(1) lookup
-    const linkMap = new Map();
-    links.forEach((link) => {
-      const id = link.getAttribute("data-toc-id");
-      if (id) linkMap.set(id, link);
-    });
-
-    const headings = Array.from(
-      document.querySelectorAll(
-        ".article-content h2, .article-content h3, .article-content h4",
-      ),
-    );
-
-    if (headings.length === 0) return;
-
-    // Intersection Observer setup
-    const observerOptions = {
-      root: null,
-      // Highlight when heading crosses the top area (top 100px to 40% of viewport)
-      // Adjust rootMargin to create a "sensing zone" near the top
-      rootMargin: "-100px 0px -60% 0px",
-      threshold: 0, // Trigger as soon as any part enters the zone
-    };
-
-    let activeLink: HTMLElement | null = null;
-
-    const headingObserver = new IntersectionObserver((entries) => {
-      // Process entries to find the latest intersection
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const headingId = entry.target.id;
-          const link = linkMap.get(headingId);
-
-          if (link && link !== activeLink) {
-            // Remove active class from previous
-            if (activeLink) activeLink.classList.remove("active");
-
-            // Add to new
-            link.classList.add("active");
-            activeLink = link;
-
-            // Scroll TOC to keep active link in view
-            // We throttle this slightly or just checking offset
-            const tocRect = toc.getBoundingClientRect();
-            const linkRect = link.getBoundingClientRect();
-
-            // Calculate relative position within TOC container
-            // We want the link to be around 30% from top of TOC view, if possible
-            const relativeTop = linkRect.top - tocRect.top;
-            const targetTop = tocRect.height * 0.3;
-
-            // Only scroll if it's far from target position to avoid jitter
-            if (Math.abs(relativeTop - targetTop) > 60) {
-              toc.scrollTo({
-                top: toc.scrollTop + relativeTop - targetTop,
-                behavior: "smooth",
-              });
-            }
-          }
-        }
-      });
-    }, observerOptions);
-
-    headings.forEach((heading) => {
-      headingObserver.observe(heading);
-    });
-  }
-
-  document.addEventListener("astro:page-load", initTableOfContents);
-</script>

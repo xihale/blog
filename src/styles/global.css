@@ -137,6 +137,10 @@ a {
   flex-grow: 1;
 }
 
+.site-content.site-content-wide {
+  max-width: min(96rem, calc(100vw - 2rem));
+}
+
 .site-main { flex-grow: 1; padding-bottom: 2rem; }
 .site-footer { display: flex; align-items: baseline; justify-content: space-between; font-size: 0.875rem; }
 

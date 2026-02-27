@@ -1,0 +1,38 @@
+---
+import type { LinkItem } from "../data/links";
+import "../styles/components/link-cards.css";
+
+interface Props extends LinkItem {}
+
+const { name, url, avatar, description } = Astro.props;
+
+let host = url;
+try {
+  host = new URL(url).hostname.replace(/^www\./, "");
+} catch {
+  host = url;
+}
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="link-card"
+>
+  {
+    avatar && (
+      <div class="link-card-avatar-wrap">
+        <img src={avatar} alt={name} class="link-card-avatar" loading="lazy" />
+      </div>
+    )
+  }
+
+  <div class="link-card-body">
+    <div class="link-card-title-row">
+      <span class="link-card-name">{name}</span>
+      <span class="link-card-host">{host}</span>
+    </div>
+    <p class="link-card-description">{description}</p>
+  </div>
+</a>

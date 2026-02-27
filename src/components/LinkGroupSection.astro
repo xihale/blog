@@ -1,0 +1,21 @@
+---
+import LinkCard from "./LinkCard.astro";
+import type { LinkGroup } from "../data/links";
+
+interface Props {
+  group: LinkGroup;
+}
+
+const { group } = Astro.props;
+---
+
+<section class="link-group section-spacing">
+  <header class="content-spacing">
+    <h2>{group.title}</h2>
+    {group.description && <p class="meta-text">{group.description}</p>}
+  </header>
+
+  <div class="link-grid">
+    {group.links.map((item) => <LinkCard {...item} />)}
+  </div>
+</section>

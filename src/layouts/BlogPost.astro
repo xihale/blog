@@ -21,49 +21,64 @@ const {
 } = Astro.props;
 
 const robots = unlisted ? "noindex" : undefined;
+
+const baseLayoutProps = robots
+  ? { title, description, robots }
+  : { title, description };
+
+const hasToc = headings.filter((h) => h.depth >= 2 && h.depth <= 4).length >= 2;
+const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
 ---
 
-<BaseLayout title={title} description={description} robots={robots}>
+<BaseLayout {...baseLayoutProps} contentWidth="wide">
   <div class="min-h-screen">
-    <article class="container-center responsive-padding">
-      <!-- Article Header -->
-      <header class="article-header">
-        <h1>
-          {title}
-        </h1>
-
-        <div class="article-meta-container">
-          <time datetime={formatDateISO(pubDate)} class="font-mono">
-            {formatDate(pubDate)}
-          </time>
-
-          {
-            updatedDate && (
-              <time datetime={formatDateISO(updatedDate)} class="font-mono">
-                | {formatDate(updatedDate)}
-              </time>
-            )
-          }
-        </div>
-
+    <article class="container-center responsive-padding blog-post-layout">
+      <div class={articleShellClass}>
         {
-          tags && tags.length > 0 && (
-            <div class="tag-container">
-              {tags.map((tag: string) => (
-                <span class="tag">#{tag}</span>
-              ))}
-            </div>
+          hasToc && (
+            <aside class="article-toc-wrap">
+              <TableOfContents headings={headings} />
+            </aside>
           )
         }
-      </header>
 
-      <!-- Table of Contents outside container -->
-      <TableOfContents headings={headings} />
+        <div class="article-main">
+          <!-- Article Header -->
+          <header class="article-header">
+            <h1>
+              {title}
+            </h1>
 
-      <!-- Article Content -->
-      <main class="article-content section-spacing body-text">
-        <slot />
-      </main>
+            <div class="article-meta-container">
+              <time datetime={formatDateISO(pubDate)} class="font-mono">
+                {formatDate(pubDate)}
+              </time>
+
+              {
+                updatedDate && (
+                  <time datetime={formatDateISO(updatedDate)} class="font-mono">
+                    | {formatDate(updatedDate)}
+                  </time>
+                )
+              }
+            </div>
+
+            {
+              tags && tags.length > 0 && (
+                <div class="tag-container">
+                  {tags.map((tag: string) => (
+                    <span class="tag">#{tag}</span>
+                  ))}
+                </div>
+              )
+            }
+          </header>
+
+          <main class="article-content section-spacing body-text">
+            <slot />
+          </main>
+        </div>
+      </div>
     </article>
   </div>
 </BaseLayout>

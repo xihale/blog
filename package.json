@@ -12,11 +12,11 @@
     "lint": "autocorrect --strict --fix"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.10",
-    "@astrojs/rss": "^4.0.13",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/mdx": "4.3.13",
+    "@astrojs/rss": "4.0.15",
+    "@astrojs/sitemap": "3.7.0",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
-    "astro": "^5.16.6",
+    "astro": "5.18.0",
     "astro-expressive-code": "^0.41.3",
     "hastscript": "^9.0.1",
     "rehype-katex": "^7.0.1",
@@ -25,7 +25,7 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.5",
+    "@astrojs/check": "0.9.6",
     "autocorrect": "^1.2.0",
     "autocorrect-node": "^2.14.0"
   }
