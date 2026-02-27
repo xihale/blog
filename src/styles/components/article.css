@@ -54,9 +54,9 @@ h6 { font-size: 1.125rem; }
 
   .article-toc-wrap {
     grid-column: 1;
+    align-self: start;
     position: sticky;
     top: 8.75rem;
-    align-self: start;
   }
 }
 

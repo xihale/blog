@@ -26,7 +26,8 @@ const baseLayoutProps = robots
   ? { title, description, robots }
   : { title, description };
 
-const hasToc = headings.filter((h) => h.depth >= 2 && h.depth <= 4).length >= 2;
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
+const hasToc = tocHeadings.length >= 2;
 const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
 ---
 
@@ -37,7 +38,7 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
         {
           hasToc && (
             <aside class="article-toc-wrap">
-              <TableOfContents headings={headings} />
+              <TableOfContents headings={tocHeadings} />
             </aside>
           )
         }

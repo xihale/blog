@@ -1,33 +1,525 @@
 ---
-interface Props {
-  headings: Array<{
-    depth: number;
-    slug: string;
-    text: string;
-  }>;
+interface HeadingItem {
+  depth: number;
+  slug: string;
+  text: string;
 }
 
-const { headings } = Astro.props;
+interface Props {
+  headings: HeadingItem[];
+}
 
-// Filter for h2-h4 and ensure minimum count
-const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
+type TocNode = {
+  id: string;
+  text: string;
+  depth: number;
+  parentId: string | null;
+  children: TocNode[];
+};
+
+const { headings } = Astro.props as Props;
+const tocItems = headings;
+const tocCount = tocItems.length;
+
+const h2Nodes: TocNode[] = [];
+let currentH2: TocNode | null = null;
+let currentH3: TocNode | null = null;
+
+for (const item of tocItems) {
+  if (item.depth === 2) {
+    const node: TocNode = {
+      id: item.slug,
+      text: item.text,
+      depth: item.depth,
+      parentId: null,
+      children: [],
+    };
+
+    h2Nodes.push(node);
+    currentH2 = node;
+    currentH3 = null;
+    continue;
+  }
+
+  if (item.depth === 3) {
+    if (!currentH2) {
+      const fallbackH2: TocNode = {
+        id: item.slug,
+        text: item.text,
+        depth: 2,
+        parentId: null,
+        children: [],
+      };
+
+      h2Nodes.push(fallbackH2);
+      currentH2 = fallbackH2;
+      currentH3 = null;
+      continue;
+    }
+
+    const node: TocNode = {
+      id: item.slug,
+      text: item.text,
+      depth: item.depth,
+      parentId: currentH2.id,
+      children: [],
+    };
+
+    currentH2.children.push(node);
+    currentH3 = node;
+    continue;
+  }
+
+  if (item.depth === 4) {
+    if (currentH3) {
+      currentH3.children.push({
+        id: item.slug,
+        text: item.text,
+        depth: item.depth,
+        parentId: currentH3.id,
+        children: [],
+      });
+      continue;
+    }
+
+    if (currentH2) {
+      currentH2.children.push({
+        id: item.slug,
+        text: item.text,
+        depth: item.depth,
+        parentId: currentH2.id,
+        children: [],
+      });
+    }
+  }
+}
+
+const tocTree = h2Nodes.length > 0
+  ? h2Nodes
+  : tocItems.map((item) => ({
+      id: item.slug,
+      text: item.text,
+      depth: item.depth,
+      parentId: null,
+      children: [],
+    }));
 
 import "../styles/components/toc.css";
 ---
 
 {
-  tocItems.length >= 2 && (
-    <nav class="toc" aria-label="Table of contents">
-      <p class="toc-title">目录</p>
-      <div class="toc-list">
-        {tocItems.map(({ depth, slug, text }) => (
-          <div class={`toc-item toc-level-${depth}`}>
-            <a href={`#${slug}`} class="toc-link" title={text}>
-              {text}
-            </a>
-          </div>
+  tocCount >= 2 && (
+    <nav class="toc" data-toc aria-label="Table of contents">
+      <ol class="toc-list" data-toc-list>
+        {tocTree.map((h2) => (
+          <li
+            class={`toc-node toc-depth-${h2.depth}`}
+            data-toc-node
+            data-node-id={h2.id}
+            data-parent-id=""
+            data-has-children={h2.children.length > 0 ? "true" : "false"}
+            data-open={h2.children.length > 0 ? "false" : "true"}
+          >
+            <div class="toc-row">
+              {
+                h2.children.length > 0 && (
+                  <button
+                    class="toc-toggle"
+                    data-toc-toggle
+                    data-target-id={h2.id}
+                    aria-controls={`toc-panel-${h2.id}`}
+                    aria-expanded="false"
+                    aria-label={`展开 ${h2.text}`}
+                    type="button"
+                  ></button>
+                )
+              }
+
+              {
+                h2.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
+              }
+
+              <a
+                href={`#${h2.id}`}
+                class="toc-link toc-link-h2"
+                data-toc-link
+                data-toc-id={h2.id}
+                title={h2.text}
+              >
+                {h2.text}
+              </a>
+            </div>
+
+            {
+              h2.children.length > 0 && (
+                <div class="toc-panel" id={`toc-panel-${h2.id}`} data-toc-panel>
+                  <div class="toc-panel-inner">
+                    <ol class="toc-sublist">
+                      {h2.children.map((h3) => (
+                        <li
+                          class={`toc-node toc-depth-${h3.depth}`}
+                          data-toc-node
+                          data-node-id={h3.id}
+                          data-parent-id={h3.parentId ?? ""}
+                          data-has-children={h3.children.length > 0 ? "true" : "false"}
+                          data-open={h3.children.length > 0 ? "false" : "true"}
+                        >
+                          <div class="toc-row">
+                            {
+                              h3.children.length > 0 && (
+                                <button
+                                  class="toc-toggle"
+                                  data-toc-toggle
+                                  data-target-id={h3.id}
+                                  aria-controls={`toc-panel-${h3.id}`}
+                                  aria-expanded="false"
+                                  aria-label={`展开 ${h3.text}`}
+                                  type="button"
+                                ></button>
+                              )
+                            }
+
+                            {
+                              h3.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                            }
+
+                            <a
+                              href={`#${h3.id}`}
+                              class="toc-link"
+                              data-toc-link
+                              data-toc-id={h3.id}
+                              title={h3.text}
+                            >
+                              {h3.text}
+                            </a>
+                          </div>
+
+                          {
+                            h3.children.length > 0 && (
+                              <div class="toc-panel" id={`toc-panel-${h3.id}`} data-toc-panel>
+                                <div class="toc-panel-inner">
+                                  <ol class="toc-sublist toc-sublist-leaf">
+                                    {h3.children.map((h4) => (
+                                      <li
+                                        class={`toc-node toc-depth-${h4.depth}`}
+                                        data-toc-node
+                                        data-node-id={h4.id}
+                                        data-parent-id={h4.parentId ?? ""}
+                                        data-has-children="false"
+                                        data-open="true"
+                                      >
+                                        <div class="toc-row">
+                                          <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                                          <a
+                                            href={`#${h4.id}`}
+                                            class="toc-link"
+                                            data-toc-link
+                                            data-toc-id={h4.id}
+                                            title={h4.text}
+                                          >
+                                            {h4.text}
+                                          </a>
+                                        </div>
+                                      </li>
+                                    ))}
+                                  </ol>
+                                </div>
+                              </div>
+                            )
+                          }
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+              )
+            }
+          </li>
         ))}
-      </div>
+      </ol>
     </nav>
   )
 }
+
+<script>
+  type TocEntry = {
+    id: string;
+    link: HTMLAnchorElement;
+    heading: HTMLElement;
+  };
+
+  type TocWindow = Window & {
+    __tocCleanup?: () => void;
+    __tocBound?: boolean;
+  };
+
+  const tocWindow = window as TocWindow;
+
+  const initTableOfContents = () => {
+    const toc = document.querySelector<HTMLElement>("[data-toc]");
+    if (!(toc instanceof HTMLElement)) return;
+
+    if (typeof tocWindow.__tocCleanup === "function") {
+      tocWindow.__tocCleanup();
+      delete tocWindow.__tocCleanup;
+    }
+
+    const list = toc.querySelector<HTMLElement>("[data-toc-list]");
+    const nodeElements = Array.from(toc.querySelectorAll<HTMLElement>("[data-toc-node]"));
+    const toggleButtons = Array.from(toc.querySelectorAll<HTMLButtonElement>("[data-toc-toggle]"));
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
+
+    if (!(list instanceof HTMLElement) || nodeElements.length === 0 || links.length === 0) {
+      return;
+    }
+
+    const nodeById = new Map<string, HTMLElement>();
+    nodeElements.forEach((node) => {
+      const id = node.getAttribute("data-node-id");
+      if (id) {
+        nodeById.set(id, node);
+      }
+    });
+
+    const hasChildren = (node: HTMLElement) => node.getAttribute("data-has-children") === "true";
+    const getParentId = (node: HTMLElement) => {
+      const value = node.getAttribute("data-parent-id");
+      return value && value.length > 0 ? value : null;
+    };
+
+    const setNodeOpen = (node: HTMLElement, open: boolean) => {
+      if (!hasChildren(node)) return;
+
+      node.setAttribute("data-open", open ? "true" : "false");
+      const button = node.querySelector<HTMLButtonElement>(":scope > .toc-row > [data-toc-toggle]");
+      if (button) {
+        button.setAttribute("aria-expanded", open ? "true" : "false");
+      }
+    };
+
+    const collapseAll = () => {
+      nodeElements.forEach((node) => setNodeOpen(node, false));
+    };
+
+    const buildOpenPath = (nodeId: string) => {
+      const path: string[] = [];
+      let cursor = nodeById.get(nodeId) ?? null;
+
+      while (cursor) {
+        if (hasChildren(cursor)) {
+          const cursorId = cursor.getAttribute("data-node-id");
+          if (cursorId) {
+            path.push(cursorId);
+          }
+        }
+
+        const parentId = getParentId(cursor);
+        cursor = parentId ? nodeById.get(parentId) ?? null : null;
+      }
+
+      return path.reverse();
+    };
+
+    const headingEntries = links.reduce<TocEntry[]>((items, link) => {
+      const id = link.getAttribute("data-toc-id");
+      if (!id) return items;
+
+      const heading = document.getElementById(id);
+      if (!(heading instanceof HTMLElement)) return items;
+
+      items.push({ id, link, heading });
+      return items;
+    }, []);
+
+    if (headingEntries.length === 0) {
+      tocWindow.__tocCleanup = () => {};
+      return;
+    }
+
+    let currentActiveId = "";
+    let currentOpenSignature = "";
+
+    const applyOpenPath = (activeId: string | null) => {
+      const nextPath = activeId ? buildOpenPath(activeId) : [];
+      const nextSignature = nextPath.join(">");
+
+      if (nextSignature === currentOpenSignature) {
+        return;
+      }
+
+      collapseAll();
+      nextPath.forEach((id) => {
+        const node = nodeById.get(id);
+        if (node) {
+          setNodeOpen(node, true);
+        }
+      });
+
+      currentOpenSignature = nextSignature;
+    };
+
+    const setActive = (activeId: string | null) => {
+      const nextActiveId = activeId ?? "";
+      if (nextActiveId === currentActiveId) return;
+
+      currentActiveId = nextActiveId;
+
+      headingEntries.forEach((entry) => {
+        const isActive = entry.id === nextActiveId;
+        entry.link.classList.toggle("is-active", isActive);
+
+        if (isActive) {
+          entry.link.setAttribute("aria-current", "location");
+        } else {
+          entry.link.removeAttribute("aria-current");
+        }
+      });
+
+      const activeEntry = headingEntries.find((entry) => entry.id === nextActiveId) ?? null;
+      applyOpenPath(activeEntry?.id ?? null);
+
+      if (!activeEntry) return;
+
+      const listRect = list.getBoundingClientRect();
+      const linkRect = activeEntry.link.getBoundingClientRect();
+      const isAbove = linkRect.top < listRect.top + 10;
+      const isBelow = linkRect.bottom > listRect.bottom - 10;
+
+      if (isAbove || isBelow) {
+        activeEntry.link.scrollIntoView({
+          block: "nearest",
+          inline: "nearest",
+        });
+      }
+    };
+
+    const getHashId = () => {
+      const rawHash = window.location.hash.replace(/^#/, "");
+      if (!rawHash) return "";
+
+      try {
+        return decodeURIComponent(rawHash);
+      } catch {
+        return rawHash;
+      }
+    };
+
+    const syncFromHash = () => {
+      const hashId = getHashId();
+      if (!hashId) return false;
+
+      const matched = headingEntries.find((entry) => entry.id === hashId);
+      if (!matched) return false;
+
+      setActive(matched.id);
+      return true;
+    };
+
+    const getActivationThreshold = () => {
+      const firstHeading = headingEntries[0]?.heading;
+      const fallbackThreshold = Math.min(260, window.innerHeight * 0.24 + 48);
+      if (!(firstHeading instanceof HTMLElement)) {
+        return fallbackThreshold;
+      }
+
+      const scrollMarginTopValue = Number.parseFloat(getComputedStyle(firstHeading).scrollMarginTop || "0");
+      if (!Number.isFinite(scrollMarginTopValue) || scrollMarginTopValue <= 0) {
+        return fallbackThreshold;
+      }
+
+      return Math.max(scrollMarginTopValue + 20, fallbackThreshold);
+    };
+
+    let rafId = 0;
+    const updateActiveFromViewport = () => {
+      const threshold = getActivationThreshold();
+      const firstEntry = headingEntries[0];
+      if (!firstEntry) return;
+
+      let currentId = firstEntry.id;
+      for (const entry of headingEntries) {
+        if (entry.heading.getBoundingClientRect().top <= threshold) {
+          currentId = entry.id;
+        } else {
+          break;
+        }
+      }
+
+      setActive(currentId);
+    };
+
+    const onScrollOrResize = () => {
+      if (rafId !== 0) return;
+
+      rafId = window.requestAnimationFrame(() => {
+        updateActiveFromViewport();
+        rafId = 0;
+      });
+    };
+
+    const onHashChange = () => {
+      if (!syncFromHash()) {
+        onScrollOrResize();
+      }
+    };
+
+    const onToggleClick = (event: Event) => {
+      const button = event.currentTarget;
+      if (!(button instanceof HTMLButtonElement)) return;
+
+      const targetId = button.getAttribute("data-target-id");
+      if (!targetId) return;
+
+      const node = nodeById.get(targetId);
+      if (!node || !hasChildren(node)) return;
+
+      const isOpen = node.getAttribute("data-open") === "true";
+      setNodeOpen(node, !isOpen);
+      currentOpenSignature = "";
+    };
+
+    toggleButtons.forEach((button) => {
+      button.addEventListener("click", onToggleClick);
+    });
+
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    window.addEventListener("hashchange", onHashChange);
+
+    if (!syncFromHash()) {
+      updateActiveFromViewport();
+    }
+
+    tocWindow.__tocCleanup = () => {
+      toggleButtons.forEach((button) => {
+        button.removeEventListener("click", onToggleClick);
+      });
+
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      window.removeEventListener("hashchange", onHashChange);
+
+      if (rafId !== 0) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    };
+  };
+
+  const bindTableOfContentsLifecycle = () => {
+    if (tocWindow.__tocBound) return;
+
+    document.addEventListener("astro:page-load", initTableOfContents);
+    document.addEventListener("astro:before-swap", () => {
+      if (typeof tocWindow.__tocCleanup === "function") {
+        tocWindow.__tocCleanup();
+        delete tocWindow.__tocCleanup;
+      }
+    });
+
+    tocWindow.__tocBound = true;
+  };
+
+  bindTableOfContentsLifecycle();
+  initTableOfContents();
+</script>
