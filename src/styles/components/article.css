@@ -15,7 +15,7 @@ h6 { font-size: 1.125rem; }
 .blog-post-layout {
   --article-column-max-width: 70ch;
   --article-shell-max-width: 88rem;
-  --toc-rail-width: 10.75rem;
+  --toc-rail-width: 13.5rem;
   --toc-rail-gap: clamp(1rem, 1.4vw, 1.75rem);
 }
 
@@ -57,6 +57,7 @@ h6 { font-size: 1.125rem; }
     align-self: start;
     position: sticky;
     top: 8.75rem;
+    margin-left: -0.5rem;
   }
 }
 
@@ -145,6 +146,10 @@ h6 { font-size: 1.125rem; }
 
   & :is(h2, h3, h4, h5, h6) {
     margin-top: var(--space-8);
+  }
+
+  & > :is(h2, h3, h4, h5, h6):first-child {
+    margin-top: 0;
   }
 
   & :is(h3, h4, h5, h6) {
@@ -323,7 +328,7 @@ blockquote {
 /* Article Header */
 .article-header {
   max-width: min(100%, var(--article-column-max-width, var(--max-width)));
-  margin: 0 auto var(--space-8);
+  margin: 0 auto var(--space-6);
   text-align: center;
 }
 

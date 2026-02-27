@@ -18,6 +18,10 @@
 
   & :is(pre, figcaption, figcaption.header) { border-radius: 0 !important; }
 
+  & .frame > .header {
+    display: none !important;
+  }
+
   /* Fix right padding - add inline-block space after code content */
   & .ec-line .code::after {
     content: "";

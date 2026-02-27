@@ -20,6 +20,7 @@ type TocNode = {
 const { headings } = Astro.props as Props;
 const tocItems = headings;
 const tocCount = tocItems.length;
+const bottomDepth = tocItems.reduce((maxDepth, item) => Math.max(maxDepth, item.depth), 2);
 
 const h2Nodes: TocNode[] = [];
 let currentH2: TocNode | null = null;
@@ -109,7 +110,7 @@ import "../styles/components/toc.css";
 
 {
   tocCount >= 2 && (
-    <nav class="toc" data-toc aria-label="Table of contents">
+    <nav class="toc" data-toc data-bottom-depth={String(bottomDepth)} aria-label="Table of contents">
       <ol class="toc-list" data-toc-list>
         {tocTree.map((h2) => (
           <li
@@ -279,6 +280,8 @@ import "../styles/components/toc.css";
       if (id) {
         nodeById.set(id, node);
       }
+
+      node.setAttribute("data-current", "false");
     });
 
     const hasChildren = (node: HTMLElement) => node.getAttribute("data-has-children") === "true";
@@ -337,6 +340,7 @@ import "../styles/components/toc.css";
     }
 
     let currentActiveId = "";
+    let currentNodeId = "";
     let currentOpenSignature = "";
 
     const applyOpenPath = (activeId: string | null) => {
@@ -362,7 +366,18 @@ import "../styles/components/toc.css";
       const nextActiveId = activeId ?? "";
       if (nextActiveId === currentActiveId) return;
 
+      if (currentNodeId) {
+        const previousNode = nodeById.get(currentNodeId);
+        previousNode?.setAttribute("data-current", "false");
+      }
+
       currentActiveId = nextActiveId;
+      currentNodeId = nextActiveId;
+
+      if (nextActiveId) {
+        const currentNode = nodeById.get(nextActiveId);
+        currentNode?.setAttribute("data-current", "true");
+      }
 
       headingEntries.forEach((entry) => {
         const isActive = entry.id === nextActiveId;
@@ -376,6 +391,7 @@ import "../styles/components/toc.css";
       });
 
       const activeEntry = headingEntries.find((entry) => entry.id === nextActiveId) ?? null;
+      currentOpenSignature = "";
       applyOpenPath(activeEntry?.id ?? null);
 
       if (!activeEntry) return;

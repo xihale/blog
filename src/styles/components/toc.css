@@ -2,8 +2,8 @@
   margin: 0;
   width: 100%;
   min-width: 0;
-  padding-left: var(--space-2);
-  border-left: 1px solid var(--color-header-divider);
+  padding-left: 0;
+  border-left: 0;
   font-family: var(--font-sans);
   color: var(--color-text-muted);
 }
@@ -33,6 +33,17 @@
   align-items: start;
   column-gap: 0.2rem;
   min-width: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.toc-node[data-current="true"] > .toc-row {
+  opacity: 1;
+}
+
+.article-toc-wrap:hover .toc .toc-row,
+.article-toc-wrap:focus-within .toc .toc-row {
+  opacity: 1;
 }
 
 .toc-toggle {
@@ -61,12 +72,19 @@
   content: "›";
   font-size: 0.8rem;
   line-height: 1;
-  opacity: 0.58;
+  opacity: 0;
   transform: rotate(0deg);
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
 }
 
-.toc-toggle:hover::before {
+.article-toc-wrap:hover .toc .toc-toggle::before,
+.article-toc-wrap:focus-within .toc .toc-toggle::before {
+  opacity: 0.58;
+}
+
+.article-toc-wrap:hover .toc .toc-toggle:hover::before,
+.article-toc-wrap:focus-within .toc .toc-toggle:hover::before,
+.article-toc-wrap:focus-within .toc .toc-toggle:focus-visible::before {
   opacity: 0.82;
 }
 
@@ -164,7 +182,7 @@
 
 @media (min-width: 1360px) {
   .toc {
-    width: min(100%, 12.5rem);
+    width: min(100%, 13.75rem);
     max-height: calc(100dvh - 11.5rem);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -182,6 +200,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .toc,
+  .toc-row,
   .toc-link,
   .toc-panel,
   .toc-toggle::before {

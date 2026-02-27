@@ -34,6 +34,37 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
 <BaseLayout {...baseLayoutProps} contentWidth="wide">
   <div class="min-h-screen">
     <article class="container-center responsive-padding blog-post-layout">
+      <!-- Article Header -->
+      <header class="article-header">
+        <h1>
+          {title}
+        </h1>
+
+        <div class="article-meta-container">
+          <time datetime={formatDateISO(pubDate)} class="font-mono">
+            {formatDate(pubDate)}
+          </time>
+
+          {
+            updatedDate && (
+              <time datetime={formatDateISO(updatedDate)} class="font-mono">
+                | {formatDate(updatedDate)}
+              </time>
+            )
+          }
+        </div>
+
+        {
+          tags && tags.length > 0 && (
+            <div class="tag-container">
+              {tags.map((tag: string) => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
       <div class={articleShellClass}>
         {
           hasToc && (
@@ -44,37 +75,6 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
         }
 
         <div class="article-main">
-          <!-- Article Header -->
-          <header class="article-header">
-            <h1>
-              {title}
-            </h1>
-
-            <div class="article-meta-container">
-              <time datetime={formatDateISO(pubDate)} class="font-mono">
-                {formatDate(pubDate)}
-              </time>
-
-              {
-                updatedDate && (
-                  <time datetime={formatDateISO(updatedDate)} class="font-mono">
-                    | {formatDate(updatedDate)}
-                  </time>
-                )
-              }
-            </div>
-
-            {
-              tags && tags.length > 0 && (
-                <div class="tag-container">
-                  {tags.map((tag: string) => (
-                    <span class="tag">#{tag}</span>
-                  ))}
-                </div>
-              )
-            }
-          </header>
-
           <main class="article-content section-spacing body-text">
             <slot />
           </main>
