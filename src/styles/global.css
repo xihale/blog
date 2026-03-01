@@ -92,10 +92,20 @@ body {
   background: var(--color-background);
 }
 
+::view-transition-group(root) {
+  background: var(--color-background);
+}
+
 ::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-new(root),
+::view-transition-group(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  background: var(--color-background);
 }
 
 @media (prefers-reduced-motion: reduce) {
