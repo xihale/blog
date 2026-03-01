@@ -110,135 +110,187 @@ import "../styles/components/toc.css";
 
 {
   tocCount >= 2 && (
-    <nav class="toc" data-toc data-bottom-depth={String(bottomDepth)} aria-label="Table of contents">
-      <ol class="toc-list" data-toc-list>
-        {tocTree.map((h2) => (
-          <li
-            class={`toc-node toc-depth-${h2.depth}`}
-            data-toc-node
-            data-node-id={h2.id}
-            data-parent-id=""
-            data-has-children={h2.children.length > 0 ? "true" : "false"}
-            data-open={h2.children.length > 0 ? "false" : "true"}
-          >
-            <div class="toc-row">
-              {
-                h2.children.length > 0 && (
-                  <button
-                    class="toc-toggle"
-                    data-toc-toggle
-                    data-target-id={h2.id}
-                    aria-controls={`toc-panel-${h2.id}`}
-                    aria-expanded="false"
-                    aria-label={`展开 ${h2.text}`}
-                    type="button"
-                  ></button>
-                )
-              }
+    <>
+      <nav class="toc-mobile" aria-label="Table of contents">
+        <details class="toc-mobile-details">
+          <summary class="toc-mobile-summary">
+            <span class="toc-mobile-summary-main">
+              <span class="toc-mobile-summary-title">目录</span>
+              <span class="toc-mobile-summary-meta">{tocCount} 项</span>
+            </span>
+            <span class="toc-mobile-summary-action" aria-hidden="true"></span>
+          </summary>
 
-              {
-                h2.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
-              }
+          <ol class="toc-mobile-list">
+            {tocTree.map((h2) => (
+              <li class={`toc-mobile-item toc-mobile-depth-${h2.depth}`}>
+                <a href={`#${h2.id}`} class="toc-mobile-link toc-mobile-link-h2" title={h2.text}>
+                  {h2.text}
+                </a>
 
-              <a
-                href={`#${h2.id}`}
-                class="toc-link toc-link-h2"
-                data-toc-link
-                data-toc-id={h2.id}
-                title={h2.text}
-              >
-                {h2.text}
-              </a>
-            </div>
-
-            {
-              h2.children.length > 0 && (
-                <div class="toc-panel" id={`toc-panel-${h2.id}`} data-toc-panel>
-                  <div class="toc-panel-inner">
-                    <ol class="toc-sublist">
+                {
+                  h2.children.length > 0 && (
+                    <ol class="toc-mobile-list toc-mobile-sublist">
                       {h2.children.map((h3) => (
-                        <li
-                          class={`toc-node toc-depth-${h3.depth}`}
-                          data-toc-node
-                          data-node-id={h3.id}
-                          data-parent-id={h3.parentId ?? ""}
-                          data-has-children={h3.children.length > 0 ? "true" : "false"}
-                          data-open={h3.children.length > 0 ? "false" : "true"}
-                        >
-                          <div class="toc-row">
-                            {
-                              h3.children.length > 0 && (
-                                <button
-                                  class="toc-toggle"
-                                  data-toc-toggle
-                                  data-target-id={h3.id}
-                                  aria-controls={`toc-panel-${h3.id}`}
-                                  aria-expanded="false"
-                                  aria-label={`展开 ${h3.text}`}
-                                  type="button"
-                                ></button>
-                              )
-                            }
-
-                            {
-                              h3.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
-                            }
-
-                            <a
-                              href={`#${h3.id}`}
-                              class="toc-link"
-                              data-toc-link
-                              data-toc-id={h3.id}
-                              title={h3.text}
-                            >
-                              {h3.text}
-                            </a>
-                          </div>
+                        <li class={`toc-mobile-item toc-mobile-depth-${h3.depth}`}>
+                          <a href={`#${h3.id}`} class="toc-mobile-link toc-mobile-link-h3" title={h3.text}>
+                            {h3.text}
+                          </a>
 
                           {
                             h3.children.length > 0 && (
-                              <div class="toc-panel" id={`toc-panel-${h3.id}`} data-toc-panel>
-                                <div class="toc-panel-inner">
-                                  <ol class="toc-sublist toc-sublist-leaf">
-                                    {h3.children.map((h4) => (
-                                      <li
-                                        class={`toc-node toc-depth-${h4.depth}`}
-                                        data-toc-node
-                                        data-node-id={h4.id}
-                                        data-parent-id={h4.parentId ?? ""}
-                                        data-has-children="false"
-                                        data-open="true"
-                                      >
-                                        <div class="toc-row">
-                                          <span class="toc-toggle-spacer" aria-hidden="true"></span>
-                                          <a
-                                            href={`#${h4.id}`}
-                                            class="toc-link"
-                                            data-toc-link
-                                            data-toc-id={h4.id}
-                                            title={h4.text}
-                                          >
-                                            {h4.text}
-                                          </a>
-                                        </div>
-                                      </li>
-                                    ))}
-                                  </ol>
-                                </div>
-                              </div>
+                              <ol class="toc-mobile-list toc-mobile-sublist toc-mobile-sublist-leaf">
+                                {h3.children.map((h4) => (
+                                  <li class={`toc-mobile-item toc-mobile-depth-${h4.depth}`}>
+                                    <a href={`#${h4.id}`} class="toc-mobile-link toc-mobile-link-h4" title={h4.text}>
+                                      {h4.text}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ol>
                             )
                           }
                         </li>
                       ))}
                     </ol>
+                  )
+                }
+              </li>
+            ))}
+          </ol>
+        </details>
+      </nav>
+
+      <nav class="toc toc-desktop" data-toc data-bottom-depth={String(bottomDepth)} aria-label="Table of contents">
+        <ol class="toc-list" data-toc-list>
+          {tocTree.map((h2) => (
+            <li
+              class={`toc-node toc-depth-${h2.depth}`}
+              data-toc-node
+              data-node-id={h2.id}
+              data-parent-id=""
+              data-has-children={h2.children.length > 0 ? "true" : "false"}
+              data-open={h2.children.length > 0 ? "false" : "true"}
+            >
+              <div class="toc-row">
+                {
+                  h2.children.length > 0 && (
+                    <button
+                      class="toc-toggle"
+                      data-toc-toggle
+                      data-target-id={h2.id}
+                      aria-controls={`toc-panel-${h2.id}`}
+                      aria-expanded="false"
+                      aria-label={`展开 ${h2.text}`}
+                      type="button"
+                    ></button>
+                  )
+                }
+
+                {
+                  h2.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                }
+
+                <a
+                  href={`#${h2.id}`}
+                  class="toc-link toc-link-h2"
+                  data-toc-link
+                  data-toc-id={h2.id}
+                  title={h2.text}
+                >
+                  {h2.text}
+                </a>
+              </div>
+
+              {
+                h2.children.length > 0 && (
+                  <div class="toc-panel" id={`toc-panel-${h2.id}`} data-toc-panel>
+                    <div class="toc-panel-inner">
+                      <ol class="toc-sublist">
+                        {h2.children.map((h3) => (
+                          <li
+                            class={`toc-node toc-depth-${h3.depth}`}
+                            data-toc-node
+                            data-node-id={h3.id}
+                            data-parent-id={h3.parentId ?? ""}
+                            data-has-children={h3.children.length > 0 ? "true" : "false"}
+                            data-open={h3.children.length > 0 ? "false" : "true"}
+                          >
+                            <div class="toc-row">
+                              {
+                                h3.children.length > 0 && (
+                                  <button
+                                    class="toc-toggle"
+                                    data-toc-toggle
+                                    data-target-id={h3.id}
+                                    aria-controls={`toc-panel-${h3.id}`}
+                                    aria-expanded="false"
+                                    aria-label={`展开 ${h3.text}`}
+                                    type="button"
+                                  ></button>
+                                )
+                              }
+
+                              {
+                                h3.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                              }
+
+                              <a
+                                href={`#${h3.id}`}
+                                class="toc-link"
+                                data-toc-link
+                                data-toc-id={h3.id}
+                                title={h3.text}
+                              >
+                                {h3.text}
+                              </a>
+                            </div>
+
+                            {
+                              h3.children.length > 0 && (
+                                <div class="toc-panel" id={`toc-panel-${h3.id}`} data-toc-panel>
+                                  <div class="toc-panel-inner">
+                                    <ol class="toc-sublist toc-sublist-leaf">
+                                      {h3.children.map((h4) => (
+                                        <li
+                                          class={`toc-node toc-depth-${h4.depth}`}
+                                          data-toc-node
+                                          data-node-id={h4.id}
+                                          data-parent-id={h4.parentId ?? ""}
+                                          data-has-children="false"
+                                          data-open="true"
+                                        >
+                                          <div class="toc-row">
+                                            <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                                            <a
+                                              href={`#${h4.id}`}
+                                              class="toc-link"
+                                              data-toc-link
+                                              data-toc-id={h4.id}
+                                              title={h4.text}
+                                            >
+                                              {h4.text}
+                                            </a>
+                                          </div>
+                                        </li>
+                                      ))}
+                                    </ol>
+                                  </div>
+                                </div>
+                              )
+                            }
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
                   </div>
-                </div>
-              )
-            }
-          </li>
-        ))}
-      </ol>
-    </nav>
+                )
+              }
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
   )
 }
 
@@ -257,12 +309,16 @@ import "../styles/components/toc.css";
   const tocWindow = window as TocWindow;
 
   const initTableOfContents = () => {
-    const toc = document.querySelector<HTMLElement>("[data-toc]");
+    const toc = document.querySelector<HTMLElement>("[data-toc].toc-desktop");
     if (!(toc instanceof HTMLElement)) return;
 
     if (typeof tocWindow.__tocCleanup === "function") {
       tocWindow.__tocCleanup();
       delete tocWindow.__tocCleanup;
+    }
+
+    if (!window.matchMedia("(min-width: 1360px)").matches) {
+      return;
     }
 
     const list = toc.querySelector<HTMLElement>("[data-toc-list]");

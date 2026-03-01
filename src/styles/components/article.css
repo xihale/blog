@@ -86,17 +86,66 @@ h6 { font-size: 1.125rem; }
     text-decoration: none;
   }
 
-  & :is(h2, h3, h4, h5, h6)::before {
-    color: var(--color-text-secondary);
-    font-weight: 300;
-    margin-right: var(--space-2);
+  & :is(h2, h3, h4, h5, h6) {
+    position: relative;
   }
 
-  & h2::before { content: "#"; opacity: 0.6; }
-  & h3::before { content: "##"; opacity: 0.5; }
-  & h4::before { content: "###"; opacity: 0.4; }
-  & h5::before { content: "####"; opacity: 0.3; }
-  & h6::before { content: "#####"; opacity: 0.2; }
+  & .heading-anchor {
+    position: absolute;
+    right: 100%;
+    top: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: var(--space-2);
+    line-height: 1;
+    color: var(--color-text-secondary);
+    font-weight: 300;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, color 0.18s ease;
+  }
+
+  & :is(h2, h3, h4, h5, h6):focus-within .heading-anchor {
+    opacity: 0.5;
+    pointer-events: auto;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    & :is(h2, h3, h4, h5, h6):hover .heading-anchor {
+      opacity: 0.5;
+      pointer-events: auto;
+    }
+  }
+
+  & .heading-anchor:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+    color: var(--article-link-color);
+    text-decoration: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    & .heading-anchor:hover {
+      opacity: 1;
+      pointer-events: auto;
+      color: var(--article-link-color);
+      text-decoration: none;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    & .heading-anchor {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    & :is(h2, h3, h4, h5, h6):active .heading-anchor {
+      opacity: 0.5;
+      pointer-events: auto;
+    }
+  }
 
   @media (max-width: 768px) {
     & h1 { font-size: 2.5rem; }
@@ -139,10 +188,6 @@ h6 { font-size: 1.125rem; }
 
   & h5 { font-size: 1.1rem; }
   & h6 { font-size: 1rem; }
-
-  & :is(h2, h3, h4, h5, h6)::before {
-    opacity: 0.22;
-  }
 
   & :is(h2, h3, h4, h5, h6) {
     margin-top: var(--space-8);

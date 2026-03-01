@@ -78,6 +78,32 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
           <main class="article-content section-spacing body-text">
             <slot />
           </main>
+
+          <script is:inline>
+            const articleContent = document.querySelector(".article-content");
+
+            if (articleContent instanceof HTMLElement) {
+              const headingNodes = articleContent.querySelectorAll(
+                "h2[id], h3[id], h4[id], h5[id], h6[id]",
+              );
+
+              headingNodes.forEach((headingNode) => {
+                if (!(headingNode instanceof HTMLElement)) return;
+                if (headingNode.querySelector(":scope > a.heading-anchor")) return;
+
+                const headingId = headingNode.id.trim();
+                if (!headingId) return;
+
+                const anchor = document.createElement("a");
+                anchor.className = "heading-anchor";
+                anchor.href = `#${headingId}`;
+                anchor.textContent = "#";
+                anchor.setAttribute("aria-label", `链接到标题：${headingNode.textContent?.trim() ?? headingId}`);
+
+                headingNode.prepend(anchor);
+              });
+            }
+          </script>
         </div>
       </div>
     </article>

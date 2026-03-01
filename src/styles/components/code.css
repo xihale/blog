@@ -4,10 +4,10 @@
 :not(pre) code {
   color: var(--color-accent);
   font: 0.85em var(--font-mono);
-  padding: 0 0.3em;
-  background: var(--color-surface-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
   word-break: break-all;
   white-space: pre-wrap;
 }
@@ -18,15 +18,34 @@
 
   & :is(pre, figcaption, figcaption.header) { border-radius: 0 !important; }
 
+  & .frame {
+    position: relative;
+  }
+
   & .frame > .header {
     display: none !important;
+  }
+
+  & .frame.has-title:not(.is-terminal),
+  & .frame.is-terminal {
+    --button-spacing: 0.4rem;
   }
 
   /* Fix right padding - add inline-block space after code content */
   & .ec-line .code::after {
     content: "";
     display: inline-block;
-    width: 1.35rem;
+    width: 1.8rem;
+  }
+
+  & .copy {
+    position: absolute;
+    inset-block-start: 0.35rem;
+    inset-inline-end: 0.45rem;
+    top: 0.35rem;
+    right: 0.45rem;
+    z-index: 12;
+    align-items: flex-start;
   }
 
   /* Hide copy button by default, show on interaction */
@@ -37,11 +56,27 @@
     background: var(--code-copy-bg) !important;
     border: 1px solid var(--code-copy-border) !important;
     box-shadow: none !important;
+    margin: 0 !important;
+    align-self: flex-start !important;
   }
 
-  & .frame:is(:focus-within, :hover, :active) .copy button { opacity: 0.85 !important; }
+  & .frame:focus-within .copy button {
+    opacity: 0.85 !important;
+  }
 
-  & .frame:is(:focus-within, :hover, :active) pre[data-language]::before { opacity: 0; }
+  & .frame:focus-within pre[data-language]::before {
+    opacity: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    & .frame:hover .copy button {
+      opacity: 0.85 !important;
+    }
+
+    & .frame:hover pre[data-language]::before {
+      opacity: 0;
+    }
+  }
 
   & .copy :is(button:hover, button:focus-visible, button:active, .feedback.show ~ button) {
     opacity: 1 !important;
@@ -51,8 +86,13 @@
   }
 
   @media (hover: none) and (pointer: coarse) {
-    & .copy button { opacity: 0.92 !important; }
-    & pre[data-language]::before { opacity: 0; }
+    & .frame:active .copy button {
+      opacity: 0.92 !important;
+    }
+
+    & .frame:active pre[data-language]::before {
+      opacity: 0;
+    }
   }
 
   @media (max-width: 768px) {
@@ -66,3 +106,22 @@
 }
 
 .indent { display: inline-block; width: 2rem; }
+
+.expressive-code.expressive-code .frame.has-title:not(.is-terminal),
+.expressive-code.expressive-code .frame.is-terminal {
+  --button-spacing: 0.4rem !important;
+}
+
+.expressive-code.expressive-code .copy {
+  position: absolute !important;
+  inset-block-start: 0.35rem !important;
+  inset-inline-end: 0.45rem !important;
+  top: 0.35rem !important;
+  right: 0.45rem !important;
+  align-items: flex-start !important;
+}
+
+.expressive-code.expressive-code .copy button {
+  margin: 0 !important;
+  align-self: flex-start !important;
+}
