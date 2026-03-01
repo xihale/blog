@@ -60,7 +60,9 @@ async function extractProjectChars(): Promise<Set<string>> {
             // 提取所有中文字符和常用符号
             const textChars = content.match(/[一-鿿㐀-䶿豈-﫿＀-￯]/g);
             if (textChars) {
-                textChars.forEach(char => chars.add(char));
+                textChars.forEach((char: string) => {
+                    chars.add(char);
+                });
             }
         } catch (error) {
             console.warn(`Warning: Could not read file ${file}:`, error);

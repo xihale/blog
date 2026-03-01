@@ -1,0 +1,31 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { SITE_DESCRIPTION } from "../consts";
+import "../styles/components/article.css";
+import "../styles/components/admonitions.css";
+import "../styles/components/code.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  robots?: string;
+}
+
+const { title, description = SITE_DESCRIPTION, robots } = Astro.props as Props;
+
+const baseLayoutProps: {
+  description: string;
+  robots?: string;
+  title?: string;
+} = robots ? { description, robots } : { description };
+
+if (typeof title === "string") {
+  baseLayoutProps.title = title;
+}
+---
+
+<BaseLayout {...baseLayoutProps}>
+  <article class="mx-auto max-w-[68ch] py-8 md:py-12 article-content body-text">
+    <slot />
+  </article>
+</BaseLayout>

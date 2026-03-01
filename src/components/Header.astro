@@ -1,6 +1,6 @@
 ---
 import { SITE_TITLE } from "../consts";
-import "../styles/components/header.css";
+import styles from "./Header.module.css";
 
 const currentPath = Astro.url.pathname;
 const navItems = [
@@ -19,20 +19,24 @@ const isCurrent = (href: string) => {
 };
 ---
 
-<header class="site-header bg-background border-b border-block shadow-sm">
-  <div class="header-container">
+<header class={styles["siteHeader"]}>
+  <div class={styles["headerContainer"]}>
     <!-- Logo/Title -->
-    <nav class="site-title">
-      <a href="/" class="nav-link">
+    <nav class={styles["brandTitle"]}>
+      <a href="/" class={styles["navLink"]}>
         {SITE_TITLE}
       </a>
     </nav>
 
     <!-- Desktop Navigation Menu -->
-    <nav class="nav-menu-desktop">
+    <nav class={styles["navMenuDesktop"]}>
       {
         navItems.map(({ href, label }) => (
-          <a href={href} class={`nav-link ${isCurrent(href) ? "nav-link-active" : ""}`} aria-current={isCurrent(href) ? "page" : undefined}>
+          <a
+            href={href}
+            class:list={[styles["navLink"], isCurrent(href) && styles["navLinkActive"]]}
+            aria-current={isCurrent(href) ? "page" : undefined}
+          >
             {label}
           </a>
         ))
@@ -41,23 +45,28 @@ const isCurrent = (href: string) => {
 
     <!-- Mobile menu button -->
     <button
-      class="mobile-menu-toggle"
+      class={styles["mobileMenuToggle"]}
       aria-label="Toggle navigation menu"
       aria-expanded="false"
+      data-open="false"
       id="mobile-menu-button"
     >
-      <span class="mobile-menu-line"></span>
-      <span class="mobile-menu-line"></span>
-      <span class="mobile-menu-line"></span>
+      <span class={styles["mobileMenuLine"]}></span>
+      <span class={styles["mobileMenuLine"]}></span>
+      <span class={styles["mobileMenuLine"]}></span>
     </button>
   </div>
 
   <!-- Mobile Navigation Menu -->
-  <nav class="nav-menu-mobile" id="nav-menu">
-    <div class="nav-menu-container">
+  <nav class={styles["navMenuMobile"]} data-open="false" id="nav-menu">
+    <div class={styles["navMenuContainer"]}>
       {
         navItems.map(({ href, label }) => (
-          <a href={href} class={`nav-link ${isCurrent(href) ? "nav-link-active" : ""}`} aria-current={isCurrent(href) ? "page" : undefined}>
+          <a
+            href={href}
+            class:list={[styles["navLink"], isCurrent(href) && styles["navLinkActive"]]}
+            aria-current={isCurrent(href) ? "page" : undefined}
+          >
             {label}
           </a>
         ))
@@ -78,8 +87,9 @@ const isCurrent = (href: string) => {
     // The previous code was fine, just rewriting for style.
 
     const toggleMenu = () => {
-      const isOpen = nav.classList.toggle("nav-menu--open");
-      button.classList.toggle("active", isOpen);
+      const isOpen = nav.dataset["open"] !== "true";
+      nav.dataset["open"] = isOpen ? "true" : "false";
+      button.dataset["open"] = isOpen ? "true" : "false";
       button.setAttribute("aria-expanded", isOpen.toString());
     };
 

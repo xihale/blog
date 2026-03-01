@@ -43,6 +43,9 @@ const baseHeadProps = robots
 
 const siteContentClass =
 	contentWidth === "wide" ? "site-content site-content-wide" : "site-content";
+
+const footerLinkClass =
+	"text-[var(--color-nav-link)] transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-[var(--color-nav-link-hover)] focus-visible:text-[var(--color-nav-link-hover)]";
 ---
 
 <!doctype html>
@@ -63,13 +66,13 @@ const siteContentClass =
 		</div>
 
 		<!-- Global Footer -->
-		<footer class="bg-background border-t border-block">
+		<footer class="bg-[var(--color-background)] border-t border-[var(--color-border)]">
 			<div class="mx-auto px-4 w-full max-w-4xl py-3">
 				<div class="site-footer">
 					<span>
-						<a href="https://astro.build/" class="nav-link">Astro</a> • Minimal
+						<a href="https://astro.build/" class={footerLinkClass}>Astro</a> • Minimal
 					</span>
-					<a href="/rss.xml" class="nav-link" title="RSS Feed"> RSS </a>
+					<a href="/rss.xml" class={footerLinkClass} title="RSS Feed"> RSS </a>
 				</div>
 			</div>
 		</footer>

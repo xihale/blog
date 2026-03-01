@@ -105,44 +105,62 @@ const tocTree = h2Nodes.length > 0
       children: [],
     }));
 
-import "../styles/components/toc.css";
+import styles from "./TableOfContents.module.css";
 ---
 
 {
   tocCount >= 2 && (
     <>
-      <nav class="toc-mobile" aria-label="Table of contents">
-        <details class="toc-mobile-details">
-          <summary class="toc-mobile-summary">
-            <span class="toc-mobile-summary-main">
-              <span class="toc-mobile-summary-title">目录</span>
-              <span class="toc-mobile-summary-meta">{tocCount} 项</span>
+      <nav class={styles["toc-mobile"]} aria-label="Table of contents">
+        <details class={styles["toc-mobile-details"]}>
+          <summary class={styles["toc-mobile-summary"]}>
+            <span class={styles["toc-mobile-summary-main"]}>
+              <span class={styles["toc-mobile-summary-title"]}>目录</span>
+              <span class={styles["toc-mobile-summary-meta"]}>{tocCount} 项</span>
             </span>
-            <span class="toc-mobile-summary-action" aria-hidden="true"></span>
+            <span class={styles["toc-mobile-summary-action"]} aria-hidden="true"></span>
           </summary>
 
-          <ol class="toc-mobile-list">
+          <ol class={styles["toc-mobile-list"]}>
             {tocTree.map((h2) => (
-              <li class={`toc-mobile-item toc-mobile-depth-${h2.depth}`}>
-                <a href={`#${h2.id}`} class="toc-mobile-link toc-mobile-link-h2" title={h2.text}>
+              <li class={styles["toc-mobile-item"]}>
+                <a
+                  href={`#${h2.id}`}
+                  class:list={[styles["toc-mobile-link"], styles["toc-mobile-link-h2"]]}
+                  title={h2.text}
+                >
                   {h2.text}
                 </a>
 
                 {
                   h2.children.length > 0 && (
-                    <ol class="toc-mobile-list toc-mobile-sublist">
+                    <ol class:list={[styles["toc-mobile-list"], styles["toc-mobile-sublist"]]}>
                       {h2.children.map((h3) => (
-                        <li class={`toc-mobile-item toc-mobile-depth-${h3.depth}`}>
-                          <a href={`#${h3.id}`} class="toc-mobile-link toc-mobile-link-h3" title={h3.text}>
+                        <li class={styles["toc-mobile-item"]}>
+                          <a
+                            href={`#${h3.id}`}
+                            class:list={[styles["toc-mobile-link"], styles["toc-mobile-link-h3"]]}
+                            title={h3.text}
+                          >
                             {h3.text}
                           </a>
 
                           {
                             h3.children.length > 0 && (
-                              <ol class="toc-mobile-list toc-mobile-sublist toc-mobile-sublist-leaf">
+                              <ol
+                                class:list={[
+                                  styles["toc-mobile-list"],
+                                  styles["toc-mobile-sublist"],
+                                  styles["toc-mobile-sublist-leaf"],
+                                ]}
+                              >
                                 {h3.children.map((h4) => (
-                                  <li class={`toc-mobile-item toc-mobile-depth-${h4.depth}`}>
-                                    <a href={`#${h4.id}`} class="toc-mobile-link toc-mobile-link-h4" title={h4.text}>
+                                  <li class={styles["toc-mobile-item"]}>
+                                    <a
+                                      href={`#${h4.id}`}
+                                      class:list={[styles["toc-mobile-link"], styles["toc-mobile-link-h4"]]}
+                                      title={h4.text}
+                                    >
                                       {h4.text}
                                     </a>
                                   </li>
@@ -161,22 +179,29 @@ import "../styles/components/toc.css";
         </details>
       </nav>
 
-      <nav class="toc toc-desktop" data-toc data-bottom-depth={String(bottomDepth)} aria-label="Table of contents">
-        <ol class="toc-list" data-toc-list>
+      <nav
+        class:list={[styles["toc"], styles["toc-desktop"]]}
+        data-toc
+        data-toc-desktop
+        data-bottom-depth={String(bottomDepth)}
+        aria-label="Table of contents"
+      >
+        <ol class={styles["toc-list"]} data-toc-list>
           {tocTree.map((h2) => (
             <li
-              class={`toc-node toc-depth-${h2.depth}`}
+              class={styles["toc-node"]}
               data-toc-node
               data-node-id={h2.id}
+              data-depth={String(h2.depth)}
               data-parent-id=""
               data-has-children={h2.children.length > 0 ? "true" : "false"}
               data-open={h2.children.length > 0 ? "false" : "true"}
             >
-              <div class="toc-row">
+              <div class={styles["toc-row"]}>
                 {
                   h2.children.length > 0 && (
                     <button
-                      class="toc-toggle"
+                      class={styles["toc-toggle"]}
                       data-toc-toggle
                       data-target-id={h2.id}
                       aria-controls={`toc-panel-${h2.id}`}
@@ -188,12 +213,12 @@ import "../styles/components/toc.css";
                 }
 
                 {
-                  h2.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                  h2.children.length === 0 && <span class={styles["toc-toggle-spacer"]} aria-hidden="true"></span>
                 }
 
                 <a
                   href={`#${h2.id}`}
-                  class="toc-link toc-link-h2"
+                  class:list={[styles["toc-link"], styles["toc-link-h2"]]}
                   data-toc-link
                   data-toc-id={h2.id}
                   title={h2.text}
@@ -204,23 +229,24 @@ import "../styles/components/toc.css";
 
               {
                 h2.children.length > 0 && (
-                  <div class="toc-panel" id={`toc-panel-${h2.id}`} data-toc-panel>
-                    <div class="toc-panel-inner">
-                      <ol class="toc-sublist">
+                  <div class={styles["toc-panel"]} id={`toc-panel-${h2.id}`} data-toc-panel>
+                    <div class={styles["toc-panel-inner"]}>
+                      <ol class={styles["toc-sublist"]}>
                         {h2.children.map((h3) => (
                           <li
-                            class={`toc-node toc-depth-${h3.depth}`}
+                            class={styles["toc-node"]}
                             data-toc-node
                             data-node-id={h3.id}
+                            data-depth={String(h3.depth)}
                             data-parent-id={h3.parentId ?? ""}
                             data-has-children={h3.children.length > 0 ? "true" : "false"}
                             data-open={h3.children.length > 0 ? "false" : "true"}
                           >
-                            <div class="toc-row">
+                            <div class={styles["toc-row"]}>
                               {
                                 h3.children.length > 0 && (
                                   <button
-                                    class="toc-toggle"
+                                    class={styles["toc-toggle"]}
                                     data-toc-toggle
                                     data-target-id={h3.id}
                                     aria-controls={`toc-panel-${h3.id}`}
@@ -232,12 +258,12 @@ import "../styles/components/toc.css";
                               }
 
                               {
-                                h3.children.length === 0 && <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                                h3.children.length === 0 && <span class={styles["toc-toggle-spacer"]} aria-hidden="true"></span>
                               }
 
                               <a
                                 href={`#${h3.id}`}
-                                class="toc-link"
+                                class={styles["toc-link"]}
                                 data-toc-link
                                 data-toc-id={h3.id}
                                 title={h3.text}
@@ -248,23 +274,24 @@ import "../styles/components/toc.css";
 
                             {
                               h3.children.length > 0 && (
-                                <div class="toc-panel" id={`toc-panel-${h3.id}`} data-toc-panel>
-                                  <div class="toc-panel-inner">
-                                    <ol class="toc-sublist toc-sublist-leaf">
+                                <div class={styles["toc-panel"]} id={`toc-panel-${h3.id}`} data-toc-panel>
+                                  <div class={styles["toc-panel-inner"]}>
+                                    <ol class:list={[styles["toc-sublist"], styles["toc-sublist-leaf"]]}>
                                       {h3.children.map((h4) => (
                                         <li
-                                          class={`toc-node toc-depth-${h4.depth}`}
+                                          class={styles["toc-node"]}
                                           data-toc-node
                                           data-node-id={h4.id}
+                                          data-depth={String(h4.depth)}
                                           data-parent-id={h4.parentId ?? ""}
                                           data-has-children="false"
                                           data-open="true"
                                         >
-                                          <div class="toc-row">
-                                            <span class="toc-toggle-spacer" aria-hidden="true"></span>
+                                          <div class={styles["toc-row"]}>
+                                            <span class={styles["toc-toggle-spacer"]} aria-hidden="true"></span>
                                             <a
                                               href={`#${h4.id}`}
-                                              class="toc-link"
+                                              class={styles["toc-link"]}
                                               data-toc-link
                                               data-toc-id={h4.id}
                                               title={h4.text}
@@ -309,7 +336,7 @@ import "../styles/components/toc.css";
   const tocWindow = window as TocWindow;
 
   const initTableOfContents = () => {
-    const toc = document.querySelector<HTMLElement>("[data-toc].toc-desktop");
+    const toc = document.querySelector<HTMLElement>("[data-toc][data-toc-desktop]");
     if (!(toc instanceof HTMLElement)) return;
 
     if (typeof tocWindow.__tocCleanup === "function") {
@@ -437,7 +464,6 @@ import "../styles/components/toc.css";
 
       headingEntries.forEach((entry) => {
         const isActive = entry.id === nextActiveId;
-        entry.link.classList.toggle("is-active", isActive);
 
         if (isActive) {
           entry.link.setAttribute("aria-current", "location");

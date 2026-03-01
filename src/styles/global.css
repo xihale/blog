@@ -1,9 +1,3 @@
-/* Import styles */
-@import "./components/article.css";
-@import "./components/code.css";
-@import "./components/admonitions.css";
-@import "./utilities.css";
-
 /* CSS Variables */
 :root {
   color-scheme: light dark;
@@ -144,40 +138,10 @@ a {
 .site-main { flex-grow: 1; padding-bottom: 2rem; }
 .site-footer { display: flex; align-items: baseline; justify-content: space-between; font-size: 0.875rem; }
 
-.header-container {
-  max-width: var(--max-width);
-  margin-inline: auto;
-  margin-block: 1rem;
-  padding-inline: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-.nav-menu-container {
-  max-width: var(--max-width);
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-block: 5rem;
-}
-
-.site-title {
-  font: 300 1.25rem/1.75rem var(--font-serif);
-  letter-spacing: -0.025em;
-}
-
-.avatar-image {
-  margin: 0 auto;
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
 }

@@ -1,7 +1,7 @@
 ---
 title: "About"
 description: "Learn more about me and this blog"
-layout: "../layouts/BaseLayout.astro"
+layout: "../layouts/MarkdownPageLayout.astro"
 ---
 
 # About

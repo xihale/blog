@@ -1,0 +1,23 @@
+.linkGroup {
+  margin-bottom: var(--space-8);
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+.description {
+  color: var(--color-text-muted);
+}
+
+.linkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .linkGrid {
+    grid-template-columns: 1fr;
+  }
+}

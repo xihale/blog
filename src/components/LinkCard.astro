@@ -1,6 +1,6 @@
 ---
 import type { LinkItem } from "../data/links";
-import "../styles/components/link-cards.css";
+import styles from "./LinkCard.module.css";
 
 interface Props extends LinkItem {}
 
@@ -18,21 +18,21 @@ try {
   href={url}
   target="_blank"
   rel="noopener noreferrer"
-  class="link-card"
+  class={styles["linkCard"]}
 >
   {
     avatar && (
-      <div class="link-card-avatar-wrap">
-        <img src={avatar} alt={name} class="link-card-avatar" loading="lazy" />
+      <div class={styles["avatarWrap"]}>
+        <img src={avatar} alt={name} class={styles["avatar"]} loading="lazy" />
       </div>
     )
   }
 
-  <div class="link-card-body">
-    <div class="link-card-title-row">
-      <span class="link-card-name">{name}</span>
-      <span class="link-card-host">{host}</span>
+  <div class={styles["body"]}>
+    <div class={styles["titleRow"]}>
+      <span class={styles["name"]}>{name}</span>
+      <span class={styles["host"]}>{host}</span>
     </div>
-    <p class="link-card-description">{description}</p>
+    <p class={styles["description"]}>{description}</p>
   </div>
 </a>

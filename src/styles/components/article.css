@@ -67,6 +67,7 @@ h6 { font-size: 1.125rem; }
 
   & > *:first-child { margin-top: 0; }
   & a {
+    color: var(--article-link-color);
     word-break: normal;
     overflow-wrap: anywhere;
     text-decoration: none;
@@ -74,16 +75,11 @@ h6 { font-size: 1.125rem; }
 
   & a:hover,
   & a:focus-visible {
+    color: var(--article-link-hover);
     text-decoration: underline;
     text-decoration-thickness: 0.06em;
     text-underline-offset: 0.12em;
     text-decoration-color: var(--color-header-divider);
-  }
-
-  & .link-card,
-  & .link-card:hover,
-  & .link-card:focus-visible {
-    text-decoration: none;
   }
 
   & :is(h2, h3, h4, h5, h6) {

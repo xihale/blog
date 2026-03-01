@@ -3,14 +3,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout>
-  <div class="hero-section">
-    <div class="content-wrapper">
+  <div class="min-h-[80vh] flex items-center justify-center">
+    <div class="mx-auto max-w-3xl text-center">
       <!-- Hero Section with Avatar -->
-      <section class="section-spacing text-center">
+      <section class="mb-8 text-center">
         <div class="mb-8">
-          <img src="/avatar.jpg" alt="xihale" class="avatar-image" />
+          <img
+            src="/avatar.jpg"
+            alt="xihale"
+            class="mx-auto h-[150px] w-[150px] rounded-full object-cover"
+          />
         </div>
-        <h1 class="heading-hero mb-4">Leisure Thoughts</h1>
+        <h1 class="mb-4 text-5xl font-light font-serif text-[var(--color-text)]">
+          Leisure Thoughts
+        </h1>
       </section>
     </div>
   </div>

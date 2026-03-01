@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { formatDateShort, formatDateISO } from "../../utils/date";
+import "../../styles/components/article.css";
 
 const posts = await getCollection("blog", ({ data }) => {
   return data.draft !== true && data.unlisted !== true;
@@ -29,8 +30,8 @@ const years = Object.keys(postsByYear)
 ---
 
 <BaseLayout title={`Blog`} description="All blog posts">
-  <div class="container-center">
-    <header class="responsive-margin">
+  <div class="mx-auto max-w-[120rem]">
+    <header class="mb-12 md:mb-16">
       <h1 class="mb-4">Writing</h1>
       Thoughts on code, design, and the creative process.
     </header>
@@ -38,9 +39,9 @@ const years = Object.keys(postsByYear)
     <main class="space-y-16">
       {
         years.map((year) => (
-          <section class="section-spacing">
-            <h2 class="text-weak">{year}</h2>
-            <div class="content-spacing">
+          <section class="mb-8">
+            <h2 class="text-[var(--color-text-muted)]">{year}</h2>
+            <div class="mb-6">
               {postsByYear[year]?.map((post) => (
                 <div class="post-card">
                   <a href={`/blog/${post.id}/`} class="block">
@@ -61,7 +62,7 @@ const years = Object.keys(postsByYear)
                                 <span class="tag-small">#{tag}</span>
                               ))}
                               {post.data.tags.length > 3 && (
-                                <span class="weak-text">
+                                <span class="text-[var(--color-text-muted)]">
                                   +{post.data.tags.length - 3}
                                 </span>
                               )}
@@ -88,7 +89,7 @@ const years = Object.keys(postsByYear)
     {
       sortedPosts.length === 0 && (
         <div class="empty-state">
-          <p class="meta-text">No posts yet. Check back soon!</p>
+          <p class="text-[var(--color-text-muted)]">No posts yet. Check back soon!</p>
         </div>
       )
     }
