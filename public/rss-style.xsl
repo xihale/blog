@@ -9,15 +9,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <style type="text/css">
           @font-face {
-            font-family: "LXGW WenKai";
+            font-family: "LXGW WenKai Subset";
             font-style: normal;
             font-weight: normal;
             font-display: swap;
-            src: local("Times New Roman"), local("serif"), url("/fonts/lxgw.woff2") format("woff2");
+            src: url("/fonts/lxgw.woff2") format("woff2");
           }
 
           :root {
-            --font-serif: "Times New Roman", "LXGW WenKai", serif;
+            --font-serif: "LXGW WenKai Subset", "Times New Roman", serif;
             --font-sans: var(--font-serif), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             
             /* Light mode variables */

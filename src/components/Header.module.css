@@ -115,6 +115,11 @@
 }
 
 @media (max-width: 768px) {
+  .headerContainer,
+  .navMenuContainer {
+    padding-inline: calc(1rem * 2 / 3);
+  }
+
   .mobileMenuToggle {
     display: flex;
   }

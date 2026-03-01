@@ -22,14 +22,11 @@
   }
 
   @font-face {
-    font-family: "LXGW WenKai";
+    font-family: "LXGW WenKai Subset";
     font-style: normal;
     font-weight: normal;
-    font-display: fallback;
-    src:
-      local("Times New Roman"),
-      local("serif"),
-      url("/fonts/lxgw.woff2") format("woff2");
+    font-display: swap;
+    src: url("/fonts/lxgw.woff2") format("woff2");
   }
 
   @font-face {
@@ -64,7 +61,7 @@
       return;
     }
 
-    const font = new FontFace("LXGW WenKai", 'url("/fonts/lxgw.woff2")');
+    const font = new FontFace("LXGW WenKai Subset", 'url("/fonts/lxgw.woff2")');
 
     // Load font and apply when ready
     font

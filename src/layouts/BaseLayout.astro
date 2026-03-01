@@ -43,9 +43,7 @@ const baseHeadProps = robots
 
 const siteContentClass =
 	contentWidth === "wide" ? "site-content site-content-wide" : "site-content";
-
-const footerLinkClass =
-	"text-[var(--color-nav-link)] transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-[var(--color-nav-link-hover)] focus-visible:text-[var(--color-nav-link-hover)]";
+const currentYear = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -58,22 +56,20 @@ const footerLinkClass =
 	<body class="site-layout">
 		<Header />
 		<div class={siteContentClass}>
-			<div class="px-2">
+			<div class="px-[0.3333rem] md:px-2">
 				<main class="site-main">
 					<slot />
 				</main>
 			</div>
 		</div>
 
-		<!-- Global Footer -->
-		<footer class="bg-[var(--color-background)] border-t border-[var(--color-border)]">
-			<div class="mx-auto px-4 w-full max-w-4xl py-3">
-				<div class="site-footer">
-					<span>
-						<a href="https://astro.build/" class={footerLinkClass}>Astro</a> • Minimal
-					</span>
-					<a href="/rss.xml" class={footerLinkClass} title="RSS Feed"> RSS </a>
-				</div>
+		<footer class="site-footer">
+			<div class="site-footer-inner">
+				<span class="site-footer-copy">© {currentYear} {SITE_TITLE}</span>
+				<nav class="site-footer-nav" aria-label="Footer navigation">
+					<a href="/rss.xml" class="site-footer-link" title="RSS Feed">RSS</a>
+					<a href="https://astro.build/" class="site-footer-link">Astro</a>
+				</nav>
 			</div>
 		</footer>
 	</body>

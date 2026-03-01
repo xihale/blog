@@ -2,9 +2,9 @@
 :root {
   color-scheme: light;
 
-  --font-serif: "Times New Roman", "LXGW WenKai";
+  --font-serif: "LXGW WenKai Subset", "Times New Roman", serif;
   --font-sans: var(--font-serif), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "LXGW WenKai", monospace;
+  --font-mono: "JetBrains Mono", "LXGW WenKai Subset", monospace;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -13,6 +13,10 @@
   --space-6: 2rem;
   --space-8: 3rem;
   --space-12: 4rem;
+  --layout-inline-padding: 1rem;
+  --layout-inline-padding-narrow: calc(var(--layout-inline-padding) * 2 / 3);
+  --layout-wide-bleed: 2rem;
+  --layout-wide-bleed-narrow: calc(var(--layout-wide-bleed) * 2 / 3);
 
   --max-width: 56rem;
 
@@ -125,7 +129,7 @@ a {
   display: flex;
   flex-direction: column;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: var(--layout-inline-padding);
   padding-top: 2rem;
   width: 100%;
   max-width: var(--max-width);
@@ -133,11 +137,65 @@ a {
 }
 
 .site-content.site-content-wide {
-  max-width: min(96rem, calc(100vw - 2rem));
+  max-width: min(96rem, calc(100vw - var(--layout-wide-bleed)));
+}
+
+@media (max-width: 768px) {
+  .site-content {
+    padding-inline: var(--layout-inline-padding-narrow);
+  }
+
+  .site-content.site-content-wide {
+    max-width: min(96rem, calc(100vw - var(--layout-wide-bleed-narrow)));
+  }
 }
 
 .site-main { flex-grow: 1; padding-bottom: 2rem; }
-.site-footer { display: flex; align-items: baseline; justify-content: space-between; font-size: 0.875rem; }
+
+.site-footer {
+  margin-top: auto;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+.site-footer-inner {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--layout-inline-padding);
+  padding-block: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: 0.82rem;
+}
+
+.site-footer-copy {
+  color: var(--color-text-muted);
+}
+
+.site-footer-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-footer-link {
+  color: var(--color-text-secondary);
+  transition: color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-footer-link:hover,
+.site-footer-link:focus-visible {
+  color: var(--color-nav-link-hover);
+}
+
+@media (max-width: 768px) {
+  .site-footer-inner {
+    padding-inline: var(--layout-inline-padding-narrow);
+  }
+}
 
 .empty-state {
   display: flex;

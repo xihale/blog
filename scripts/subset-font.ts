@@ -8,10 +8,18 @@ const FONT_CACHE_DIR = join(PROJECT_ROOT, ".fonts");
 const SOURCE_FONT = join(FONT_CACHE_DIR, "LXGWWenKai-Regular.ttf");
 const OUTPUT_DIR = join(PROJECT_ROOT, "public", "fonts");
 const OUTPUT_FONT = join(OUTPUT_DIR, "lxgw.woff2");
+const LOCAL_FONT_CANDIDATES = [
+  "/usr/share/fonts/TTF/LXGWWenKai-Regular.ttf",
+];
 
-const FONT_DOWNLOAD_URL = "https://github.com/lxgw/LxgwWenKai/releases/latest/download/LXGWWenKai-Regular.ttf";
+const FONT_DOWNLOAD_URLS = [
+  "https://github.com/lxgw/LxgwWenKai/releases/latest/download/LXGWWenKai-Regular.ttf",
+  "https://cdn.jsdelivr.net/gh/lxgw/LxgwWenKai@latest/LXGWWenKai-Regular.ttf",
+  "https://fastly.jsdelivr.net/gh/lxgw/LxgwWenKai@latest/LXGWWenKai-Regular.ttf",
+];
 // SHA256 Checksum for LXGWWenKai-Regular.ttf
 const FONT_SHA256 = "b64b7add297672bf04c54ce229678ddf09b4f9671cb1ece1f24c868f4226edd0";
+const DOWNLOAD_TIMEOUT_MS = 30000;
 
 /**
  * 校验文件哈希
@@ -45,7 +53,7 @@ async function extractProjectChars(): Promise<Set<string>> {
   const chars = new Set<string>();
   
   // 使用 Bun.Glob 扫描文件，替代 shell find 命令
-  const glob = new Bun.Glob("**/*.{astro,md,ts,js,json}");
+  const glob = new Bun.Glob("**/*.{astro,md,mdx,ts,tsx,js,jsx,json,html,xml,xsl,txt}");
   
   // 扫描 src 和 public 目录
   const scanDirs = ["src", "public"];
@@ -58,7 +66,7 @@ async function extractProjectChars(): Promise<Set<string>> {
         try {
             const content = await Bun.file(file).text();
             // 提取所有中文字符和常用符号
-            const textChars = content.match(/[一-鿿㐀-䶿豈-﫿＀-￯]/g);
+            const textChars = content.match(/[\p{Script=Han}\u{3000}-\u{303F}\u{FF00}-\u{FFEF}]/gu);
             if (textChars) {
                 textChars.forEach((char: string) => {
                     chars.add(char);
@@ -104,24 +112,53 @@ async function downloadFont() {
     }
   }
 
-  console.log(`Downloading font from ${FONT_DOWNLOAD_URL}...`);
-  try {
-    const response = await fetch(FONT_DOWNLOAD_URL);
-    if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
-    
-    await Bun.write(SOURCE_FONT, response);
-    console.log("Font downloaded successfully!");
-    
-    // Verify again after download
-    if (!await verifyFileHash(SOURCE_FONT, FONT_SHA256)) {
-        console.error("❌ Downloaded file verification failed! The file may be compromised.");
-        process.exit(1);
-    }
-    
-  } catch (error) {
-    console.error("Error downloading font:", error);
-    process.exit(1);
+  for (const localFontPath of LOCAL_FONT_CANDIDATES) {
+    if (!existsSync(localFontPath)) continue;
+
+    const isLocalFontValid = await verifyFileHash(localFontPath, FONT_SHA256);
+    if (!isLocalFontValid) continue;
+
+    await Bun.write(SOURCE_FONT, Bun.file(localFontPath));
+    console.log(`Using local system font: ${localFontPath}`);
+    return;
   }
+
+  for (const fontDownloadURL of FONT_DOWNLOAD_URLS) {
+    console.log(`Downloading font from ${fontDownloadURL}...`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(fontDownloadURL, {
+        signal: controller.signal,
+        redirect: "follow",
+      });
+      if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
+
+      await Bun.write(SOURCE_FONT, response);
+
+      if (!await verifyFileHash(SOURCE_FONT, FONT_SHA256)) {
+        console.error("❌ Downloaded file verification failed! Trying next mirror...");
+        continue;
+      }
+
+      console.log("Font downloaded successfully!");
+      return;
+    } catch (error) {
+      const isAbortError = error instanceof Error && error.name === "AbortError";
+      if (isAbortError) {
+        console.error(`Error downloading from ${fontDownloadURL}: request timed out after ${DOWNLOAD_TIMEOUT_MS / 1000}s.`);
+      } else {
+        console.error(`Error downloading from ${fontDownloadURL}:`, error);
+      }
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  console.error("Error downloading font: all download sources failed.");
+  console.error(`Please manually download LXGWWenKai-Regular.ttf to ${SOURCE_FONT} and rerun.`);
+  process.exit(1);
 }
 
 /**
@@ -135,9 +172,11 @@ function subsetFont(chars: Set<string>): void {
 
   // 将字符转换为 Unicode 范围格式
   const charArray = Array.from(chars).sort();
-  const unicodeList = charArray.map(char => {
-    const code = char.charCodeAt(0);
-    return `U+${code.toString(16).toUpperCase().padStart(4, "0")}`;
+  const unicodeList = charArray.flatMap(char => {
+    const codePoint = char.codePointAt(0);
+    if (codePoint === undefined) return [];
+
+    return [`U+${codePoint.toString(16).toUpperCase().padStart(4, "0")}`];
   }).join(",");
 
   console.log(`Extracted ${charArray.length} unique characters`);

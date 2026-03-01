@@ -96,7 +96,7 @@
   }
 
   @media (max-width: 768px) {
-    margin-inline: -1rem;
+    margin-inline: calc(-1rem * 2 / 3);
     border-radius: 0 !important;
 
     & .gutter { display: none; }
