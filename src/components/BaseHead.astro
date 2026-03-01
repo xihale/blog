@@ -19,6 +19,9 @@ const { title, description, robots } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#fffffd" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#17191d" media="(prefers-color-scheme: dark)" />
 {robots && <meta name="robots" content={robots} />}
 <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 <link rel="sitemap" href="/sitemap.xml" />
@@ -50,3 +53,34 @@ const { title, description, robots } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL("/avatars/avatar.jpg", Astro.url)} />
+
+<script is:inline>
+  (() => {
+    const darkReaderLockSelector = 'meta[name="darkreader-lock"]';
+    const preferredDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const addDarkReaderLock = () => {
+      if (document.head.querySelector(darkReaderLockSelector)) return;
+      const lock = document.createElement("meta");
+      lock.name = "darkreader-lock";
+      document.head.append(lock);
+    };
+
+    const removeDarkReaderLock = () => {
+      const lock = document.head.querySelector(darkReaderLockSelector);
+      if (lock) lock.remove();
+    };
+
+    const syncDarkReaderLock = () => {
+      if (preferredDark.matches) {
+        addDarkReaderLock();
+      } else {
+        removeDarkReaderLock();
+      }
+    };
+
+    syncDarkReaderLock();
+
+    preferredDark.addEventListener?.("change", syncDarkReaderLock);
+  })();
+</script>
