@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { existsSync, mkdirSync } from "node:fs"; // Keep node:fs for sync checks if needed, or switch to Bun completely
+import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 const PROJECT_ROOT = process.cwd();
@@ -20,6 +20,13 @@ const FONT_DOWNLOAD_URLS = [
 // SHA256 Checksum for LXGWWenKai-Regular.ttf
 const FONT_SHA256 = "b64b7add297672bf04c54ce229678ddf09b4f9671cb1ece1f24c868f4226edd0";
 const DOWNLOAD_TIMEOUT_MS = 30000;
+
+function assertNonEmptyFile(filePath: string, label: string): void {
+  const file = Bun.file(filePath);
+  if (!existsSync(filePath) || file.size === 0) {
+    throw new Error(`${label} is missing or empty: ${filePath}`);
+  }
+}
 
 /**
  * 校验文件哈希
@@ -119,6 +126,7 @@ async function downloadFont() {
     if (!isLocalFontValid) continue;
 
     await Bun.write(SOURCE_FONT, Bun.file(localFontPath));
+    assertNonEmptyFile(SOURCE_FONT, "Cached source font");
     console.log(`Using local system font: ${localFontPath}`);
     return;
   }
@@ -142,6 +150,7 @@ async function downloadFont() {
         continue;
       }
 
+      assertNonEmptyFile(SOURCE_FONT, "Downloaded source font");
       console.log("Font downloaded successfully!");
       return;
     } catch (error) {
@@ -220,6 +229,8 @@ function subsetFont(chars: Set<string>): void {
         throw new Error(`pyftsubset exited with code ${proc.exitCode}`);
     }
 
+    assertNonEmptyFile(OUTPUT_FONT, "Subset font output");
+
     console.log(`Font subset successfully created at: ${OUTPUT_FONT}`);
 
     // 显示文件大小对比
@@ -272,5 +283,8 @@ async function main() {
 
 // 运行主函数
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
+  main().catch((error) => {
+    console.error("Fatal error during font subsetting:", error);
+    process.exit(1);
+  });
 }
