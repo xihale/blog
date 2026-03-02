@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 const PROJECT_ROOT = process.cwd();
@@ -12,6 +12,8 @@ const LOCAL_FONT_CANDIDATES = [
   "/usr/share/fonts/TTF/LXGWWenKai-Regular.ttf",
 ];
 
+const FORCE_DOWNLOAD = process.env.SUBSET_FONT_FORCE_DOWNLOAD === "1";
+
 const FONT_DOWNLOAD_URLS = [
   "https://github.com/lxgw/LxgwWenKai/releases/latest/download/LXGWWenKai-Regular.ttf",
   "https://cdn.jsdelivr.net/gh/lxgw/LxgwWenKai@latest/LXGWWenKai-Regular.ttf",
@@ -19,9 +21,11 @@ const FONT_DOWNLOAD_URLS = [
 ];
 // SHA256 Checksum for LXGWWenKai-Regular.ttf
 const FONT_SHA256 = "b64b7add297672bf04c54ce229678ddf09b4f9671cb1ece1f24c868f4226edd0";
-const DOWNLOAD_TIMEOUT_MS = 30000;
+const DOWNLOAD_TIMEOUT_MS = 120000;
+const DOWNLOAD_TIMEOUT_SECONDS = Math.ceil(DOWNLOAD_TIMEOUT_MS / 1000);
 
 let subsetCommand: string[] | null = null;
+let curlAvailable: boolean | null = null;
 
 function trySpawn(command: string, args: string[] = []): boolean {
   try {
@@ -64,6 +68,80 @@ function resolveSubsetCommand(): string[] {
   throw new Error(
     "pyftsubset command is unavailable. Install fonttools (pip install fonttools brotli) and ensure either 'pyftsubset' is in PATH or Python can import fontTools."
   );
+}
+
+function hasCurlSupport(): boolean {
+  if (curlAvailable !== null) {
+    return curlAvailable;
+  }
+  curlAvailable = trySpawn("curl", ["--version"]);
+  return curlAvailable;
+}
+
+function deleteIfExists(filePath: string): void {
+  if (existsSync(filePath)) {
+    rmSync(filePath);
+  }
+}
+
+function downloadWithCurl(url: string): boolean {
+  const args = [
+    "curl",
+    "-fL",
+    "--silent",
+    "--show-error",
+    "--retry",
+    "3",
+    "--retry-all-errors",
+    "--connect-timeout",
+    "10",
+    "--max-time",
+    Math.max(60, DOWNLOAD_TIMEOUT_SECONDS).toString(),
+    "-o",
+    SOURCE_FONT,
+    url,
+  ];
+
+  const proc = Bun.spawnSync(args, {
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+
+  if (proc.exitCode !== 0) {
+    console.error(`curl exited with code ${proc.exitCode}`);
+    return false;
+  }
+
+  return true;
+}
+
+async function downloadWithFetch(url: string): Promise<boolean> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      redirect: "follow",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Download failed: ${response.status} ${response.statusText}`);
+    }
+
+    await Bun.write(SOURCE_FONT, response);
+    return true;
+  } catch (error) {
+    const isAbortError = error instanceof Error && error.name === "AbortError";
+    if (isAbortError) {
+      console.error(`Error downloading from ${url}: request timed out after ${DOWNLOAD_TIMEOUT_SECONDS}s.`);
+    } else {
+      console.error(`Error downloading from ${url}:`, error);
+    }
+    return false;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 function assertNonEmptyFile(filePath: string, label: string): void {
@@ -146,69 +224,77 @@ async function extractProjectChars(): Promise<Set<string>> {
 }
 
 /**
- * 下载字体文件 (使用 Bun 原生 fetch)
+ * 下载字体文件 (使用 curl/fetch)
  */
 async function downloadFont() {
   if (!existsSync(FONT_CACHE_DIR)) {
     mkdirSync(FONT_CACHE_DIR, { recursive: true });
   }
 
-  if (existsSync(SOURCE_FONT)) {
+  if (FORCE_DOWNLOAD) {
+    console.log("SUBSET_FONT_FORCE_DOWNLOAD=1 detected, skipping cached/local fonts.");
+  }
+
+  if (!FORCE_DOWNLOAD && existsSync(SOURCE_FONT)) {
     console.log("Using cached font:", SOURCE_FONT);
     if (!await verifyFileHash(SOURCE_FONT, FONT_SHA256)) {
-        console.error("Cached font is corrupted or tampered. Deleting...");
-        // 这里的 unlinkSync 是 Node 的，Bun 也有自己的 unlink，但为了兼容性或简单起见
-        // 既然我们之前用了 existsSync (node)，这里可以用 fs.unlinkSync，或者直接 Bun.write 覆盖
-        // 为保持纯 Bun 风格，我们可以直接继续下载流程覆盖它
+        console.error("Cached font is corrupted or tampered. Re-downloading...");
+        deleteIfExists(SOURCE_FONT);
     } else {
         return;
     }
   }
 
-  for (const localFontPath of LOCAL_FONT_CANDIDATES) {
-    if (!existsSync(localFontPath)) continue;
+  if (!FORCE_DOWNLOAD) {
+    for (const localFontPath of LOCAL_FONT_CANDIDATES) {
+      if (!existsSync(localFontPath)) continue;
+  
+      const isLocalFontValid = await verifyFileHash(localFontPath, FONT_SHA256);
+      if (!isLocalFontValid) continue;
+  
+      await Bun.write(SOURCE_FONT, Bun.file(localFontPath));
+      assertNonEmptyFile(SOURCE_FONT, "Cached source font");
+      console.log(`Using local system font: ${localFontPath}`);
+      return;
+    }
+  }
 
-    const isLocalFontValid = await verifyFileHash(localFontPath, FONT_SHA256);
-    if (!isLocalFontValid) continue;
-
-    await Bun.write(SOURCE_FONT, Bun.file(localFontPath));
-    assertNonEmptyFile(SOURCE_FONT, "Cached source font");
-    console.log(`Using local system font: ${localFontPath}`);
-    return;
+  const preferCurl = hasCurlSupport();
+  if (preferCurl) {
+    console.log("curl detected, using curl for downloads (with fetch as fallback).");
+  } else {
+    console.log("curl not available, falling back to Bun.fetch for downloads.");
   }
 
   for (const fontDownloadURL of FONT_DOWNLOAD_URLS) {
     console.log(`Downloading font from ${fontDownloadURL}...`);
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT_MS);
+    deleteIfExists(SOURCE_FONT);
 
-    try {
-      const response = await fetch(fontDownloadURL, {
-        signal: controller.signal,
-        redirect: "follow",
-      });
-      if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
-
-      await Bun.write(SOURCE_FONT, response);
-
-      if (!await verifyFileHash(SOURCE_FONT, FONT_SHA256)) {
-        console.error("❌ Downloaded file verification failed! Trying next mirror...");
-        continue;
+    let success = false;
+    if (preferCurl) {
+      success = downloadWithCurl(fontDownloadURL);
+      if (!success) {
+        console.warn("curl download failed, falling back to fetch for this URL...");
+        success = await downloadWithFetch(fontDownloadURL);
       }
-
-      assertNonEmptyFile(SOURCE_FONT, "Downloaded source font");
-      console.log("Font downloaded successfully!");
-      return;
-    } catch (error) {
-      const isAbortError = error instanceof Error && error.name === "AbortError";
-      if (isAbortError) {
-        console.error(`Error downloading from ${fontDownloadURL}: request timed out after ${DOWNLOAD_TIMEOUT_MS / 1000}s.`);
-      } else {
-        console.error(`Error downloading from ${fontDownloadURL}:`, error);
-      }
-    } finally {
-      clearTimeout(timeoutId);
+    } else {
+      success = await downloadWithFetch(fontDownloadURL);
     }
+
+    if (!success) {
+      console.error(`Failed to download font from ${fontDownloadURL}. Trying next mirror...`);
+      continue;
+    }
+
+    if (!await verifyFileHash(SOURCE_FONT, FONT_SHA256)) {
+      console.error("❌ Downloaded file verification failed! Trying next mirror...");
+      deleteIfExists(SOURCE_FONT);
+      continue;
+    }
+
+    assertNonEmptyFile(SOURCE_FONT, "Downloaded source font");
+    console.log("Font downloaded successfully!");
+    return;
   }
 
   console.error("Error downloading font: all download sources failed.");
