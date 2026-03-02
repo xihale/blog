@@ -21,6 +21,51 @@ const FONT_DOWNLOAD_URLS = [
 const FONT_SHA256 = "b64b7add297672bf04c54ce229678ddf09b4f9671cb1ece1f24c868f4226edd0";
 const DOWNLOAD_TIMEOUT_MS = 30000;
 
+let subsetCommand: string[] | null = null;
+
+function trySpawn(command: string, args: string[] = []): boolean {
+  try {
+    const result = Bun.spawnSync([command, ...args], {
+      stdout: "ignore",
+      stderr: "ignore",
+    });
+    return result.exitCode === 0;
+  } catch {
+    return false;
+  }
+}
+
+function resolveSubsetCommand(): string[] {
+  if (subsetCommand) return subsetCommand;
+
+  if (trySpawn("pyftsubset", ["--help"])) {
+    subsetCommand = ["pyftsubset"];
+    return subsetCommand;
+  }
+
+  const pythonCandidates = ["python3", "python"];
+  for (const python of pythonCandidates) {
+    if (!trySpawn(python, ["--version"])) continue;
+
+    try {
+      const importCheck = Bun.spawnSync([python, "-c", "import fontTools"], {
+        stdout: "ignore",
+        stderr: "ignore",
+      });
+      if (importCheck.exitCode === 0) {
+        subsetCommand = [python, "-m", "fontTools.subset"];
+        return subsetCommand;
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  throw new Error(
+    "pyftsubset command is unavailable. Install fonttools (pip install fonttools brotli) and ensure either 'pyftsubset' is in PATH or Python can import fontTools."
+  );
+}
+
 function assertNonEmptyFile(filePath: string, label: string): void {
   const file = Bun.file(filePath);
   if (!existsSync(filePath) || file.size === 0) {
@@ -87,7 +132,8 @@ async function extractProjectChars(): Promise<Set<string>> {
 
   // 添加常用字符和符号
   const commonChars = `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?~'"\ 	
-`;
+
+`;
   const chinesePunctuation = `，。；：？！「」『』（）【】《》〈〉""''`;
 
   [commonChars, chinesePunctuation].forEach(str => {
@@ -190,14 +236,14 @@ function subsetFont(chars: Set<string>): void {
 
   console.log(`Extracted ${charArray.length} unique characters`);
   
-  // 使用 Bun.spawnSync 安全调用外部命令 (避免 shell 注入)
+  const command = subsetCommand ?? resolveSubsetCommand();
   const args = [
-      "pyftsubset",
+      ...command,
       SOURCE_FONT,
       `--unicodes=${unicodeList}`,
       `--output-file=${OUTPUT_FONT}`,
       "--flavor=woff2",
-      "--layout-features-='*'", // 注意：在数组参数中不需要引号包裹 *，除非是 shell 解析。这里直接传值
+      "--layout-features-=*",
       "--glyph-names",
       "--symbol-cmap",
       "--legacy-cmap",
@@ -208,25 +254,17 @@ function subsetFont(chars: Set<string>): void {
       "--drop-tables+=DSIG,LTSH,PCLT,EBSC,MTYP,BASE,GDEF,GPOS,GSUB,JSTF,EBSG,EZDJ,FFTM,OXGS,FEA2,Feat,Silf,Sill,Gloc,Glat",
       "--no-hinting"
   ];
-  
-  // 修正 layout-features 参数，Bun spawn 不需要 shell 转义
-  // pyftsubset 参数有些特殊，shell 中是 --layout-features-='*', 直接调用时可能是 --layout-features-=*
-  // 为了安全和兼容，我们微调一下 args
-  const cleanArgs = args.map(arg => {
-      if (arg.startsWith("--layout-features")) return "--layout-features-=*"; 
-      return arg;
-  });
 
   console.log("Running font subsetting...");
   
   try {
-    const proc = Bun.spawnSync(cleanArgs, {
+    const proc = Bun.spawnSync(args, {
         stdout: "inherit",
         stderr: "inherit"
     });
 
     if (proc.exitCode !== 0) {
-        throw new Error(`pyftsubset exited with code ${proc.exitCode}`);
+        throw new Error(`Font subset command exited with code ${proc.exitCode}`);
     }
 
     assertNonEmptyFile(OUTPUT_FONT, "Subset font output");
@@ -254,11 +292,15 @@ function subsetFont(chars: Set<string>): void {
  */
 function checkTools(): void {
   try {
-    const proc = Bun.spawnSync(["pyftsubset", "--help"], { stdout: "ignore", stderr: "ignore" });
-    if (proc.exitCode !== 0) throw new Error("Not found");
+    const command = resolveSubsetCommand();
+    console.log(`Using font subset command: ${command.join(" ")}`);
   } catch (error) {
-    console.error("Error: pyftsubset not found. Please install fonttools:");
-    console.error("pip install fonttools brotli");
+    console.error("Error: pyftsubset (or Python fontTools) not found.");
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    console.error("Please install fonttools via: pip install fonttools brotli");
+    console.error("Ensure either 'pyftsubset' is in PATH or Python can import fontTools.");
     process.exit(1);
   }
 }
