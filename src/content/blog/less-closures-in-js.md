@@ -103,4 +103,4 @@ description: "深入解析 JavaScript 闭包的 shared lexical environment 机�
 
 ## 附录
 
-在此附带一份由 AI 辅助生成的实验报告，测试过程详见仓库：[xihale/js_shared_lexical_environment](https://github.com/xihale/js_shared_lexical_environment)
+在此附带一份由 AI 辅助生成的实验报告，测试过程详见仓库：[xihale/js_shared_lexcial_environment](https://github.com/xihale/js_shared_lexcial_enviornment)
