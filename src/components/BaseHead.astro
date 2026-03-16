@@ -27,9 +27,9 @@ const { title, description, robots } = Astro.props;
 <link rel="sitemap" href="/sitemap.xml" />
 <link
   rel="alternate"
-  type="application/rss+xml"
+  type="application/atom+xml"
   title={SITE_TITLE}
-  href={new URL("rss.xml", Astro.site)}
+  href={new URL("atom.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
