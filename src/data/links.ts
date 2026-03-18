@@ -24,7 +24,7 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "hill",
-        url: "https://blog.hill-q.com",
+        url: "https://mutsumi.moe",
         avatar: "/avatars/hill-avatar.webp",
         description: "Just Forward",
       },
