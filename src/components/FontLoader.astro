@@ -3,27 +3,11 @@
   FontLoader.astro
   Handles font preloading and global @font-face declarations.
 */
+import "lxgw-wenkai-webfont/lxgwwenkai-regular.css";
 ---
-
-<!-- Font Preload with highest priority -->
-<link
-  rel="preload"
-  href="/fonts/lxgw.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
 
 <!-- Critical CSS for immediate font application -->
 <style is:global>
-  @font-face {
-    font-family: "LXGW WenKai Subset";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/fonts/lxgw.woff2") format("woff2");
-  }
-
   @font-face {
     font-family: "JetBrains Mono";
     font-style: normal;
