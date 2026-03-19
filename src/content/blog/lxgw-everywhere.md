@@ -43,11 +43,17 @@ for k, v in pairs(Font.fontmap) do
 end
 ```
 
-## 博客（自动裁切字体）
+## 博客（动态切片字体）
 
-网上有很多方案，但是我是自己弄了一套很简单的，放到构建流程中直接就可以用了
+以前我使用一套基于 `pyftsubset` 的构建脚本在 CI 环境下动态裁剪字体子集，但那套方案非常依赖 Python 环境，且在处理大字体文件时会极大地拖慢 CI 构建速度。
 
-主要调用 pyftsubset，脚本在 <https://github.com/xihale/blog/blob/astro/scripts/subset-font.ts> ，方便融入 bun 工作流
+现在我改用了 **`lxgw-wenkai-webfont`** 方案。它基于 CSS 的 `unicode-range` 属性，将庞大的字体文件预先切分为数百个微小的切片。浏览器在渲染页面时，会根据实际出现的字符自动下载对应的切片。
+
+这种方案不仅实现了 **零构建开销**，还避免了由于动态内容（如用户留言、搜索结果）导致子集缺失的问题。配置起来也非常简单，直接在 Astro 组件中引入对应的 CSS 即可：
+
+```astro
+import "lxgw-wenkai-webfont/lxgwwenkai-regular.css";
+```
 
 ## 与其他字体合并
 
