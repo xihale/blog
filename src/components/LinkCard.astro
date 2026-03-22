@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { LinkItem } from "../data/links";
 import styles from "./LinkCard.module.css";
 
@@ -23,7 +24,7 @@ try {
   {
     avatar && (
       <div class={styles["avatarWrap"]}>
-        <img src={avatar} alt={name} class={styles["avatar"]} loading="lazy" />
+        <Image src={avatar} alt={name} class={styles["avatar"]} width={40} height={40} loading="lazy" />
       </div>
     )
   }

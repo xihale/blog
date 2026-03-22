@@ -45,7 +45,7 @@ const tags = [...tagMap.entries()]
             <div class="mb-6">
               {posts.map((post) => (
                 <div class="post-card">
-                  <a href={`/blog/${post.id}/`} class="block">
+                  <a href={`/writing/${post.id}/`} class="block">
                     <div class="blog-post-item">
                       <time
                         datetime={formatDateISO(post.data.pubDate)}

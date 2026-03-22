@@ -29,7 +29,7 @@ const years = Object.keys(postsByYear)
   .sort((a, b) => b - a);
 ---
 
-<BaseLayout title={`Blog`} description="All blog posts">
+<BaseLayout title={`Writing`} description="All posts">
   <div class="mx-auto max-w-[120rem]">
     <header class="mb-12 md:mb-16">
       <h1 class="mb-4">Writing</h1>
@@ -44,7 +44,7 @@ const years = Object.keys(postsByYear)
             <div class="mb-6">
               {postsByYear[year]?.map((post) => (
                 <div class="post-card">
-                  <a href={`/blog/${post.id}/`} class="block">
+                  <a href={`/writing/${post.id}/`} class="block">
                     <div class="blog-post-item">
                       <time
                         datetime={formatDateISO(post.data.pubDate)}

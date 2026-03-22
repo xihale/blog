@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import avatarImg from "../assets/images/avatar.jpg";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
@@ -8,10 +10,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <!-- Hero Section with Avatar -->
       <section class="mb-8 text-center">
         <div class="mb-8">
-          <img
-            src="/avatar.jpg"
+          <Image
+            src={avatarImg}
             alt="xihale"
             class="mx-auto h-[150px] w-[150px] rounded-full object-cover"
+            width={150}
+            height={150}
           />
         </div>
         <h1 class="mb-4 text-5xl font-light font-serif text-[var(--color-text)]">

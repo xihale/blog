@@ -4,6 +4,9 @@
 import "../styles/global.css";
 import { SITE_TITLE } from "../consts";
 import FontLoader from "./FontLoader.astro";
+import { getImage } from "astro:assets";
+import avatarImg from "../assets/images/avatar.jpg";
+import faviconImg from "../assets/images/favicon.jpg";
 
 interface Props {
   title: string;
@@ -14,6 +17,10 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, robots } = Astro.props;
+
+const favicon = await getImage({ src: faviconImg, format: "jpg" });
+const ogImage = await getImage({ src: avatarImg, format: "jpg", width: 1200, height: 630 });
+const ogImageUrl = new URL(ogImage.src, Astro.url);
 ---
 
 <!-- Global Metadata -->
@@ -23,7 +30,7 @@ const { title, description, robots } = Astro.props;
 <meta name="theme-color" content="#fffffd" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#17191d" media="(prefers-color-scheme: dark)" />
 {robots && <meta name="robots" content={robots} />}
-<link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+<link rel="icon" type="image/jpeg" href={favicon.src} />
 <link rel="sitemap" href="/sitemap.xml" />
 <link
   rel="alternate"
@@ -45,14 +52,14 @@ const { title, description, robots } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL("/avatars/avatar.jpg", Astro.url)} />
+<meta property="og:image" content={ogImageUrl} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL("/avatars/avatar.jpg", Astro.url)} />
+<meta property="twitter:image" content={ogImageUrl} />
 
 <script is:inline>
   (() => {

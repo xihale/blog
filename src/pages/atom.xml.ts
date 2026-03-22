@@ -34,7 +34,7 @@ export async function GET(context: APIContext) {
   <id>${siteUrl}/</id>
   <generator uri="https://astro.build/">Astro</generator>
   ${sortedPosts.map(post => {
-      const postUrl = `${siteUrl}/blog/${post.id}/`;
+      const postUrl = `${siteUrl}/writing/${post.id}/`;
       const description = post.data.description || '';
       const tags = post.data.tags || [];
       return `
