@@ -2,6 +2,7 @@
 title: "浅谈“知行合一”"
 pubDate: "2025-07-25"
 description: "重新审视王阳明的知行合一：知识与行动的统一性及实践意义"
+tags: ["思考"]
 draft: false
 ---
 

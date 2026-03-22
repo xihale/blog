@@ -1,0 +1,78 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDateShort, formatDateISO } from "../../utils/date";
+import "../../styles/components/article.css";
+
+const posts = await getCollection("blog", ({ data }) => {
+  return data.draft !== true && data.unlisted !== true;
+});
+
+// Collect all tags and group posts by tag
+const tagMap = new Map<string, typeof posts>();
+for (const post of posts) {
+  for (const tag of post.data.tags ?? []) {
+    if (!tagMap.has(tag)) tagMap.set(tag, []);
+    tagMap.get(tag)!.push(post);
+  }
+}
+
+// Sort tags by post count descending
+const tags = [...tagMap.entries()]
+  .map(([tag, posts]) => ({
+    tag,
+    posts: posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+  }))
+  .sort((a, b) => b.posts.length - a.posts.length);
+---
+
+<BaseLayout title="Tags" description="Posts grouped by tag">
+  <div class="mx-auto max-w-[120rem]">
+    <header class="mb-12 md:mb-16">
+      <h1 class="mb-4">Tags</h1>
+    </header>
+
+    <main class="space-y-16">
+      {
+        tags.map(({ tag, posts }) => (
+          <section class="mb-8">
+            <h2 class="text-[var(--color-text-muted)]">
+              #{tag}
+              <span class="text-[var(--color-text-muted)] text-base font-normal ml-2">
+                {posts.length}
+              </span>
+            </h2>
+            <div class="mb-6">
+              {posts.map((post) => (
+                <div class="post-card">
+                  <a href={`/blog/${post.id}/`} class="block">
+                    <div class="blog-post-item">
+                      <time
+                        datetime={formatDateISO(post.data.pubDate)}
+                        class="blog-date"
+                      >
+                        {formatDateShort(post.data.pubDate)}
+                      </time>
+
+                      <div class="blog-content">
+                        <div class="post-title-row">
+                          <h3 class="post-title">{post.data.title}</h3>
+                        </div>
+
+                        {post.data.description && (
+                          <p class="post-description">
+                            {post.data.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </main>
+  </div>
+</BaseLayout>

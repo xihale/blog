@@ -2,6 +2,7 @@
 title: "ADCTF25-WP"
 pubDate: "2025-12-02"
 description: ""
+tags: ["CTF"]
 ---
 
 ## Crypto

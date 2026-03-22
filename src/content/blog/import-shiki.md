@@ -2,6 +2,7 @@
 title: "Mdx 接入 shiki.js + twoslash"
 pubDate: "2024-12-15"
 description: "在 MDX 中集成 shiki.js 代码高亮和 twoslash 类型检查功能"
+tags: ["技术"]
 draft: false
 ---
 

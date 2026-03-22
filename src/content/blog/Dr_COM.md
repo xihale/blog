@@ -2,6 +2,7 @@
 title: "绕过校园网多设备检测"
 pubDate: "2025-09-13"
 description: "校园网突破指南：利用 UA3F 和 MAC 地址修改绕过 Dr.COM 多设备限制"
+tags: ["技术"]
 draft: false
 ---
 
