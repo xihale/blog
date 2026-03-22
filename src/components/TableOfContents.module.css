@@ -198,16 +198,18 @@
   column-gap: 0.2rem;
   min-width: 0;
   opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.toc-node[data-current="true"] > .toc-row {
-  opacity: 1;
+  transition: opacity 0.15s ease;
 }
 
 .toc:hover .toc-row,
 .toc:focus-within .toc-row {
   opacity: 1;
+}
+
+.toc:hover .toc-node[data-current="true"] > .toc-row .toc-link,
+.toc:focus-within .toc-node[data-current="true"] > .toc-row .toc-link {
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 .toc-toggle {
@@ -238,7 +240,7 @@
   line-height: 1;
   opacity: 0;
   transform: rotate(0deg);
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.15s ease;
 }
 
 .toc:hover .toc-toggle::before,
@@ -295,9 +297,7 @@
   outline-offset: 2px;
 }
 
-.toc-link[aria-current="location"] {
-  color: var(--color-text);
-}
+
 
 .toc-panel {
   display: grid;
@@ -363,13 +363,14 @@
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
     padding-right: 0.35rem;
-    opacity: 0.9;
-    transition: opacity 0.24s ease;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.4s;
   }
 
   .toc:hover,
   .toc:focus-within {
     opacity: 1;
+    transition: opacity 0.12s ease;
   }
 }
 
