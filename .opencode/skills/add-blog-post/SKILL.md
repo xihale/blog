@@ -5,20 +5,18 @@ description: Add, migrate, rewrite, or polish blog posts for this Astro blog. Us
 
 # Add Blog Post
 
-Use this repo-specific workflow for anything under `src/content/blog/`.
+Use this for anything under `src/content/blog/`.
 
-## Canonical Location
+## Rules
 
 - Put posts in `src/content/blog/*.md`.
-- The URL slug comes from the filename.
-- Prefer lowercase ASCII kebab-case filenames for new posts, even if the title is Chinese.
-- Good examples: `slow-retreat.md`, `science-and-religion.md`, `sakurada-reset-novel.md`.
+- The slug comes from the filename.
+- Prefer lowercase ASCII kebab-case filenames for new posts.
+- Preserve original publish dates when migrating old posts.
 
-## Active Frontmatter Schema
+## Frontmatter
 
-Check `src/content.config.ts` before changing conventions.
-
-For new posts, use only the schema-backed fields:
+Use:
 
 ```md
 ---
@@ -31,18 +29,11 @@ draft: false
 ```
 
 - Allowed extras: `updatedDate`, `unlisted`.
-- Do **not** add `category` for new posts unless the schema is updated first.
-- Legacy posts may still contain `category`; treat that as historical baggage, not a template.
+- Do not add `category` for new posts. The active schema is in `src/content.config.ts`.
 
-## Date Rules
+## Tags
 
-- For migrated posts, preserve the original publish date when known.
-- For newly written posts, use the actual creation/publish date the user expects.
-- Keep dates as quoted strings in a format Astro can coerce cleanly, ideally `YYYY-MM-DD`.
-
-## Tag Rules
-
-The repo's cleaned-up tag set is:
+Only use these tags unless the repo changes:
 
 - `技术`
 - `思考`
@@ -52,56 +43,31 @@ The repo's cleaned-up tag set is:
 - `文摘`
 - `法律`
 
-Guidelines:
+Prefer 1 tag. Use 2 only if really needed. Keep tags consistent because `/tags` is generated from `tags` frontmatter.
 
-- Reuse existing tags whenever possible.
-- Usually assign 1 tag; use 2 only when it is genuinely useful.
-- Avoid synonyms and legacy fragments such as `哲思`, `哲学`, `番评`, `ani`, `aur`, `arch`, `Network`, `Law`, `China`, `zine`.
-- Tag consistency matters because `/tags` is generated directly from `tags` frontmatter.
+## Migration
 
-## Writing and Migration Rules
-
-- Keep the author's voice; do not over-normalize the prose.
-- If the source post is obviously rough, duplicated, placeholder-only, or the user asks for a rewrite, rewrite it into clean Markdown with the same core meaning.
-- When migrating from Hexo or similar systems, remove unsupported syntax such as:
-  - `{% note %}`
-  - `{% tabs %}`
-  - `{% blockquote %}`
-  - `{% center %}`
-  - theme-specific raw HTML that is only there to satisfy the old theme
+- Keep the author's voice.
+- If the source is rough and the user wants a rewrite, rewrite it into clean Markdown with the same meaning.
+- Remove old Hexo/theme syntax like `{% note %}`, `{% tabs %}`, `{% blockquote %}`, `{% center %}`.
 - Convert old constructs into standard Markdown.
-- Use repo-supported `:::` admonitions only when they help.
-- Deduplicate repeated quotes or lines copied over from old drafts.
-- Fix obvious typos and broken punctuation while preserving intent.
-
-## Practical Heuristics
-
-- If a post has no useful description, write a concise one-sentence summary.
-- If the old title is weak but the user asked for rewriting, improve the title; otherwise preserve it.
-- Prefer readable paragraphs over decorative filler or self-conscious prefaces.
-- When rewriting, cut apology language, empty throat-clearing, and obvious repetition first.
+- Deduplicate repeated lines and fix obvious typos.
 
 ## Validation
 
-After adding or editing posts, run:
+Run one of:
 
 ```bash
 autocorrect --strict --fix src/content/blog/
 ```
 
-or:
-
 ```bash
 bun run lint
 ```
 
-Run a broader build when content structure or navigation changes, or when you want stronger verification:
+Run `bun run build` if content structure or navigation changed.
 
-```bash
-bun run build
-```
-
-## Git Hygiene
+## Git
 
 - Do not commit unless the user explicitly asks.
-- When committing, keep the message focused on the content change, e.g. `post: add ...`, `post: rewrite ...`, `refactor: clean up tags ...`.
+- Typical commit prefixes here are `post:`, `docs:`, `refactor:`.
