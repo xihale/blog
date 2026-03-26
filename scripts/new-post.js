@@ -44,14 +44,14 @@ function parseArgs(argv) {
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(`Usage: bun run new "文章标题" [选项]
 
-选项:
+选项：
   -d, --desc TEXT     描述（一句话概括文章内容）
   -t, --tags T1,T2   标签，逗号分隔，最多 2 个
-                      可选: ${ALLOWED_TAGS.join(', ')}
+                      可选：${ALLOWED_TAGS.join(', ')}
       --draft         标记为草稿 (draft: true)
   -h, --help          显示帮助
 
-示例:
+示例：
   bun run new "我的第一篇文章"
   bun run new "深入理解 Astro" -d "从零学习 Astro 框架" -t 技术
   bun run new "周末见闻" -t 随笔 --draft`);
@@ -71,8 +71,8 @@ function parseArgs(argv) {
       const raw = (args[++i] || '').split(',').map(s => s.trim()).filter(Boolean);
       const invalid = raw.filter(t => !ALLOWED_TAGS.includes(t));
       if (invalid.length > 0) {
-        console.error(`Error: 未知标签: ${invalid.join(', ')}`);
-        console.error(`可选标签: ${ALLOWED_TAGS.join(', ')}`);
+        console.error(`Error: 未知标签：${invalid.join(', ')}`);
+        console.error(`可选标签：${ALLOWED_TAGS.join(', ')}`);
         process.exit(1);
       }
       if (raw.length > 2) {
