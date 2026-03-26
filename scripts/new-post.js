@@ -7,87 +7,110 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 格式化日期为 YYYY-MM-DD (frontmatter 格式)
-function formatDateForFrontmatter(date) {
+const ALLOWED_TAGS = ['技术', '思考', '番谈', 'CTF', '随笔', '文摘', '法律'];
+
+function formatDate(date) {
   return date.toISOString().split('T')[0];
 }
 
-// 格式化日期为可读格式 (显示用)
-function formatDateDisplay(date) {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
-}
-
-// 转换标题为文件名 (kebab-case)
 function slugify(title) {
-  const timestamp = Date.now();
-  const baseSlug = title
+  return title
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, '') // 移除特殊字符，保留字母、数字、下划线、横线和空格
-    .replace(/\s+/g, '-'); // 将空格替换为横线
-
-  return baseSlug || `post-${timestamp}`; // 如果生成空字符串，使用时间戳
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || `post-${Date.now()}`;
 }
 
-// 生成 frontmatter
-function generateFrontmatter(title, description = '', tags = [], category = [], draft = true) {
-  const pubDate = formatDateForFrontmatter(new Date());
+function generateFrontmatter(title, description, tags, draft) {
+  const pubDate = formatDate(new Date());
 
-  return `---
-title: "${title}"
-pubDate: "${pubDate}"
-description: "${description}"
-${tags.length > 0 ? `tags: [${tags.map(tag => `"${tag}"`).join(', ')}]\n` : ''}${category.length > 0 ? `category: [${category.map(cat => `"${cat}"`).join(', ')}]\n` : ''}draft: ${draft}
----
-
-`;
+  let fm = '---\n';
+  fm += `title: "${title}"\n`;
+  fm += `pubDate: "${pubDate}"\n`;
+  fm += `description: "${description}"\n`;
+  if (tags.length > 0) {
+    fm += `tags: [${tags.map(t => `"${t}"`).join(', ')}]\n`;
+  }
+  fm += `draft: ${draft}\n`;
+  fm += '---\n\n';
+  return fm;
 }
 
-function main() {
-  const args = process.argv.slice(2);
+function parseArgs(argv) {
+  const args = argv.slice(2);
 
-  if (args.length === 0) {
-    console.error('Usage: bun run new "Article Title" [Article Description]');
-    process.exit(1);
+  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+    console.log(`Usage: bun run new "文章标题" [选项]
+
+选项:
+  -d, --desc TEXT     描述（一句话概括文章内容）
+  -t, --tags T1,T2   标签，逗号分隔，最多 2 个
+                      可选: ${ALLOWED_TAGS.join(', ')}
+      --draft         标记为草稿 (draft: true)
+  -h, --help          显示帮助
+
+示例:
+  bun run new "我的第一篇文章"
+  bun run new "深入理解 Astro" -d "从零学习 Astro 框架" -t 技术
+  bun run new "周末见闻" -t 随笔 --draft`);
+    process.exit(0);
   }
 
   const title = args[0];
-  const description = args.slice(1).join(' ') || '';
+  let description = '';
+  let tags = [];
+  let draft = false;
+
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === '-d' || arg === '--desc') {
+      description = args[++i] || '';
+    } else if (arg === '-t' || arg === '--tags') {
+      const raw = (args[++i] || '').split(',').map(s => s.trim()).filter(Boolean);
+      const invalid = raw.filter(t => !ALLOWED_TAGS.includes(t));
+      if (invalid.length > 0) {
+        console.error(`Error: 未知标签: ${invalid.join(', ')}`);
+        console.error(`可选标签: ${ALLOWED_TAGS.join(', ')}`);
+        process.exit(1);
+      }
+      if (raw.length > 2) {
+        console.error('Error: 标签最多 2 个');
+        process.exit(1);
+      }
+      tags = raw;
+    } else if (arg === '--draft') {
+      draft = true;
+    }
+  }
+
+  return { title, description, tags, draft };
+}
+
+function main() {
+  const { title, description, tags, draft } = parseArgs(process.argv);
 
   const slug = slugify(title);
   const contentDir = path.join(__dirname, '../src/content/blog');
   const filePath = path.join(contentDir, `${slug}.md`);
 
-  // 检查文件是否已存在
   if (fs.existsSync(filePath)) {
-    console.error(`Error: Article "${slug}.md" already exists!`);
+    console.error(`Error: ${slug}.md already exists!`);
     process.exit(1);
   }
 
-  // 确保内容目录存在
   if (!fs.existsSync(contentDir)) {
     fs.mkdirSync(contentDir, { recursive: true });
   }
 
-  // 生成 frontmatter
-  const frontmatter = generateFrontmatter(title, description);
-
-  // 写入文件
+  const frontmatter = generateFrontmatter(title, description, tags, draft);
   fs.writeFileSync(filePath, frontmatter, 'utf8');
 
-  console.log(`✅ Created new article: ${slug}.md`);
-  console.log(`📝 Path: ${filePath}`);
-  console.log(`📅 Published: ${formatDateDisplay(new Date())}`);
-  console.log('\n📋 Frontmatter generated:');
-  console.log(frontmatter);
-  console.log(`⚠️  Don't forget to:`);
-  console.log(`   - Fill in description if empty`);
-  console.log(`   - Set tags and category`);
-  console.log(`   - Change draft: true to draft: false when ready`);
+  console.log(`Created: src/content/blog/${slug}.md`);
+  if (description) console.log(`Desc: ${description}`);
+  if (tags.length) console.log(`Tags: ${tags.join(', ')}`);
+  console.log(`Draft: ${draft}`);
 }
 
 main();

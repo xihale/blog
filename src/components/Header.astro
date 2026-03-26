@@ -8,9 +8,14 @@ const navItems = [
   { href: "/writing", label: "Writing" },
   { href: "/links", label: "Links" },
   { href: "/about", label: "About" },
+  { href: "https://intro.xihale.top", label: "Intro", external: true },
 ];
 
-const isCurrent = (href: string) => {
+const isCurrent = (href: string, external?: boolean) => {
+  if (external) {
+    return false;
+  }
+
   if (href === "/") {
     return currentPath === "/";
   }
@@ -21,21 +26,21 @@ const isCurrent = (href: string) => {
 
 <header class={styles["siteHeader"]}>
   <div class={styles["headerContainer"]}>
-    <!-- Logo/Title -->
     <nav class={styles["brandTitle"]}>
       <a href="/" class={styles["navLink"]}>
         {SITE_TITLE}
       </a>
     </nav>
 
-    <!-- Desktop Navigation Menu -->
     <nav class={styles["navMenuDesktop"]}>
       {
-        navItems.map(({ href, label }) => (
+        navItems.map(({ href, label, external }) => (
           <a
             href={href}
-            class:list={[styles["navLink"], isCurrent(href) && styles["navLinkActive"]]}
-            aria-current={isCurrent(href) ? "page" : undefined}
+            class:list={[styles["navLink"], isCurrent(href, external) && styles["navLinkActive"]]}
+            aria-current={isCurrent(href, external) ? "page" : undefined}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer noopener" : undefined}
           >
             {label}
           </a>
@@ -43,7 +48,6 @@ const isCurrent = (href: string) => {
       }
     </nav>
 
-    <!-- Mobile menu button -->
     <button
       class={styles["mobileMenuToggle"]}
       aria-label="Toggle navigation menu"
@@ -57,15 +61,16 @@ const isCurrent = (href: string) => {
     </button>
   </div>
 
-  <!-- Mobile Navigation Menu -->
   <nav class={styles["navMenuMobile"]} data-open="false" id="nav-menu">
     <div class={styles["navMenuContainer"]}>
       {
-        navItems.map(({ href, label }) => (
+        navItems.map(({ href, label, external }) => (
           <a
             href={href}
-            class:list={[styles["navLink"], isCurrent(href) && styles["navLinkActive"]]}
-            aria-current={isCurrent(href) ? "page" : undefined}
+            class:list={[styles["navLink"], isCurrent(href, external) && styles["navLinkActive"]]}
+            aria-current={isCurrent(href, external) ? "page" : undefined}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer noopener" : undefined}
           >
             {label}
           </a>
@@ -82,10 +87,6 @@ const isCurrent = (href: string) => {
 
     if (!button || !nav) return;
 
-    // Remove existing listeners to prevent duplicates if any (though unlikely with ViewTransitions replacing DOM)
-    // Actually, simple cloneNode or just one-time setup is tricky with ViewTransitions.
-    // The previous code was fine, just rewriting for style.
-
     const toggleMenu = () => {
       const isOpen = nav.dataset["open"] !== "true";
       nav.dataset["open"] = isOpen ? "true" : "false";
@@ -96,6 +97,5 @@ const isCurrent = (href: string) => {
     button.addEventListener("click", toggleMenu);
   };
 
-  // Runs on initial load and after every View Transition navigation
   document.addEventListener("astro:page-load", initMobileMenu);
 </script>

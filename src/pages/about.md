@@ -33,4 +33,15 @@ However, until now, I haven't achieved them; these are still just future goals t
 
 - [Astro](https://astro.build/) — Fast, content-first framework
 
+## Project Index
+
+I now keep a dedicated navigation site for the broader public trail around my work:
+
+- projects and tools
+- published pages and microsites
+- npm packages and reusable templates
+- a smaller set of contributions that feel substantial enough to surface
+
+You can browse it here: [xihale intro](https://intro.xihale.top)
+
 Feel free to reach out with questions or suggestions.
