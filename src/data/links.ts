@@ -7,6 +7,7 @@ import personalAvatar from "../assets/images/personal-avatar.png";
 import stephenlengAvatar from "../assets/images/stephenleng.jpg";
 import gamernotitleAvatar from "../assets/images/gamernotitle-avatar.png";
 import briceAvatar from "../assets/images/brice-avatar.webp";
+import dongzhuoAvatar from "../assets/images/dongzhuo-avatar.png";
 
 export interface LinkItem {
   name: string;
@@ -62,6 +63,12 @@ export const linkGroups: LinkGroup[] = [
         avatar: briceAvatar,
         description: "AI Systems, Mathematics, Computer Science and Quant Blog",
       },
+      {
+        name: "董卓有话说",
+        url: "https://sishen.xihale.top/",
+        avatar: dongzhuoAvatar,
+        description: "作为一名学生，我希望能在干中学",
+      },
     ],
   },
   {
@@ -85,6 +92,11 @@ export const linkGroups: LinkGroup[] = [
         avatar: stephenlengAvatar,
         description:
           "Intellectual History, Philosophy of History, and Theory of Human Nature",
+      },
+      {
+        name: "寥雪峰的周报",
+        url: "https://www.tianxianzi.me/",
+        description: "寥雪峰的周报",
       },
     ],
   },
