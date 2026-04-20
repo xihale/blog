@@ -22,21 +22,23 @@ main {
   --color-accent-subtle: #e9f2f0;
 }
 
-main[data-theme='dark'] {
-  /* Dark theme overrides */
-  --color-fg-default: hsl(215 13% 88%);
-  --color-fg-muted: hsl(215 10% 72%);
-  --color-fg-subtle: hsl(215 8% 58%);
-  --color-canvas-default: #17191d;
-  --color-canvas-overlay: #1f2329;
-  --color-canvas-inset: #0d1117;
-  --color-canvas-subtle: #1f2329;
-  --color-border-default: #e0e0e0;
-  --color-border-muted: #363d47;
-  --color-accent-fg: #78ab9e;
-  --color-accent-emphasis: #78ab9e;
-  --color-accent-muted: rgba(120, 171, 158, 0.4);
-  --color-accent-subtle: rgba(120, 171, 158, 0.15);
+@media (prefers-color-scheme: dark) {
+  main {
+    /* Dark theme overrides */
+    --color-fg-default: hsl(215 13% 88%);
+    --color-fg-muted: hsl(215 10% 72%);
+    --color-fg-subtle: hsl(215 8% 58%);
+    --color-canvas-default: #17191d;
+    --color-canvas-overlay: #1f2329;
+    --color-canvas-inset: #0d1117;
+    --color-canvas-subtle: #1f2329;
+    --color-border-default: #e0e0e0;
+    --color-border-muted: #363d47;
+    --color-accent-fg: #78ab9e;
+    --color-accent-emphasis: #78ab9e;
+    --color-accent-muted: rgba(120, 171, 158, 0.4);
+    --color-accent-subtle: rgba(120, 171, 158, 0.15);
+  }
 }
 
 /* Base Styles */

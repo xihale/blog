@@ -5,6 +5,8 @@ import phrinkyAvatar from "../assets/images/phrinky-avatar.webp";
 import czyAvatar from "../assets/images/czy-avatar.jpg";
 import personalAvatar from "../assets/images/personal-avatar.png";
 import stephenlengAvatar from "../assets/images/stephenleng.jpg";
+import gamernotitleAvatar from "../assets/images/gamernotitle-avatar.png";
+import briceAvatar from "../assets/images/brice-avatar.webp";
 
 export interface LinkItem {
   name: string;
@@ -47,6 +49,18 @@ export const linkGroups: LinkGroup[] = [
         url: "https://iamczy.com/",
         avatar: czyAvatar,
         description: "只会吃",
+      },
+      {
+        name: "GamerNoTitle",
+        url: "https://bili33.top",
+        avatar: gamernotitleAvatar,
+        description: "The blog of a fameless developer & CTFer. Tech Otakus Save the World.",
+      },
+      {
+        name: "Brice",
+        url: "https://brice6.pages.dev/",
+        avatar: briceAvatar,
+        description: "AI Systems, Mathematics, Computer Science and Quant Blog",
       },
     ],
   },
