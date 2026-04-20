@@ -1,0 +1,137 @@
+/* Giscus Neo-Brutalist Theme Overhaul */
+@import url('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.css');
+
+main {
+  --font-serif: "LXGW WenKai Screen", "Times New Roman", serif;
+  --font-sans: var(--font-serif), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Light theme overrides */
+  --color-fg-default: hsl(220 10% 15%);
+  --color-fg-muted: hsl(220 10% 30%);
+  --color-fg-subtle: hsl(220 10% 50%);
+  --color-canvas-default: #fffffd;
+  --color-canvas-overlay: #fffffd;
+  --color-canvas-inset: #f3f3f2;
+  --color-canvas-subtle: #f3f3f2;
+  --color-border-default: #1a1a1a;
+  --color-border-muted: #cdcdcc;
+  --color-accent-fg: #2d7a66;
+  --color-accent-emphasis: #2d7a66;
+  --color-accent-muted: rgba(45, 122, 102, 0.4);
+  --color-accent-subtle: #e9f2f0;
+}
+
+main[data-theme='dark'] {
+  /* Dark theme overrides */
+  --color-fg-default: hsl(215 13% 88%);
+  --color-fg-muted: hsl(215 10% 72%);
+  --color-fg-subtle: hsl(215 8% 58%);
+  --color-canvas-default: #17191d;
+  --color-canvas-overlay: #1f2329;
+  --color-canvas-inset: #0d1117;
+  --color-canvas-subtle: #1f2329;
+  --color-border-default: #e0e0e0;
+  --color-border-muted: #363d47;
+  --color-accent-fg: #78ab9e;
+  --color-accent-emphasis: #78ab9e;
+  --color-accent-muted: rgba(120, 171, 158, 0.4);
+  --color-accent-subtle: rgba(120, 171, 158, 0.15);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
+  font-family: var(--font-sans) !important;
+  transition: none !important;
+}
+
+/* Container spacing for shadows */
+main.giscus-frame {
+  padding-right: 8px !important;
+  overflow-x: visible !important;
+}
+
+.giscus-comment {
+  border: 2px solid var(--color-border-default) !important;
+  margin-bottom: 24px !important;
+  background-color: var(--color-canvas-default) !important;
+  box-shadow: 4px 4px 0 0 var(--color-border-default) !important;
+}
+
+.giscus-comment-header {
+  border-bottom: 2px solid var(--color-border-default) !important;
+  background-color: var(--color-canvas-subtle) !important;
+  padding: 8px 16px !important;
+}
+
+.giscus-comment-content {
+  padding: 16px !important;
+}
+
+.giscus-editor {
+  border: 2px solid var(--color-border-default) !important;
+  box-shadow: 4px 4px 0 0 var(--color-border-default) !important;
+  background-color: var(--color-canvas-default) !important;
+}
+
+.giscus-editor-header {
+  border-bottom: 2px solid var(--color-border-default) !important;
+  background-color: var(--color-canvas-subtle) !important;
+}
+
+.giscus-editor-textarea {
+  background-color: var(--color-canvas-default) !important;
+  padding: 12px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 1rem !important;
+}
+
+/* Metadata / Count Header */
+.giscus-results-summary {
+  font-family: var(--font-mono) !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  border: 2px solid var(--color-border-default) !important;
+  padding: 12px 16px !important;
+  margin-bottom: 32px !important;
+  background: var(--color-canvas-subtle) !important;
+  box-shadow: 3px 3px 0 0 var(--color-border-default) !important;
+}
+
+/* Buttons */
+button.giscus-button-primary {
+  background-color: var(--color-accent-emphasis) !important;
+  color: #fff !important;
+  border: 2px solid var(--color-border-default) !important;
+  padding: 8px 32px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  box-shadow: 4px 4px 0 0 var(--color-border-default) !important;
+  cursor: pointer !important;
+}
+
+button.giscus-button-primary:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 0 var(--color-border-default) !important;
+}
+
+/* GitHub Login Button */
+[href*="github.com/login"] {
+  display: inline-block !important;
+  border: 2px solid var(--color-border-default) !important;
+  box-shadow: 4px 4px 0 0 var(--color-border-default) !important;
+  padding: 12px 24px !important;
+  background: var(--color-canvas-subtle) !important;
+  color: var(--color-fg-default) !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  margin-top: 16px !important;
+}
+
+.giscus-footer {
+  display: none !important;
+}

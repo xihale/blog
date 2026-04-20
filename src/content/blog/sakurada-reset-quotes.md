@@ -3,7 +3,6 @@ title: "重启咲良田（文摘）"
 pubDate: "2024-03-02"
 description: "轻小说《重启咲良田》原文摘录：关于爱、记忆、勇气与温柔"
 tags: ["文摘", "番谈"]
-comments: true
 category: ["思考"]
 draft: false
 ---

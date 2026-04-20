@@ -4,7 +4,6 @@ pubDate: "2023-07-16"
 updatedDate: "2024-12-07"
 description: "AUR 包发布流程：从准备到上传 Arch Linux 用户仓库"
 tags: ["技术"]
-comments: true
 draft: false
 ---
 

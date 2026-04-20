@@ -3,7 +3,6 @@ title: "不过，这大概也不妨碍明天继续"
 pubDate: "2026-03-22"
 description: "荒诞从武器变为消费品，现代人逐渐从内部退场，感受变薄、判断后撤，活着成为一种外观。"
 tags: ["思考"]
-comments: true
 category: ["思考"]
 draft: false
 ---

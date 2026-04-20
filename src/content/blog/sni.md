@@ -4,7 +4,6 @@ pubDate: "2024-12-06"
 updatedDate: "2025-09-10"
 description: "sni 的设计缺陷导致阻断攻击变得很轻松，而 sni 的宽松设计也致使我们有绕过阻断的方法，我们同时获得了矛和盾。"
 tags: ["技术"]
-comments: true
 category: ["实践"]
 draft: false
 ---

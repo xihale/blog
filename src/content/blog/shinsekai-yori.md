@@ -3,7 +3,6 @@ title: "来自新世界"
 pubDate: "2023-09-30"
 description: "《来自新世界》深度分析：阶级压迫、精英政治与被压迫者的革命"
 tags: ["番谈"]
-comments: true
 category: ["思考"]
 draft: false
 ---

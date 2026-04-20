@@ -3,7 +3,6 @@ title: "重启咲良田（小说）"
 pubDate: "2024-03-02"
 description: "轻小说《重启咲良田》深度分析：思维实验、人物塑造与爱的哲学"
 tags: ["番谈"]
-comments: true
 category: ["思考"]
 draft: false
 ---

@@ -90,7 +90,7 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
         }
 
         <div class="article-main">
-          <main class="article-content mb-8 body-text">
+          <main class="article-content body-text">
             <slot />
           </main>
 
@@ -126,7 +126,7 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
             <script is:inline>mermaid.initialize({startOnLoad:true,theme:"neutral"});</script>
           )}
 
-          {comments && slug && <Comments slug={slug} title={title} />}
+          {comments === true && slug && <Comments slug={slug} title={title} />}
         </div>
       </div>
     </article>

@@ -3,7 +3,6 @@ title: "科学与宗教"
 pubDate: "2024-01-29"
 description: "科学与宗教的本质区别：力量源泉、信仰基础与讽刺"
 tags: ["思考"]
-comments: true
 category: ["思考"]
 draft: false
 ---

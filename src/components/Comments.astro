@@ -1,225 +1,118 @@
 ---
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { formatDate } from "../utils/date";
-import { createRenderer } from 'rehype-expressive-code';
-import { toHtml } from 'hast-util-to-html';
+/**
+ * Giscus Comments Component
+ * Refactored from local JSON sync to Giscus (GitHub Discussions)
+ */
 
-import "../styles/components/comments.css";
+interface Props {
+  slug: string;
+  title: string;
+}
 
 const { slug, title } = Astro.props;
 
-let ec = null;
-try {
-  const result = await createRenderer({
-    themes: ['vitesse-dark', 'vitesse-light'],
-    defaultProps: {
-      wrap: true,
-      showLineNumbers: true
-    }
-  });
-  ec = result.ec;
-} catch (e) {
-  console.warn("Comments: Expressive Code initialized failed, falling back to standard code blocks.", e);
-}
-
-let entry: {
-  issueNumber?: number;
-  issueUrl?: string;
-  articleTitle: string;
-  comments: Array<{
-    id: number;
-    user: string;
-    avatarUrl: string;
-    userUrl: string;
-    createdAt: string;
-    commentUrl?: string;
-    bodyHtml: string;
-  }>;
-} | null = null;
-
-try {
-  const raw = readFileSync(join(process.cwd(), "src/data/comments.json"), "utf-8");
-  const data = JSON.parse(raw);
-  entry = data[slug] || null;
-} catch {}
-
-entry ??= {
-  articleTitle: title,
-  comments: [],
-};
-
-const { issueNumber, issueUrl, articleTitle, comments } = entry;
-const hasIssueThread = Boolean(issueUrl);
-const commentCount = comments.length;
-const commentsCount = commentCount.toString().padStart(2, "0");
-const commentSummary = !hasIssueThread
-  ? `Comments are enabled for “${articleTitle}”, but this build does not have a synced thread yet.`
-  : commentCount === 0
-    ? `No notes yet. Discussion lives on GitHub issue #${issueNumber}.`
-    : `${commentsCount} note${commentCount === 1 ? "" : "s"} mirrored from GitHub issue #${issueNumber}.`;
-const footerCopy = !hasIssueThread
-  ? "The thread link will appear after the first writable sync."
-  : commentCount === 0
-    ? "Be the first to leave a note."
-    : "Reply on GitHub — new notes sync back here.";
-
-const processedComments = await Promise.all(comments.map(async (c) => {
-  let html = c.bodyHtml;
-  
-  const preCodeRegex = /<pre\b[^>]*>\s*<code(?:\s+class="language-([^"]+)")?[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/g;
-  
-  let newHtml = html;
-  const matches = [...html.matchAll(preCodeRegex)];
-  
-  for (const match of matches) {
-    const [fullMatch, lang = 'text', code = ''] = match;
-    
-    const unescapedCode = code
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&')
-      .replace(/&#39;/g, "'")
-      .replace(/&quot;/g, '"');
-    
-    try {
-      if (ec) {
-        const result = await ec.render({
-          code: unescapedCode.trim(),
-          language: lang,
-          meta: ''
-        });
-        
-        const blockHtml = toHtml(result.renderedGroupAst);
-        if (blockHtml) {
-          newHtml = newHtml.split(fullMatch).join(blockHtml);
-        }
-      }
-    } catch (e) {
-      console.error('Expressive Code render error:', e);
-    }
-  }
-  
-  return {
-    ...c,
-    bodyHtml: newHtml,
-    commentUrl: c.commentUrl || `${issueUrl}#issuecomment-${c.id}`,
-  };
-}));
-
-const baseStyles = ec ? await ec.getBaseStyles() : "";
+// --- Giscus Configuration ---
+// TO USER: Replace the following values with your own from https://giscus.app/
+const REPO = "xihale/blog";
+const REPO_ID = "R_kgDOMq2pmQ";
+const CATEGORY = "General";
+const CATEGORY_ID = "DIC_kwDOMq2pmc4C7P7J";
+// ----------------------------
 ---
 
-<section class="comments-section" aria-labelledby="comments-title">
-  <header class="comments-header">
-    <div class="comments-header-copy">
-      <span class="comments-label">// Discussion</span>
-      <h2 id="comments-title" class="comments-title">Reader notes</h2>
-      <p class="comments-summary">{commentSummary}</p>
+<section class="comments-section">
+  <div class="comments-container">
+    <div class="giscus-wrapper">
+      <div class="giscus"></div>
     </div>
-
-    {hasIssueThread
-      ? (
-        <a class="comments-thread-link" href={issueUrl} target="_blank" rel="noopener">
-          View thread ↗
-        </a>
-      )
-      : (
-        <span class="comments-thread-status">Thread pending</span>
-      )}
-  </header>
-
-  {commentCount === 0
-    ? (
-      <div class="comments-empty">
-        <p class="comments-empty-copy">
-          {hasIssueThread
-            ? "No notes yet. Leave the first note on GitHub and it will appear here after the next sync."
-            : "This preview is waiting for the GitHub thread to be provisioned."}
-        </p>
-      </div>
-    )
-    : (
-      <div class="comments-list">
-        {processedComments.map((c) => (
-          <article class="comment-card">
-            <a href={c.userUrl} target="_blank" rel="noopener" class="comment-avatar-link">
-              <div class="comment-avatar-wrapper">
-                <img
-                  class="comment-avatar"
-                  src={c.avatarUrl}
-                  alt={c.user}
-                  width="40"
-                  height="40"
-                  decoding="async"
-                />
-              </div>
-            </a>
-
-            <div class="comment-content">
-              <header class="comment-meta">
-                <a class="comment-author" href={c.userUrl} target="_blank" rel="noopener">
-                  @{c.user}
-                </a>
-                <span class="comment-meta-separator">·</span>
-                <time class="comment-date" datetime={c.createdAt}>
-                  {formatDate(c.createdAt)}
-                </time>
-                <span class="comment-meta-separator">·</span>
-                <a class="comment-permalink" href={c.commentUrl} target="_blank" rel="noopener">
-                  permalink ↗
-                </a>
-              </header>
-
-              <div class="comment-body article-content body-text" set:html={c.bodyHtml} />
-            </div>
-          </article>
-        ))}
-      </div>
-    )}
-
-  <div class="comment-footer">
-    <p class="comment-footer-copy">
-      {hasIssueThread
-        ? (
-          <>
-            <a
-              class="comment-inline-link"
-              href={`${issueUrl}#new_comment_field`}
-              target="_blank"
-              rel="noopener"
-            >
-              Reply on GitHub
-            </a>{" "}
-            — {footerCopy}
-          </>
-        )
-        : footerCopy}
-    </p>
-    {hasIssueThread
-      ? null
-      : <span class="comment-thread-note">Awaiting first sync</span>}
   </div>
 </section>
 
-{/* 注入 Expressive Code 的基础样式 */}
-<style is:global set:html={baseStyles} />
+<script is:inline
+  src="https://giscus.app/client.js"
+  data-repo={REPO}
+  data-repo-id={REPO_ID}
+  data-category={CATEGORY}
+  data-category-id={CATEGORY_ID}
+  data-mapping="pathname"
+  data-strict="0"
+  data-reactions-enabled="0"
+  data-input-position="top"
+  data-theme="https://xihale.top/styles/giscus.css"
+  data-lang="zh-CN"
+  data-loading="lazy"
+  crossorigin="anonymous"
+  async
+></script>
 
 <style>
-  :global(.comment-body .expressive-code) {
-    margin-block: var(--space-6);
+  .comments-section {
+    margin-top: var(--space-12);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--color-header-divider);
+    position: relative;
+    /* Ensure no clipping of shadows */
+    padding-right: 8px; 
+    overflow: visible;
   }
-  :global(.comment-body .expressive-code .frame) {
-    border-radius: 0 !important;
+
+  .comments-container {
+    max-width: 100%;
+    overflow: visible;
   }
-  :global(.comment-body .expressive-code pre) {
-    border-radius: 0 !important;
+
+  .giscus-wrapper {
+    min-height: 150px;
+    overflow: visible;
   }
-  /* 隐藏多余的默认 pre 样式，防止 Expressive Code 未生效时出现双重背景 */
-  .comment-body :global(pre:not(.expressive-code pre)) {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    padding: var(--space-4);
-    border-radius: 0;
+
+  /* Force Giscus to respect container width while allowing for shadows */
+  :global(.giscus), :global(.giscus-frame) {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 </style>
+
+<script is:inline>
+  function updateGiscusTheme() {
+    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+
+    iframe.contentWindow.postMessage(
+      { 
+        giscus: { 
+          setConfig: { 
+            theme: `https://xihale.top/styles/giscus.css?v=${Date.now()}` 
+          } 
+        } 
+      },
+      'https://giscus.app'
+    );
+  }
+
+  // Monitor class changes on <html>
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        updateGiscusTheme();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, { attributes: true });
+
+  // Astro page transitions support
+  document.addEventListener('astro:page-load', () => {
+    updateGiscusTheme();
+  });
+
+  // Fallback
+  window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://giscus.app') return;
+    if (event.data.giscus && event.data.giscus.discussion) {
+      // Giscus component loaded
+      updateGiscusTheme();
+    }
+  });
+</script>
