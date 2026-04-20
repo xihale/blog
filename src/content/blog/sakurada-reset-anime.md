@@ -3,6 +3,7 @@ title: "重启咲良田（动画）"
 pubDate: "2024-02-03"
 description: "重启咲良田动画观后感：人物、理性与爱"
 tags: ["番谈"]
+comments: true
 category: ["思考"]
 draft: false
 ---

@@ -5,7 +5,7 @@ const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
 	// Type-check frontmatter using a schema
-	schema: () =>
+		schema: () =>
 		z.object({
 			title: z.string(),
 			description: z.string(),
@@ -15,6 +15,9 @@ const blog = defineCollection({
 			draft: z.boolean().optional(),
 			unlisted: z.boolean().optional(),
 			tags: z.array(z.string()).optional(),
+			math: z.boolean().optional(),
+			mermaid: z.boolean().optional(),
+			comments: z.boolean().optional(),
 		}),
 });
 

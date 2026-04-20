@@ -3,8 +3,10 @@ title: "迁移 zigcc 主页到 zine"
 pubDate: "2025-7-19"
 description: "此次迁移比想象中的要简单，遇到的困难主要是 zine 的文档非常不全面。"
 tags: ["技术"]
+comments: true
 category: ["前端"]
 draft: false
+math: true
 ---
 
 

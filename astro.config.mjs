@@ -11,6 +11,7 @@ import expressiveCode from 'astro-expressive-code';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { remarkMermaid } from './lib/remark/remark-mermaid.js';
 
 // https://astro.build/config
 export default defineConfig({
@@ -34,7 +35,7 @@ export default defineConfig({
         sitemap()
     ],
     markdown: {
-        remarkPlugins: [remarkDirective, remarkCustomDirectives, remarkMath],
+        remarkPlugins: [remarkDirective, remarkCustomDirectives, remarkMath, remarkMermaid],
         rehypePlugins: [rehypeKatex]
     },
 });

@@ -3,6 +3,7 @@ title: "心底的接力赛"
 pubDate: "2026-03-26"
 description: "记初中的一次接力赛"
 tags: ["随笔"]
+comments: true
 draft: false
 ---
 

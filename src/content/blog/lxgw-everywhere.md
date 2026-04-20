@@ -3,6 +3,7 @@ title: "霞鹜文楷-EveryWhere"
 pubDate: "2025-12-30"
 description: "我很喜欢霞鹜文楷，所以我在几乎所有设备上都尝试配置这个字体"
 tags: ["技术"]
+comments: true
 ---
 
 ## zFont3

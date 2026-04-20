@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "new": "node scripts/new-post.js",
+    "comments": "node scripts/comments.js",
     "lint": "autocorrect --strict --fix"
   },
   "dependencies": {

@@ -3,8 +3,10 @@ title: "LilCTF 2025 WP"
 pubDate: "2025-8-18"
 description: "第一次打 ctf 的比赛，和 tgs-ollaic、unkn0wn 组队，还是很开心的"
 tags: ["CTF"]
+comments: true
 category: ["ctf"]
 draft: false
+math: true
 ---
 
 

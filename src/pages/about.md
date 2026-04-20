@@ -1,47 +1,31 @@
 ---
 title: "About"
-description: "Learn more about me and this blog"
+description: "About xihale and this blog"
 layout: "../layouts/MarkdownPageLayout.astro"
 ---
 
 # About
 
-:::error
-WIP\
-In the future, there will be more break changes(including rewrite posts).
-:::
+你好，我是 xihale。
 
-Welcome to my corner of the internet.
+这个站点是我的个人角落，用来放 essays、notes 和一些值得回看的链接。它不追求更新频率，更接近一份缓慢积累的记录。
 
-This is a minimalist blog built with [Astro](https://astro.build/).
-It focuses on clean typography, fast performance, and a distraction-free reading experience.
+我做的事情大致分布在几条线上：个人站与写作、网络与系统工具、学习资料整理、生态小工具与社区贡献。技术栈不固定，通常由问题驱动——Go、Zig、Kotlin、Typst、Astro、C++ 都在不同阶段出现过。
 
-## Site Design Philosophy
+如果你对具体的项目、工具、发布物或社区贡献感兴趣，可以看我的导航站：
 
-This space is dedicated to sharing thoughts, tutorials, and insights about life,
-design, and technology. The design follows the principles of minimalism and simplicity, prioritizing:
+- [xihale intro](https://intro.xihale.top) — projects、sites、packages、contributions 的完整索引
+- [GitHub](https://github.com/xihale) — 所有公开仓库与活动
 
-- **Readability** — Clean typography with excellent contrast
-- **Performance** — Fast loading and instant navigation
-- **Simplicity** — Minimal distractions, focused on content
+---
 
-:::note
-However, until now, I haven't achieved them; these are still just future goals to strive for. HAHA!
-:::
+Hi, I'm xihale.
 
-## Technology Stack
+This is a quiet personal corner for essays, notes, and links worth returning to. It doesn't chase a posting schedule — more of a slow accumulation.
 
-- [Astro](https://astro.build/) — Fast, content-first framework
+My work falls into a few loose threads: personal sites and writing, networking and system tools, study material digitization, ecosystem utilities, and community contributions. The tech stack isn't fixed — Go, Zig, Kotlin, Typst, Astro, C++ have all shown up at different stages, usually driven by whatever problem is at hand.
 
-## Project Index
+If you're looking for specific projects, tools, published packages, or community contributions, the navigation site has the full index:
 
-I now keep a dedicated navigation site for the broader public trail around my work:
-
-- projects and tools
-- published pages and microsites
-- npm packages and reusable templates
-- a smaller set of contributions that feel substantial enough to surface
-
-You can browse it here: [xihale intro](https://intro.xihale.top)
-
-Feel free to reach out with questions or suggestions.
+- [xihale intro](https://intro.xihale.top) — projects, sites, packages, contributions
+- [GitHub](https://github.com/xihale) — all public repositories and activity

@@ -3,6 +3,7 @@ title: "梦中花园"
 pubDate: "2024-03-16"
 description: "意识造物与梦中对话：一个关于自我、潜意识与存在的哲学故事"
 tags: ["思考"]
+comments: true
 category: ["随笔"]
 draft: false
 ---

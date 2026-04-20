@@ -9,6 +9,7 @@ interface Props {
 	description?: string;
 	robots?: string;
 	contentWidth?: "default" | "wide";
+	math?: boolean;
 }
 
 const {
@@ -16,6 +17,7 @@ const {
 	description = SITE_DESCRIPTION,
 	robots,
 	contentWidth = "default",
+	math = false,
 } = Astro.props;
 
 // For markdown files, try to get title from frontmatter or use pathname-based title
@@ -50,7 +52,9 @@ const currentYear = new Date().getFullYear();
 	<html lang="zh-CN">
 	<head>
 		<BaseHead {...baseHeadProps} />
-		<link rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous" />
+		{math && (
+			<link rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous" />
+		)}
 		<ClientRouter fallback="swap" />
 	</head>
 	<body class="site-layout">

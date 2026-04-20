@@ -3,6 +3,7 @@ title: "竞赛中的 cpp 细碎点"
 pubDate: "2025-7-22"
 description: "竞赛编程中容易忽略的 C++ 细节：std::endl 的工作原理和缓冲区管理"
 tags: ["技术"]
+comments: true
 draft: false
 ---
 

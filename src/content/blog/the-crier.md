@@ -3,6 +3,7 @@ title: "呐喊者"
 pubDate: "2024-02-25"
 description: "一首关于牺牲、呐喊与改变世界之意志的诗"
 tags: ["随笔"]
+comments: true
 category: ["随笔"]
 draft: false
 ---

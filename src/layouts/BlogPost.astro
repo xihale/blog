@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import { formatDate, formatDateISO } from "../utils/date";
 import TableOfContents from "../components/TableOfContents.astro";
+import Comments from "../components/Comments.astro";
 import "../styles/components/article.css";
 import "../styles/components/admonitions.css";
 import "../styles/components/code.css";
@@ -11,6 +12,10 @@ type Props = CollectionEntry<"blog">["data"] & {
   unlisted?: boolean | undefined;
   headings?: Array<{ depth: number; slug: string; text: string }> | undefined;
   tags?: string[] | undefined;
+  math?: boolean | undefined;
+  mermaid?: boolean | undefined;
+  comments?: boolean | undefined;
+  slug?: string | undefined;
 };
 
 const {
@@ -20,14 +25,21 @@ const {
   updatedDate,
   tags,
   unlisted,
+  math,
+  mermaid,
+  comments,
+  slug,
   headings = [],
 } = Astro.props;
 
 const robots = unlisted ? "noindex" : undefined;
 
-const baseLayoutProps = robots
-  ? { title, description, robots }
-  : { title, description };
+const baseLayoutProps = {
+  title,
+  description,
+  ...(robots ? { robots } : {}),
+  ...(math !== undefined ? { math } : {}),
+};
 
 const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 const hasToc = tocHeadings.length >= 2;
@@ -107,6 +119,14 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
               });
             }
           </script>
+          {mermaid && (
+            <script is:inline src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/mermaid/11.4.1/mermaid.min.js"></script>
+          )}
+          {mermaid && (
+            <script is:inline>mermaid.initialize({startOnLoad:true,theme:"neutral"});</script>
+          )}
+
+          {comments && slug && <Comments slug={slug} title={title} />}
         </div>
       </div>
     </article>

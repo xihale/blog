@@ -1,7 +1,8 @@
 # build output
 dist/
-# generated types
+# generated content
 .astro/
+src/data/comments.json
 
 # dependencies
 node_modules/

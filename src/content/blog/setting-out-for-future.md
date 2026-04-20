@@ -3,6 +3,7 @@ title: "现在要向未来出发吗"
 pubDate: "2024-02-25"
 description: "由京瓷动画短片引发的思考：积累、迷茫与向未来出发"
 tags: ["随笔"]
+comments: true
 category: ["思考"]
 draft: false
 ---

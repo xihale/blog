@@ -3,12 +3,11 @@ import { SITE_TITLE } from "../consts";
 import styles from "./Header.module.css";
 
 const currentPath = Astro.url.pathname;
-const navItems = [
+const navItems: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/tags", label: "Tags" },
   { href: "/writing", label: "Writing" },
   { href: "/links", label: "Links" },
   { href: "/about", label: "About" },
-  { href: "https://intro.xihale.top", label: "Intro", external: true },
 ];
 
 const isCurrent = (href: string, external?: boolean) => {

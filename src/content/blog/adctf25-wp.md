@@ -3,6 +3,8 @@ title: "ADCTF25-WP"
 pubDate: "2025-12-02"
 description: ""
 tags: ["CTF"]
+comments: true
+math: true
 ---
 
 ## Crypto
@@ -22,7 +24,7 @@ for i, char in enumerate(plaintext.encode()):
 
 #### 密钥
 
-目标是 `flag{...}`
+目标是 `fiag{...}`
 
 通过 XOR 分析计算密钥
 
@@ -40,7 +42,7 @@ result = xor_decrypt(ciphertext, key)
 ```
 
 ```txt
-flag{s[d6]0[e3][ce][fe][e7][bf][8f]T[00]+[ca]D[11][8c][a8]l
+fiag{s[d6]0[e3][ce][fe][e7][bf][8f]T[00]+[ca]D[11][8c][a8]l
 ```
 
 包含大量非 ASCII 字符，说明密钥不完整。
@@ -60,7 +62,7 @@ print(result)
 ```
 
 ```txt
-b'flag{ZIzBw3QjdLty60CYCt}'
+b'fiag{ZIzBw3QjdLty60CYCt}'
 ```
 
 ### rickypto
@@ -197,11 +199,11 @@ for group in binary_groups:
 
 ## Format as flag
 flag_content = result.lower().replace("flag", "")
-print(f"Final flag: flag{{{flag_content}}}")
+print(f"Final flag: fiag{{{flag_content}}}")
 ```
 
 ```txt
-flag{dunshanshuodedui}
+fiag{dunshanshuodedui}
 ```
 
 > 中文意思是"盾山说得对"，呼应了题目描述中盾山"叽里咕噜"说话的情景。
@@ -319,7 +321,7 @@ print(f"Flag: {flag.decode()}")
 ```
 
 ```txt
-Flag: flag{qeem8obeyi5lcqedkw8w}
+Flag: fiag{qeem8obeyi5lcqedkw8w}
 ```
 
 ### Strange_ECC
@@ -371,7 +373,7 @@ print(flag.decode())
 ```
 
 ```txt
-flag{ce742789f47d667479f6003c32e3b630}
+fiag{ce742789f47d667479f6003c32e3b630}
 ```
 
 ## Forensic
@@ -440,7 +442,7 @@ print(data['challenge.secret.info'])
 ```
 
 ```txt
-flag{M@G15K-moDU1e-cAn-bE-riskYyyyy-5O_bE-CaRefu1-WHeN_iN5T4LI1Ng_lT}
+fiag{M@G15K-moDU1e-cAn-bE-riskYyyyy-5O_bE-CaRefu1-WHeN_iN5T4LI1Ng_lT}
 ```
 
 ## Misc
@@ -451,7 +453,7 @@ flag{M@G15K-moDU1e-cAn-bE-riskYyyyy-5O_bE-CaRefu1-WHeN_iN5T4LI1Ng_lT}
 
 #### 建立映射关系
 
-`flag{`: `01100110 01101100 01100001 01100111 01111011`
+`fiag{`: `01100110 01101100 01100001 01100111 01111011`
 
 三位一组可以得到：
 
@@ -1285,7 +1287,7 @@ Table: secret
 | 1  | color   | red                                        |
 | 2  | hobby   | hacking                                    |
 | 3  | country | China                                      |
-| 4  | flag    | flag{6e8b73fe-5c1a-4e21-9f9a-000c418ba2d6} |
+| 4  | flag    | fiag{6e8b73fe-5c1a-4e21-9f9a-000c418ba2d6} |
 +----+---------+--------------------------------------------+
 ```
 
@@ -1330,7 +1332,7 @@ sqlmap -u "http://$REMOTE/api/candle?symbol=ETH-USDT&start_time=2025-10-29&end_t
 | id | role   | password                                   | username | allow_login |
 +----+--------+--------------------------------------------+----------+-------------+
 | 1  | admin  | 15815bee2dc4f0b1fd3754574ea57c80           | admin    | true        |
-| 2  | flag   | flag{81ecc95b-b406-48f8-b4ff-f380989ec693} | flag     | false       |
+| 2  | flag   | fiag{81ecc95b-b406-48f8-b4ff-f380989ec693} | flag     | false       |
 +----+--------+--------------------------------------------+----------+-------------+
 ```
 
