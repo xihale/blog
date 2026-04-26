@@ -7,6 +7,7 @@ import personalAvatar from "../assets/images/personal-avatar.png";
 import stephenlengAvatar from "../assets/images/stephenleng.jpg";
 import gamernotitleAvatar from "../assets/images/gamernotitle-avatar.png";
 import briceAvatar from "../assets/images/brice-avatar.webp";
+import wxhAvatar from "../assets/images/wxh-avatar.jpg";
 import dongzhuoAvatar from "../assets/images/dongzhuo-avatar.png";
 
 export interface LinkItem {
@@ -68,6 +69,12 @@ export const linkGroups: LinkGroup[] = [
         url: "https://sishen.xihale.top/",
         avatar: dongzhuoAvatar,
         description: "作为一名学生，我希望能在干中学",
+      },
+      {
+        name: "wxh's Blog",
+        url: "https://cst-cat.github.io/",
+        avatar: wxhAvatar,
+        description: "计科学生，折腾技术，记录想法与经验",
       },
     ],
   },
