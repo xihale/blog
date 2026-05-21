@@ -891,6 +891,19 @@ podman ps -a
 podman logs --tail 50 container_tag
 ```
 
+### k3s 题目容器排查
+
+题目容器由 k3s 管理，`podman ps` 看不到，需要 `kubectl`。
+
+```sh
+sudo kubectl get pods -n a1ctf-challenges -o wide  # 状态和所在节点
+sudo kubectl get svc -n a1ctf-challenges            # NodePort 映射
+sudo kubectl logs <pod-name> -n a1ctf-challenges    # 容器日志
+sudo kubectl describe pod <pod-name> -n a1ctf-challenges  # Events 段看调度/启动事件
+```
+
+A1CTF 平台日志在 `/var/lib/a1ctf/data/logs/`，JSON 格式。
+
 ## 最后
 
 祝，玩得开心。
