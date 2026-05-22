@@ -238,6 +238,8 @@ spec:
         type: Directory
         path: /var/lib/registry/auth
 EOF
+
+sudo chmod 0600 /var/lib/registry/registry-pod.yaml
 ```
 
 #### 4. 修复权限 + 启动
@@ -907,4 +909,3 @@ A1CTF 平台日志在 `/var/lib/a1ctf/data/logs/`，JSON 格式。
 ## 最后
 
 祝，玩得开心。
-
