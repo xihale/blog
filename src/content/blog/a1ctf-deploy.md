@@ -374,9 +374,13 @@ sudo k3s kubectl get nodes -o wide
 sudo k3s kubectl patch helmchart traefik -n kube-system --type merge -p '{"metadata":{"finalizers":[]}}'
 sudo k3s kubectl delete helmchart traefik -n kube-system 2>/dev/null
 
-# 清理残留的 helm-install job
+# 清理残留的 helm-install / helm-delete job
+# 这些 Job 的资源 limits 为 32 CPU / 32G 内存，卡在 ContainerCreating 会占满节点调度容量
+# 导致 scheduler 拒绝将新 Pod 调度到该节点（即使 Pod 实际并未运行）
 sudo k3s kubectl delete job helm-install-traefik -n kube-system 2>/dev/null
 sudo k3s kubectl delete job helm-install-traefik-crd -n kube-system 2>/dev/null
+sudo k3s kubectl delete job helm-delete-traefik -n kube-system 2>/dev/null
+sudo k3s kubectl delete job helm-delete-traefik-crd -n kube-system 2>/dev/null
 
 # 如果 traefik service 仍有残留，删除或 patch 成无害状态
 sudo k3s kubectl delete svc traefik -n kube-system 2>/dev/null
@@ -537,7 +541,7 @@ metadata:
   namespace: a1ctf-challenges
 rules:
   - apiGroups: [""]
-    resources: ["pods", "services"]
+    resources: ["pods", "pods/exec", "services"]
     verbs: ["get", "list", "create", "delete"]
   - apiGroups: ["networking.k8s.io"]
     resources: ["networkpolicies"]
