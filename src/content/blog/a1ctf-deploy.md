@@ -365,7 +365,24 @@ sudo k3s kubectl get nodes -o wide
 # 应显示 infra-1, worker-1, worker-2 三个节点，状态均为 Ready
 ```
 
-#### 4. Worker 节点 Registry 配置
+#### 4. 清理 HelmChart CR 残留
+
+在 cp-1 `disable: helm-controller` 后 Helm Controller 不再运行，但首次启动时创建的 HelmChart CR 仍残留（带 finalizer，无法自动删除）。手动清理：
+
+```sh
+# 移除 finalizer 让 HelmChart CR 能被删除
+sudo k3s kubectl patch helmchart traefik -n kube-system --type merge -p '{"metadata":{"finalizers":[]}}'
+sudo k3s kubectl delete helmchart traefik -n kube-system 2>/dev/null
+
+# 清理残留的 helm-install job
+sudo k3s kubectl delete job helm-install-traefik -n kube-system 2>/dev/null
+sudo k3s kubectl delete job helm-install-traefik-crd -n kube-system 2>/dev/null
+
+# 如果 traefik service 仍有残留，删除或 patch 成无害状态
+sudo k3s kubectl delete svc traefik -n kube-system 2>/dev/null
+```
+
+#### 5. Worker 节点 Registry 配置
 
 在 worker-1 (cp-2) 和 worker-2 (cp-3) 上配置 `/etc/rancher/k3s/registries.yaml`:
 
@@ -390,7 +407,7 @@ EOF
 sudo systemctl restart k3s-agent
 ```
 
-#### 5. RBAC
+#### 6. RBAC
 
 在 cp-1 (infra) 禁用 k3s 匿名访问
 
