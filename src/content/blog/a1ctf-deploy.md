@@ -1,5 +1,5 @@
 ---
-title: "26 网安卫士平台搭建(a1ctf)"
+title: "26 网安卫士平台搭建 (a1ctf)"
 pubDate: "2026-5-18"
 description: ""
 tags: ["CTF"]
@@ -7,14 +7,14 @@ tags: ["CTF"]
 
 ## 服务器选型
 
-2c4g hk \* 3；debian 12
+2c4g hk \* 3. debian 12
 
 考虑：
 
 1. docker hub 等网络问题少
 2. 免备案
 3. 距离广州近
-4. 参考 25 年中旬时网安卫士经验(ref: <https://blog.rkk.moe/2025/12/10/ADCTF-2025-Server/>)
+4. 参考 25 年中旬时网安卫士经验 (ref: <https://blog.rkk.moe/2025/12/10/ADCTF-2025-Server/>)
 5. 同域同内网服务器间通讯方便
 
 缺点：
@@ -99,7 +99,7 @@ ssh-keygen -t ed25519 -C "adctf-admin"
 ssh-copy-id -i ~/.ssh/ad_ctf.pub ctf@$INFRA_PUBLIC_IP
 ```
 
-root 用户，修改一下 sshd 配置(`/etc/ssh/sshd_config`)
+root 用户，修改一下 sshd 配置 (`/etc/ssh/sshd_config`)
 
 ```
 PermitRootLogin no
@@ -248,7 +248,7 @@ sudo chmod 0600 /var/lib/registry/registry-pod.yaml
 sudo chown -R registry:registry /var/lib/registry/data /var/lib/registry/auth
 ```
 
-进入 `registry` 用户环境执行命令(5同理)
+进入 `registry` 用户环境执行命令 (5 同理)
 
 ```sh
 sudo -u registry bash
@@ -320,7 +320,7 @@ EOF
 sudo systemctl restart k3s
 ```
 
-重启后再次确认集群正常: `sudo k3s kubectl get nodes`
+重启后再次确认集群正常：`sudo k3s kubectl get nodes`
 
 #### 3. agent (worker-1 / worker-2)
 
@@ -358,7 +358,7 @@ curl -sfL https://get.k3s.io | \
   sh -s -
 ```
 
-回到 cp-1 验证:
+回到 cp-1 验证：
 
 ```sh
 sudo k3s kubectl get nodes -o wide
@@ -849,7 +849,7 @@ sudo -u a1ctf podman unshare chown -R 1001:1001 /var/lib/a1ctf/redis
 sudo -u a1ctf podman kube play /var/lib/a1ctf/a1ctf-pod.yaml
 ```
 
-等待镜像拉取完成，检查状态:
+等待镜像拉取完成，检查状态：
 
 ```sh
 sudo -u a1ctf podman ps --pod
@@ -877,7 +877,7 @@ systemctl --user daemon-reload
 systemctl --user enable --now pod-a1ctf-pod.service
 ```
 
-退出 a1ctf 用户后，验证:
+退出 a1ctf 用户后，验证：
 
 ```sh
 sudo -u a1ctf podman ps --pod
@@ -891,7 +891,7 @@ sudo -u a1ctf podman ps --pod
 
 ## 附录
 
-### 构建+推送镜像
+### 构建 + 推送镜像
 
 ```sh
 podman build -t my-challenge .

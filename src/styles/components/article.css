@@ -65,7 +65,7 @@ h6 { font-size: 1.125rem; }
   flex: 1;
   min-width: 0;
 
-  /* 宽公式横向滚动,而不是撑大容器 */
+  /* 宽公式横向滚动，而不是撑大容器 */
   & .katex-display {
     overflow-x: auto;
     overflow-y: hidden;
@@ -82,9 +82,9 @@ h6 { font-size: 1.125rem; }
     border-radius: 2px;
   }
 
-  /* 宽表格横向滚动,而不是撑大容器。
-     table 默认 display:table 不支持 overflow,须先转 block。
-     width: fit-content 覆盖全局的 width:100%,让窄表格按内容宽度,不撑满。 */
+  /* 宽表格横向滚动，而不是撑大容器。
+     table 默认 display:table 不支持 overflow，须先转 block。
+     width: fit-content 覆盖全局的 width:100%,让窄表格按内容宽度，不撑满。 */
   & table {
     display: block;
     width: fit-content;
