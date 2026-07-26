@@ -65,6 +65,43 @@ h6 { font-size: 1.125rem; }
   flex: 1;
   min-width: 0;
 
+  /* 宽公式横向滚动,而不是撑大容器 */
+  & .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: 0.1em;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+
+  & .katex-display::-webkit-scrollbar { height: 2px; }
+  & .katex-display::-webkit-scrollbar-track { background: transparent; }
+  & .katex-display::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+
+  /* 宽表格横向滚动,而不是撑大容器。
+     table 默认 display:table 不支持 overflow,须先转 block。
+     width: fit-content 覆盖全局的 width:100%,让窄表格按内容宽度,不撑满。 */
+  & table {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+
+  & table::-webkit-scrollbar { height: 2px; }
+  & table::-webkit-scrollbar-track { background: transparent; }
+  & table::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+
   & > *:first-child { margin-top: 0; }
   & a {
     color: var(--article-link-color);
