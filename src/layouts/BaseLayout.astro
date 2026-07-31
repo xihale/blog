@@ -1,7 +1,7 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_ICP, SITE_ICP_URL } from "../consts";
 import { ClientRouter } from "astro:transitions";
 
 interface Props {
@@ -69,7 +69,17 @@ const currentYear = new Date().getFullYear();
 
 		<footer class="site-footer">
 			<div class="site-footer-inner">
-				<span class="site-footer-copy">© {currentYear} {SITE_TITLE}</span>
+				<div class="site-footer-left">
+					<span class="site-footer-copy">© {currentYear} {SITE_TITLE}</span>
+					<a
+						href={SITE_ICP_URL}
+						class="site-footer-link site-footer-icp"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{SITE_ICP}
+					</a>
+				</div>
 				<nav class="site-footer-nav" aria-label="Footer navigation">
 					<a href="/rss.xml" class="site-footer-link" title="RSS Feed">RSS</a>
 					<a href="/atom.xml" class="site-footer-link" title="Atom Feed">Atom</a>

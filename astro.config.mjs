@@ -15,7 +15,7 @@ import { remarkMermaid } from './lib/remark/remark-mermaid.js';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://xihale.top',
+    site: 'https://xeed.ink',
     output: 'static',
     integrations: [
         UnoCSS(),
