@@ -194,10 +194,6 @@ a {
   color: var(--color-text-muted);
 }
 
-.site-footer-icp {
-  color: var(--color-text-muted);
-}
-
 .site-footer-nav {
   display: inline-flex;
   align-items: center;
@@ -213,6 +209,12 @@ a {
 .site-footer-link:hover,
 .site-footer-link:focus-visible {
   color: var(--color-nav-link-hover);
+}
+
+.site-footer-link.site-footer-icp,
+.site-footer-link.site-footer-icp:hover,
+.site-footer-link.site-footer-icp:focus-visible {
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 768px) {
