@@ -90,7 +90,7 @@ jobs:
           test -n "$DEPLOY_HOST"
           test -n "$DEPLOY_USER"
           test -n "$DEPLOY_PATH"
-          rsync -az --delete \
-            -e "ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+          rsync -az --delete --timeout=120 --info=stats2 \
+            -e "ssh -i ~/.ssh/id_deploy -T -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o IPQoS=throughput" \
             ./dist/ \
             "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
