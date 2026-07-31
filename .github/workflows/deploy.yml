@@ -1,14 +1,3 @@
-# Deploy static dist/ to gx via a dedicated non-root user (deploy).
-#
-# GitHub Secrets (Settings → Secrets and variables → Actions):
-#   DEPLOY_SSH_KEY          private key for user deploy (local: ~/.ssh/xeed-deploy)
-#   DEPLOY_HOST             1.14.133.242
-#   DEPLOY_USER             deploy
-#   DEPLOY_PATH             /var/www/xeed.ink
-#   DEPLOY_SSH_KNOWN_HOSTS  optional; output of: ssh-keyscan -H 1.14.133.242
-#
-# Server: user deploy owns /var/www/xeed.ink; no sudo; SSH key-only.
-
 name: Build and Deploy
 
 on:
