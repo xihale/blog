@@ -3,7 +3,6 @@ import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import { formatDate, formatDateISO } from "../utils/date";
 import TableOfContents from "../components/TableOfContents.astro";
-import Comments from "../components/Comments.astro";
 import "../styles/components/article.css";
 import "../styles/components/admonitions.css";
 import "../styles/components/code.css";
@@ -14,8 +13,6 @@ type Props = CollectionEntry<"blog">["data"] & {
   tags?: string[] | undefined;
   math?: boolean | undefined;
   mermaid?: boolean | undefined;
-  comments?: boolean | undefined;
-  slug?: string | undefined;
 };
 
 const {
@@ -27,8 +24,6 @@ const {
   unlisted,
   math,
   mermaid,
-  comments,
-  slug,
   headings = [],
 } = Astro.props;
 
@@ -125,8 +120,6 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
           {mermaid && (
             <script is:inline>mermaid.initialize({startOnLoad:true,theme:"neutral"});</script>
           )}
-
-          {comments === true && slug && <Comments />}
         </div>
       </div>
     </article>

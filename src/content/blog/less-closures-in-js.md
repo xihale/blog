@@ -3,7 +3,6 @@ title: "慎用 JavaScript 闭包，警惕内存泄漏"
 pubDate: "2026-03-02"
 description: "深入解析 JavaScript 闭包的 shared lexical environment 机制，揭示长生命周期场景中的隐性内存泄漏与替代方案。"
 tags: ["技术"]
-comments: true
 ---
 
 ## 背景
