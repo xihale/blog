@@ -3,5 +3,5 @@
 
 export const SITE_TITLE = '种墨';
 export const SITE_DESCRIPTION = 'Personal blog about technology and life';
-export const SITE_ICP = '粤ICP备2026107105号';
-export const SITE_ICP_URL = 'https://beian.miit.gov.cn/';
+export const SITE_ICP = '粤公网安备44195702000115号';
+export const SITE_ICP_URL = 'https://beian.mps.gov.cn/#/query/webSearch?code=44195702000115';
