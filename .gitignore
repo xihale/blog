@@ -30,3 +30,7 @@ pnpm-debug.log*
 
 # font cache
 .fonts/
+
+# agent / tooling scratch
+.superpowers/
+.zcode/
