@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://xeed.ink/sitemap.xml
+Sitemap: https://xeed.ink/sitemap-index.xml
