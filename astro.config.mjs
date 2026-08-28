@@ -3,6 +3,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import UnoCSS from '@unocss/astro';
 import { remarkCustomDirectives } from './lib/remark/custom-directives';
 import remarkDirective from 'remark-directive';
@@ -37,7 +38,9 @@ export default defineConfig({
         sitemap()
     ],
     markdown: {
-        remarkPlugins: [remarkDirective, remarkCustomDirectives, remarkMath, remarkMermaid],
-        rehypePlugins: [rehypeKatex]
+        processor: unified({
+            remarkPlugins: [remarkDirective, remarkCustomDirectives, remarkMath, remarkMermaid],
+            rehypePlugins: [rehypeKatex],
+        }),
     },
 });
