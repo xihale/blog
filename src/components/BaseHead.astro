@@ -62,32 +62,14 @@ const ogImageUrl = new URL(ogImage.src, Astro.url);
 <meta property="twitter:image" content={ogImageUrl} />
 
 <script is:inline>
-  (() => {
-    const darkReaderLockSelector = 'meta[name="darkreader-lock"]';
-    const preferredDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const addDarkReaderLock = () => {
-      if (document.head.querySelector(darkReaderLockSelector)) return;
-      const lock = document.createElement("meta");
-      lock.name = "darkreader-lock";
-      document.head.append(lock);
-    };
-
-    const removeDarkReaderLock = () => {
-      const lock = document.head.querySelector(darkReaderLockSelector);
-      if (lock) lock.remove();
-    };
-
-    const syncDarkReaderLock = () => {
-      if (preferredDark.matches) {
-        addDarkReaderLock();
-      } else {
-        removeDarkReaderLock();
-      }
-    };
-
-    syncDarkReaderLock();
-
-    preferredDark.addEventListener?.("change", syncDarkReaderLock);
-  })();
+  // Firefox (144+, Zen included) paints 1-2 blank frames between the old and
+  // new snapshots of a same-document view transition; Chrome does not, so
+  // every ClientRouter navigation flashes there. Dropping the API makes Astro
+  // take its fallback="swap" path: a direct DOM swap, which is also what this
+  // site's animation: none view-transition CSS intends. Must stay an inline
+  // classic script: module scripts are deferred, and Astro's router reads
+  // document.startViewTransition when its module first evaluates.
+  if (navigator.userAgent.includes("Firefox")) {
+    document.startViewTransition = undefined;
+  }
 </script>
