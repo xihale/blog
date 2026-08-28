@@ -25,7 +25,7 @@ draft: false
 
 ## 方案
 
-以下方案都是 [GameNoTitle](https://bili33.top/) 告诉我的，
+以下方案都是 [GamerNoTitle](https://bili33.top/) 告诉我的，
 他进行了大量的探索，
 并无私地将这些分享出来，
 让我的网络环境跟上一层楼。
@@ -176,9 +176,9 @@ chmod +x /etc/NetworkManager/dispatcher.d/pre-up.d/ipv6-accept-ra
 
 有关用到的一些脚本，
 开源了，建议配合 `direnv` 使用。
-（Fork 自 GameNoTitle，感谢 GameNoTitle 的无私奉献和思路分享！）
+（Fork 自 GamerNoTitle，感谢 GamerNoTitle 的无私奉献和思路分享！）
 
 建议使用 go lang 重写版，<https://github.com/xihale/kc-go/>
 
 [xihale/WrtScript](https://github.com/xihale/WrtScript)
-[GameNoTitle/WrtScript](https://github.com/GDUTMeow/WrtScript)
+[GamerNoTitle/WrtScript](https://github.com/GDUTMeow/WrtScript)
