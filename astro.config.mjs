@@ -12,12 +12,14 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { remarkMermaid } from './lib/remark/remark-mermaid.js';
+import { fontPreload } from './lib/astro/font-preload.mjs';
 
 // https://astro.build/config
 export default defineConfig({
     site: 'https://xeed.ink',
     output: 'static',
     integrations: [
+        fontPreload(),
         UnoCSS(),
         expressiveCode({
             themes: ['vitesse-dark', 'vitesse-light'],

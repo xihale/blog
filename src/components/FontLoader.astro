@@ -1,18 +1,14 @@
 ---
 /*
   FontLoader.astro
-  Handles font preloading and global @font-face declarations.
+  Both font stylesheets are imported with ?url so Vite emits them (and the
+  woff2 files they reference) as standalone hashed assets instead of inlining
+  the @font-face declarations into every page's CSS bundle. font-preload.mjs
+  injects per-page <link rel="preload"> for the LXGW subsets each page uses.
 */
-import "lxgw-wenkai-webfont/lxgwwenkai-regular.css";
+import lxgwCss from "lxgw-wenkai-webfont/lxgwwenkai-regular.css?url";
+import jbmonoCss from "../styles/fonts.css?url";
 ---
 
-<!-- Critical CSS for immediate font application -->
-<style is:global>
-  @font-face {
-    font-family: "JetBrains Mono";
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url("/fonts/jbmono.woff2") format("woff2");
-  }
-</style>
+<link rel="stylesheet" href={lxgwCss} />
+<link rel="stylesheet" href={jbmonoCss} />

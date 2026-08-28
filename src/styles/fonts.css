@@ -1,0 +1,8 @@
+/* JetBrains Mono — the woff2 path is resolved and hashed by Vite. */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/jbmono.woff2") format("woff2");
+}

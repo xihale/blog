@@ -115,7 +115,7 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
             }
           </script>
           {mermaid && (
-            <script is:inline src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/mermaid/11.4.1/mermaid.min.js"></script>
+            <script is:inline defer src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/mermaid/11.4.1/mermaid.min.js"></script>
           )}
           {mermaid && (
             <script is:inline>mermaid.initialize({startOnLoad:true,theme:"neutral"});</script>
