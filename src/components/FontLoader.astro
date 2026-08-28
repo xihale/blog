@@ -6,18 +6,18 @@
   the @font-face declarations into every page's CSS bundle. font-preload.mjs
   injects per-page <link rel="preload"> for the LXGW subsets each page uses.
 
-  They load via preload-as-style + onload swap: the files contain only
-  @font-face rules, and first paint uses the fallback fonts anyway
-  (font-display: swap), so keeping them render-blocking only delays paint.
-  The <noscript> links restore blocking stylesheets without JS.
+  Render-blocking on purpose. The webfonts are font-display: optional, so a
+  stylesheet that lands after first paint never swaps glyphs in mid-view —
+  repeat visits would lose their cached fonts instead of gaining them.
+  Blocking puts the @font-face rules (and the cached woff2 files) inside
+  optional's 100 ms block window, so repeat views paint with the real fonts
+  on the first frame while cold visits render the fallback with no swap.
+  Both files are immutable-cached /_astro assets, so the blocking cost is
+  paid once per cache, not per navigation.
 */
 import lxgwCss from "lxgw-wenkai-webfont/lxgwwenkai-regular.css?url";
 import jbmonoCss from "../styles/fonts.css?url";
 ---
 
-<link rel="preload" as="style" href={lxgwCss} onload="this.rel='stylesheet'" />
-<link rel="preload" as="style" href={jbmonoCss} onload="this.rel='stylesheet'" />
-<noscript>
-  <link rel="stylesheet" href={lxgwCss} />
-  <link rel="stylesheet" href={jbmonoCss} />
-</noscript>
+<link rel="stylesheet" href={lxgwCss} />
+<link rel="stylesheet" href={jbmonoCss} />

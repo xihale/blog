@@ -1,8 +1,12 @@
-/* JetBrains Mono — the woff2 path is resolved and hashed by Vite. */
+/* JetBrains Mono — the woff2 path is resolved and hashed by Vite.
+   font-display: optional, not swap: a late swap visibly reflows dates and
+   code mid-pageview. Optional pins each view to the font when it wins the
+   100 ms block window (always, via immutable cache, on repeat visits) or to
+   the fallback for the whole view; there is never a visible glyph swap. */
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url("../assets/fonts/jbmono.woff2") format("woff2");
 }
