@@ -425,6 +425,8 @@ import styles from "./TableOfContents.module.css";
     let currentActiveId = "";
     let currentNodeId = "";
     let currentOpenSignature = "";
+    let autoScrollRafId = 0;
+    let cachedActivationThreshold: number | null = null;
 
     const applyOpenPath = (activeId: string | null) => {
       const nextPath = activeId ? buildOpenPath(activeId) : [];
@@ -443,6 +445,25 @@ import styles from "./TableOfContents.module.css";
       });
 
       currentOpenSignature = nextSignature;
+    };
+
+    const scrollActiveLinkIntoView = () => {
+      autoScrollRafId = 0;
+
+      const activeEntry = headingEntries.find((entry) => entry.id === currentNodeId) ?? null;
+      if (!activeEntry) return;
+
+      const listRect = list.getBoundingClientRect();
+      const linkRect = activeEntry.link.getBoundingClientRect();
+      const isAbove = linkRect.top < listRect.top + 10;
+      const isBelow = linkRect.bottom > listRect.bottom - 10;
+
+      if (isAbove || isBelow) {
+        activeEntry.link.scrollIntoView({
+          block: "nearest",
+          inline: "nearest",
+        });
+      }
     };
 
     const setActive = (activeId: string | null) => {
@@ -476,18 +497,10 @@ import styles from "./TableOfContents.module.css";
       currentOpenSignature = "";
       applyOpenPath(activeEntry?.id ?? null);
 
-      if (!activeEntry) return;
-
-      const listRect = list.getBoundingClientRect();
-      const linkRect = activeEntry.link.getBoundingClientRect();
-      const isAbove = linkRect.top < listRect.top + 10;
-      const isBelow = linkRect.bottom > listRect.bottom - 10;
-
-      if (isAbove || isBelow) {
-        activeEntry.link.scrollIntoView({
-          block: "nearest",
-          inline: "nearest",
-        });
+      // The writes above change the list layout, so measuring here would force
+      // a synchronous reflow; wait for the browser to lay out, then measure.
+      if (activeEntry && autoScrollRafId === 0) {
+        autoScrollRafId = window.requestAnimationFrame(scrollActiveLinkIntoView);
       }
     };
 
@@ -513,19 +526,24 @@ import styles from "./TableOfContents.module.css";
       return true;
     };
 
+    // scroll-margin-top and innerHeight only change on resize, so cache the
+    // threshold instead of re-reading styles on every scroll frame.
     const getActivationThreshold = () => {
-      const firstHeading = headingEntries[0]?.heading;
+      if (cachedActivationThreshold !== null) {
+        return cachedActivationThreshold;
+      }
+
       const fallbackThreshold = Math.min(260, window.innerHeight * 0.24 + 48);
-      if (!(firstHeading instanceof HTMLElement)) {
-        return fallbackThreshold;
-      }
+      const firstHeading = headingEntries[0]?.heading;
+      const scrollMarginTopValue = firstHeading
+        ? Number.parseFloat(getComputedStyle(firstHeading).scrollMarginTop || "0")
+        : Number.NaN;
 
-      const scrollMarginTopValue = Number.parseFloat(getComputedStyle(firstHeading).scrollMarginTop || "0");
-      if (!Number.isFinite(scrollMarginTopValue) || scrollMarginTopValue <= 0) {
-        return fallbackThreshold;
-      }
+      cachedActivationThreshold = Number.isFinite(scrollMarginTopValue) && scrollMarginTopValue > 0
+        ? Math.max(scrollMarginTopValue + 20, fallbackThreshold)
+        : fallbackThreshold;
 
-      return Math.max(scrollMarginTopValue + 20, fallbackThreshold);
+      return cachedActivationThreshold;
     };
 
     let rafId = 0;
@@ -580,8 +598,13 @@ import styles from "./TableOfContents.module.css";
       button.addEventListener("click", onToggleClick);
     });
 
+    const onWindowResize = () => {
+      cachedActivationThreshold = null;
+      onScrollOrResize();
+    };
+
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
-    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onWindowResize, { passive: true });
     window.addEventListener("hashchange", onHashChange);
 
     if (!syncFromHash()) {
@@ -594,12 +617,17 @@ import styles from "./TableOfContents.module.css";
       });
 
       window.removeEventListener("scroll", onScrollOrResize);
-      window.removeEventListener("resize", onScrollOrResize);
+      window.removeEventListener("resize", onWindowResize);
       window.removeEventListener("hashchange", onHashChange);
 
       if (rafId !== 0) {
         window.cancelAnimationFrame(rafId);
         rafId = 0;
+      }
+
+      if (autoScrollRafId !== 0) {
+        window.cancelAnimationFrame(autoScrollRafId);
+        autoScrollRafId = 0;
       }
     };
   };
