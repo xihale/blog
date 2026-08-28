@@ -14,13 +14,18 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { remarkMermaid } from './lib/remark/remark-mermaid.js';
 import { fontPreload } from './lib/astro/font-preload.mjs';
+import { fontDisplayOptional } from './lib/astro/font-display.mjs';
+import { llmsTxt } from './lib/astro/llms-txt.mjs';
 
 // https://astro.build/config
+const SITE = 'https://xeed.ink';
 export default defineConfig({
-    site: 'https://xeed.ink',
+    site: SITE,
     output: 'static',
     integrations: [
         fontPreload(),
+        fontDisplayOptional(),
+        llmsTxt({ site: SITE }),
         UnoCSS(),
         expressiveCode({
             themes: ['vitesse-dark', 'vitesse-light'],
