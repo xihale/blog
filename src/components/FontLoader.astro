@@ -5,10 +5,19 @@
   woff2 files they reference) as standalone hashed assets instead of inlining
   the @font-face declarations into every page's CSS bundle. font-preload.mjs
   injects per-page <link rel="preload"> for the LXGW subsets each page uses.
+
+  They load via preload-as-style + onload swap: the files contain only
+  @font-face rules, and first paint uses the fallback fonts anyway
+  (font-display: swap), so keeping them render-blocking only delays paint.
+  The <noscript> links restore blocking stylesheets without JS.
 */
 import lxgwCss from "lxgw-wenkai-webfont/lxgwwenkai-regular.css?url";
 import jbmonoCss from "../styles/fonts.css?url";
 ---
 
-<link rel="stylesheet" href={lxgwCss} />
-<link rel="stylesheet" href={jbmonoCss} />
+<link rel="preload" as="style" href={lxgwCss} onload="this.rel='stylesheet'" />
+<link rel="preload" as="style" href={jbmonoCss} onload="this.rel='stylesheet'" />
+<noscript>
+  <link rel="stylesheet" href={lxgwCss} />
+  <link rel="stylesheet" href={jbmonoCss} />
+</noscript>
