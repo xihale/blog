@@ -91,7 +91,7 @@ printf '{"sha":"%s","branch":"%s","deployedAt":"%s"}\n' \
 # /var/www) — the web-served tree is all ReadWritePaths grants beside it.
 ATTIC="$HOME/blog-attic"
 mkdir -p "$ATTIC"
-rsync -a --delete --delay-updates --exclude=/_astro \
+rsync -a --delete --delay-updates --exclude=/_astro --exclude=/deploy-status.json \
   --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
   dist/ "$DEST/"
 # --checksum: dist mtimes are always fresh, so quick-check would rewrite (and

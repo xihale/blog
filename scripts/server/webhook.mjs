@@ -14,7 +14,7 @@
  *   log:    /home/blog-ci/deploy.log        (deploy.sh output)
  */
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { openSync, readFileSync } from "node:fs";
+import { existsSync, openSync, readFileSync, writeFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,6 +24,9 @@ const SECRET_FILE = process.env.BLOG_WEBHOOK_SECRET_FILE ?? "/home/blog-ci/.webh
 const DEPLOY_SH = join(HERE, "deploy.sh");
 const DEPLOY_LOG = process.env.BLOG_DEPLOY_LOG ?? "/home/blog-ci/deploy.log";
 const HOOK_PATH = process.env.BLOG_HOOK_PATH ?? "/hooks/blog-deploy";
+const STATUS_FILE = process.env.BLOG_STATUS_FILE ?? "/var/www/xeed.ink/deploy-status.json";
+const NTFY_CONFIG = process.env.BLOG_NTFY_CONFIG ?? "/home/blog-ci/.ntfy-notify";
+const NTFY_URL = process.env.BLOG_NTFY_URL ?? "http://127.0.0.1:8090";
 // Repo currently uses astro; accept both so a rename is a non-event.
 const DEPLOY_BRANCHES = new Set(["astro", "main"]);
 const READ_TIMEOUT_MS = 15_000;
@@ -100,6 +103,42 @@ function signatureOk(secret, body, header) {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
+// Served by Caddy at /deploy-status.json. deploy.sh's rsync excludes this
+// name, so the previous result stays readable while a new build runs.
+function writeStatus(fields) {
+  try {
+    writeFileSync(STATUS_FILE, JSON.stringify(fields) + "\n");
+  } catch (err) {
+    log("status write failed:", err.message);
+  }
+}
+
+// Push the outcome to the self-hosted ntfy. NTFY_CONFIG holds the topic on
+// line 1 and a user:pass (write-only ACL on that topic) on line 2. Strictly
+// best-effort: a notification outage must never fail a deploy.
+async function notifyNtfy(status, code, sha) {
+  try {
+    if (!existsSync(NTFY_CONFIG)) return;
+    const [topic, userPass] = readFileSync(NTFY_CONFIG, "utf8").trim().split("\n");
+    await fetch(`${NTFY_URL}/${topic}`, {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + Buffer.from(userPass).toString("base64"),
+        Title: `blog deploy ${status}`,
+        Priority: status === "success" ? "default" : "high",
+        Tags: status === "success" ? "white_check_mark" : "rotating_light",
+      },
+      body:
+        status === "success"
+          ? `${sha.slice(0, 7)} is live — https://xeed.ink/deploy-meta.json`
+          : `${sha.slice(0, 7)} FAILED (exit ${code}) — ssh gx tail /home/blog-ci/deploy.log`,
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch (err) {
+    log("ntfy notify failed:", err.message);
+  }
+}
+
 let req;
 try {
   req = await readRequest();
@@ -159,11 +198,25 @@ await respond(200, `deploy started (${ref})\n`);
 log(`push ${String(payload.after ?? "").slice(0, 7)} on ${ref} → deploy`);
 process.stdin.destroy(); // socket served; deploy.sh owns the process now
 
+const sha = String(payload.after ?? "");
+const startedAt = new Date().toISOString();
+writeStatus({ status: "building", branch, sha, startedAt });
+
 const logFd = openSync(DEPLOY_LOG, "a");
 const child = spawn("/bin/bash", [DEPLOY_SH, ref], {
   stdio: ["ignore", logFd, logFd],
-  env: { ...process.env, BLOG_PUSH_SHA: String(payload.after ?? "") },
+  env: { ...process.env, BLOG_PUSH_SHA: sha },
 });
 const code = await new Promise((resolve) => child.on("close", resolve));
+const status = code === 0 ? "success" : "failure";
+writeStatus({
+  status,
+  branch,
+  sha,
+  startedAt,
+  finishedAt: new Date().toISOString(),
+  exitCode: code,
+});
+await notifyNtfy(status, code, sha);
 log(`deploy exited ${code}`);
 process.exit(code === 0 ? 0 : 1);
