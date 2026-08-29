@@ -52,8 +52,10 @@ curl -i -X POST https://xeed.ink/hooks/blog-deploy \
 ```
 
 Deploy answers GitHub within ~10s and builds afterwards; smoke tests:
-wrong signature → 403, `ping` event → 200 pong, unknown path → 404.
-Probe file: `/deploy-meta.json` (sha + timestamp of the live deploy).
+wrong signature → 403, `ping` event → 200 pong. Other paths fall through
+to the site itself (the `try_files` catch-all serves the shell — only the
+exact hook path is special). Probe file: `/deploy-meta.json`
+(sha + timestamp of the live deploy).
 
 ## Retired
 
