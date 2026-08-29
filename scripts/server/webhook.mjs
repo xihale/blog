@@ -14,12 +14,22 @@
  *   log:    /home/blog-ci/deploy.log        (deploy.sh output)
  */
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { existsSync, openSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  closeSync,
+  existsSync,
+  openSync,
+  readFileSync,
+  readSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { spawn } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const PROJECT = "blog";
+const SERVER = "gx";
 const SECRET_FILE = process.env.BLOG_WEBHOOK_SECRET_FILE ?? "/home/blog-ci/.webhook-secret";
 const DEPLOY_SH = join(HERE, "deploy.sh");
 const DEPLOY_LOG = process.env.BLOG_DEPLOY_LOG ?? "/home/blog-ci/deploy.log";
@@ -113,29 +123,51 @@ function writeStatus(fields) {
   }
 }
 
-// Push the outcome to the self-hosted ntfy. NTFY_CONFIG holds the topic on
-// line 1 and a user:pass (write-only ACL on that topic) on line 2. Strictly
-// best-effort: a notification outage must never fail a deploy.
-async function notifyNtfy(status, code, sha) {
+// Push the outcome to the shared ntfy topic `webhook-deploy` (message format
+// unified across all webhook-deployed sites: `[project@server] deploy …`).
+// NTFY_CONFIG holds the topic on line 1 and a user:pass (write-only ACL on
+// the topic) on line 2. Strictly best-effort: a notification outage must
+// never fail a deploy.
+async function notifyNtfy(status, code, sha, startedAt) {
   try {
     if (!existsSync(NTFY_CONFIG)) return;
     const [topic, userPass] = readFileSync(NTFY_CONFIG, "utf8").trim().split("\n");
+    const tookS = Math.max(1, Math.round((Date.now() - Date.parse(startedAt)) / 1000));
+    const short = sha.slice(0, 7);
     await fetch(`${NTFY_URL}/${topic}`, {
       method: "POST",
       headers: {
         Authorization: "Basic " + Buffer.from(userPass).toString("base64"),
-        Title: `blog deploy ${status}`,
+        Title: `[${PROJECT}@${SERVER}] deploy ${status}`,
         Priority: status === "success" ? "default" : "high",
         Tags: status === "success" ? "white_check_mark" : "rotating_light",
       },
       body:
         status === "success"
-          ? `${sha.slice(0, 7)} is live — https://xeed.ink/deploy-meta.json`
-          : `${sha.slice(0, 7)} FAILED (exit ${code}) — ssh gx tail /home/blog-ci/deploy.log`,
+          ? `${short} live in ${tookS}s`
+          : `${short} failed (exit ${code}): ${failureReason(code)} — ssh ${SERVER}: tail ${DEPLOY_LOG}`,
       signal: AbortSignal.timeout(5000),
     });
   } catch (err) {
     log("ntfy notify failed:", err.message);
+  }
+}
+
+// The reason a deploy failed: a `FATAL:` line if the run died via die(),
+// else the log's final line. Reads only the tail — deploy.log is
+// append-only and grows without bound.
+function failureReason(code) {
+  try {
+    const size = statSync(DEPLOY_LOG).size;
+    const len = Math.min(size, 8192);
+    const buf = Buffer.alloc(len);
+    const fd = openSync(DEPLOY_LOG, "r");
+    readSync(fd, buf, 0, len, size - len);
+    closeSync(fd);
+    const lines = buf.toString("utf8").trimEnd().split("\n").reverse();
+    return (lines.find((l) => l.includes("FATAL:")) ?? lines[0] ?? "").slice(0, 200) || `exit ${code}`;
+  } catch {
+    return `exit ${code}`;
   }
 }
 
@@ -217,6 +249,6 @@ writeStatus({
   finishedAt: new Date().toISOString(),
   exitCode: code,
 });
-await notifyNtfy(status, code, sha);
+await notifyNtfy(status, code, sha, startedAt);
 log(`deploy exited ${code}`);
 process.exit(code === 0 ? 0 : 1);
