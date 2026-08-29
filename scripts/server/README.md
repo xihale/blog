@@ -66,9 +66,14 @@ exact hook path is special). Probe file: `/deploy-meta.json`
   this; it is the "did it deploy?" answer. (no-cache via Caddy `@probe`)
 - `https://xeed.ink/deploy-meta.json` — what is actually live, written by
   deploy.sh from the tree it built. (no-cache via Caddy `@probe`)
-- ntfy push on every finish — topic `xeed-blog-deploy` on ntfy.xeed.ink
-  (subscribe with the `xihale` account; `blog-notify` has write-only ACL on
-  the topic and its password never leaves the server).
+- ntfy push on every finish — shared topic **`webhook-deploy`** on
+  ntfy.xeed.ink (subscribe with the `xihale` account; `deploy-notify` has
+  write-only ACL on the topic and its password never leaves a server).
+  Format shared by all webhook-deployed sites (blog@gx;
+  zig-playground/ziglings/mao@zzy_hk): title
+  `[<project>@<server>] deploy success|failure`, success body
+  `<sha7> live in <N>s`, failure (high priority) body
+  `<sha7> failed (exit <N>): <reason from deploy.log>`.
 - `ssh gx tail -f /home/blog-ci/deploy.log` — full build output; failures
   end with a `FATAL:` line and leave the previous deploy untouched.
 - GitHub's webhook deliveries page only proves delivery: the receiver
