@@ -1,8 +1,8 @@
-name: Build and Deploy
+name: Build (PR validation)
 
+# Deploys run on the server via webhook (scripts/server/) — this workflow
+# only gates PRs with the same lint + check + build steps.
 on:
-  push:
-    branches: [astro]
   pull_request:
     branches: [astro]
   workflow_dispatch:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-xeed
+  group: build-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-bun-
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Run Autocorrect
         run: bun run lint
@@ -46,51 +46,3 @@ jobs:
 
       - name: Build
         run: bun run build
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: dist
-          path: dist
-          retention-days: 7
-
-  deploy:
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download dist artifact
-        uses: actions/download-artifact@v7
-        with:
-          name: dist
-          path: dist
-
-      - name: Setup SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-          SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
-        run: |
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
-          chmod 600 ~/.ssh/id_deploy
-          if [ -n "$SSH_KNOWN_HOSTS" ]; then
-            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          else
-            ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
-          fi
-          chmod 644 ~/.ssh/known_hosts
-
-      - name: Rsync to server
-        env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-        run: |
-          test -n "$DEPLOY_HOST"
-          test -n "$DEPLOY_USER"
-          test -n "$DEPLOY_PATH"
-          rsync -az --delete --timeout=120 --info=stats2 \
-            -e "ssh -i ~/.ssh/id_deploy -T -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o IPQoS=throughput" \
-            ./dist/ \
-            "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
