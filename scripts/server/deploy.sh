@@ -44,7 +44,30 @@ git reset --hard -q
 # file afterwards — path-to-path comparison can never detect the change.
 SELF_SNAP=$(mktemp)
 cat "$0" > "$SELF_SNAP"
-git fetch --depth=1 origin "$BRANCH" && git checkout -q -B "$BRANCH" FETCH_HEAD
+
+# github.com is intermittently unreachable from this box (2026-08-29: a 134s
+# connect timeout between two successful fetches two minutes apart). Retry
+# until we hold the exact pushed commit, and never build from a tree we could
+# not verify — a silent stale deploy is the worst failure mode. `timeout`
+# bounds each attempt (git lets a connect hang >2min otherwise). Note
+# `git fetch && git checkout` alone would NOT abort under errexit: a failed
+# non-final command of an AND-list is exempt.
+WANT="${BLOG_PUSH_SHA:-}"
+ok=""
+for attempt in 1 2 3 4 5; do
+  if timeout 60 git fetch --depth=1 origin "$BRANCH"; then
+    got=$(git rev-parse -q --verify FETCH_HEAD || true)
+    if [ -z "$WANT" ] || [ "$got" = "$WANT" ]; then ok=1; break; fi
+    say "fetch got ${got:-nothing}, want $WANT — attempt $attempt"
+  else
+    say "fetch failed — attempt $attempt"
+  fi
+  [ "$attempt" = 5 ] || sleep $((attempt * 5))
+done
+if [ -z "$ok" ]; then
+  die "could not fetch $BRANCH (want ${WANT:-any tip}) — keeping last good deploy"
+fi
+git checkout -q -B "$BRANCH" FETCH_HEAD
 if ! cmp -s "$SELF_SNAP" "$REPO/scripts/server/deploy.sh"; then
   rm -f "$SELF_SNAP"; say "deploy.sh changed — re-execing"
   exec /bin/bash "$REPO/scripts/server/deploy.sh" "$@"
