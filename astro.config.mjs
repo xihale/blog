@@ -22,6 +22,20 @@ const SITE = 'https://xeed.ink';
 export default defineConfig({
     site: SITE,
     output: 'static',
+    redirects: {
+        '/writing/erasable': '/fragments/erasable/',
+        '/writing/relay-race': '/fragments/relay-race/',
+        '/writing/the-crier': '/fragments/the-crier/',
+        '/writing/setting-out-for-future': '/fragments/setting-out-for-future/',
+        '/writing/when-you-cant-cry': '/fragments/when-you-cant-cry/',
+        '/writing/coincidence-high-school': '/fragments/coincidence-high-school/',
+        '/writing/dream-garden': '/fragments/dream-garden/',
+        '/writing/knowledge-action': '/fragments/knowledge-action/',
+        '/writing/neo-colonialism': '/fragments/neo-colonialism/',
+        '/writing/science-and-religion': '/fragments/science-and-religion/',
+        '/writing/slow-retreat': '/fragments/slow-retreat/',
+        '/writing/sakurada-reset-quotes': '/fragments/sakurada-reset-quotes/',
+    },
     integrations: [
         fontPreload(),
         fontDisplayOptional(),

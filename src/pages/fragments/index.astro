@@ -1,0 +1,97 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDateShort, formatDateISO } from "../../utils/date";
+import "../../styles/components/article.css";
+
+const posts = await getCollection("fragments", ({ data }) => {
+  return data.draft !== true && data.unlisted !== true;
+});
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Group posts by year
+const postsByYear = sortedPosts.reduce(
+  (acc, post) => {
+    const year = post.data.pubDate.getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof posts>,
+);
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<BaseLayout title="碎语集" description="散文、随想与不成篇的句子">
+  <div class="mx-auto max-w-[120rem]">
+    <header class="mb-12 md:mb-16">
+      <h1 class="mb-4">碎语集</h1>
+      散文、随想，与不成篇的句子。
+    </header>
+
+    <main class="space-y-16">
+      {
+        years.map((year) => (
+          <section class="mb-8">
+            <h2 class="text-[var(--color-text-muted)]">{year}</h2>
+            <div class="mb-6">
+              {postsByYear[year]?.map((post) => (
+                <div class="post-card">
+                  <a href={`/fragments/${post.id}/`} class="block">
+                    <div class="blog-post-item">
+                      <time
+                        datetime={formatDateISO(post.data.pubDate)}
+                        class="blog-date"
+                      >
+                        {formatDateShort(post.data.pubDate)}
+                      </time>
+
+                      <div class="blog-content">
+                        <div class="post-title-row">
+                          <h3 class="post-title">{post.data.title}</h3>
+                          {post.data.tags && post.data.tags.length > 0 && (
+                            <div class="tag-container">
+                              {post.data.tags.slice(0, 3).map((tag: string) => (
+                                <span class="tag-small">#{tag}</span>
+                              ))}
+                              {post.data.tags.length > 3 && (
+                                <span class="text-[var(--color-text-muted)]">
+                                  +{post.data.tags.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
+                        {post.data.description && (
+                          <p class="post-description">
+                            {post.data.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </main>
+
+    {
+      sortedPosts.length === 0 && (
+        <div class="empty-state">
+          <p class="text-[var(--color-text-muted)]">No fragments yet. Check back soon!</p>
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

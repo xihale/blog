@@ -4,11 +4,17 @@ import type { APIContext } from 'astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 export async function GET(context: APIContext) {
-	const posts = await getCollection('blog');
+	const [blogPosts, fragmentPosts] = await Promise.all([
+		getCollection('blog'),
+		getCollection('fragments'),
+	]);
 
-	const sortedPosts = posts
-		.filter((post) => !post.data.draft)
-		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	const sortedPosts = [
+		...blogPosts.map((post) => ({ post, link: `/writing/${post.id}/` })),
+		...fragmentPosts.map((post) => ({ post, link: `/fragments/${post.id}/` })),
+	]
+		.filter(({ post }) => !post.data.draft)
+		.sort((a, b) => b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf());
 
 	return rss({
 		xmlns: {
@@ -21,11 +27,11 @@ export async function GET(context: APIContext) {
 		customData: `<language>zh-CN</language>
 <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 <atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml"/>`,
-		items: sortedPosts.map((post) => ({
+		items: sortedPosts.map(({ post, link }) => ({
 			title: post.data.title,
 			pubDate: post.data.pubDate,
 			description: post.data.description || '',
-			link: `/writing/${post.id}/`,
+			link,
 			categories: post.data.tags,
 		})),
 	});

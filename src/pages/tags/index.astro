@@ -4,24 +4,36 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { formatDateShort, formatDateISO } from "../../utils/date";
 import "../../styles/components/article.css";
 
-const posts = await getCollection("blog", ({ data }) => {
-  return data.draft !== true && data.unlisted !== true;
-});
+const [blogPosts, fragmentPosts] = await Promise.all([
+  getCollection("blog", ({ data }) => {
+    return data.draft !== true && data.unlisted !== true;
+  }),
+  getCollection("fragments", ({ data }) => {
+    return data.draft !== true && data.unlisted !== true;
+  }),
+]);
+
+const entries = [
+  ...blogPosts.map((post) => ({ post, href: `/writing/${post.id}/` })),
+  ...fragmentPosts.map((post) => ({ post, href: `/fragments/${post.id}/` })),
+];
 
 // Collect all tags and group posts by tag
-const tagMap = new Map<string, typeof posts>();
-for (const post of posts) {
-  for (const tag of post.data.tags ?? []) {
+const tagMap = new Map<string, typeof entries>();
+for (const entry of entries) {
+  for (const tag of entry.post.data.tags ?? []) {
     if (!tagMap.has(tag)) tagMap.set(tag, []);
-    tagMap.get(tag)!.push(post);
+    tagMap.get(tag)!.push(entry);
   }
 }
 
 // Sort tags by post count descending
 const tags = [...tagMap.entries()]
-  .map(([tag, posts]) => ({
+  .map(([tag, entries]) => ({
     tag,
-    posts: posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    posts: entries.sort(
+      (a, b) => b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf(),
+    ),
   }))
   .sort((a, b) => b.posts.length - a.posts.length);
 ---
@@ -43,9 +55,9 @@ const tags = [...tagMap.entries()]
               </span>
             </h2>
             <div class="mb-6">
-              {posts.map((post) => (
+              {posts.map(({ post, href }) => (
                 <div class="post-card">
-                  <a href={`/writing/${post.id}/`} class="block">
+                  <a href={href} class="block">
                     <div class="blog-post-item">
                       <time
                         datetime={formatDateISO(post.data.pubDate)}

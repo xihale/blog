@@ -3,11 +3,17 @@ import type { APIContext } from 'astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 export async function GET(context: APIContext) {
-	const posts = await getCollection('blog');
+	const [blogPosts, fragmentPosts] = await Promise.all([
+		getCollection('blog'),
+		getCollection('fragments'),
+	]);
 
-	const sortedPosts = posts
-		.filter((post) => !post.data.draft)
-		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	const sortedPosts = [
+		...blogPosts.map((post) => ({ post, link: `/writing/${post.id}/` })),
+		...fragmentPosts.map((post) => ({ post, link: `/fragments/${post.id}/` })),
+	]
+		.filter(({ post }) => !post.data.draft)
+		.sort((a, b) => b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf());
 
 	const siteUrl = context.site!.toString().replace(/\/$/, "");
 
@@ -30,11 +36,11 @@ export async function GET(context: APIContext) {
   <subtitle>${escapeXml(SITE_DESCRIPTION)}</subtitle>
   <link href="${siteUrl}/atom.xml" rel="self"/>
   <link href="${siteUrl}/"/>
-  <updated>${sortedPosts[0]?.data.pubDate.toISOString() || new Date().toISOString()}</updated>
+  <updated>${sortedPosts[0]?.post.data.pubDate.toISOString() || new Date().toISOString()}</updated>
   <id>${siteUrl}/</id>
   <generator uri="https://astro.build/">Astro</generator>
-  ${sortedPosts.map(post => {
-      const postUrl = `${siteUrl}/writing/${post.id}/`;
+  ${sortedPosts.map(({ post, link }) => {
+      const postUrl = `${siteUrl}${link}`;
       const description = post.data.description || '';
       const tags = post.data.tags || [];
       return `
