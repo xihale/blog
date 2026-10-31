@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/components/article.css";
+
+const [blogPosts, fragmentPosts] = await Promise.all([
+  getCollection("blog", ({ data }) => {
+    return data.draft !== true && data.unlisted !== true;
+  }),
+  getCollection("fragments", ({ data }) => {
+    return data.draft !== true && data.unlisted !== true;
+  }),
+]);
+
+const sections = [
+  {
+    name: "Writing",
+    href: "/writing/",
+    description: "技术、CTF、番谈与其他长文。",
+    count: blogPosts.length,
+  },
+  {
+    name: "碎语集",
+    href: "/fragments/",
+    description: "散文、随想，与不成篇的句子。",
+    count: fragmentPosts.length,
+  },
+];
+---
+
+<BaseLayout title="Categories" description="Site sections and collections">
+  <div class="mx-auto max-w-[68ch]">
+    <header class="mb-12 md:mb-16">
+      <h1 class="mb-4">Categories</h1>
+      <p class="text-[var(--color-text-secondary)]">
+        站点内容的各个集合，从这里进入。
+      </p>
+    </header>
+
+    <main>
+      {
+        sections.map(({ name, href, description, count }) => (
+          <a href={href} class="post-card block">
+            <div class="post-title-row">
+              <h2 class="post-title">{name}</h2>
+              <span class="tag-small">{count} 篇</span>
+            </div>
+            <p class="post-description">{description}</p>
+          </a>
+        ))
+      }
+    </main>
+  </div>
+</BaseLayout>

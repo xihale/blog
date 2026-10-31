@@ -4,6 +4,7 @@ import styles from "./Header.module.css";
 
 const currentPath = Astro.url.pathname;
 const navItems: Array<{ href: string; label: string; external?: boolean }> = [
+  { href: "/categories", label: "Categories" },
   { href: "/tags", label: "Tags" },
   { href: "/writing", label: "Writing" },
   { href: "/links", label: "Links" },
