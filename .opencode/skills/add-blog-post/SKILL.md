@@ -5,14 +5,20 @@ description: Add, migrate, rewrite, or polish blog posts for this Astro blog. Us
 
 # Add Blog Post
 
-Use this for anything under `src/content/blog/`.
+Two content collections share one schema, defined in `src/content.config.ts`:
+
+- `src/content/blog/*.md` — `/writing/<slug>/`: 技术、CTF、番谈、法律, and other long-form posts.
+- `src/content/fragments/*.md` — `/fragments/<slug>/`: 碎语集, for prose, 随笔, 思考, 文摘, and short personal pieces.
+
+New prose that belongs to 碎语集 goes in `fragments/`; everything else goes in `blog/`. Fragments are excluded from `/writing` by virtue of living in the other collection.
 
 ## Rules
 
-- Put posts in `src/content/blog/*.md`.
+- Put posts in the collection directory that matches their nature.
 - The slug comes from the filename.
 - Prefer lowercase ASCII kebab-case filenames for new posts.
 - Preserve original publish dates when migrating old posts.
+- When moving an existing post between collections, add a static redirect in `astro.config.mjs` for its old URL.
 
 ## Frontmatter
 
@@ -58,7 +64,7 @@ Prefer 1 tag. Use 2 only if really needed. Keep tags consistent because `/tags` 
 Run one of:
 
 ```bash
-autocorrect --strict --fix src/content/blog/
+autocorrect --strict --fix src/content/blog/ src/content/fragments/
 ```
 
 ```bash
