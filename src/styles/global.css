@@ -29,7 +29,7 @@
   --color-surface-elevated: #f8f8f6;
   --color-border: #cdcdcc;
   --color-nav-link: hsl(220 11% 24%);
-  --color-nav-link-hover: hsl(220 20% 31%);
+  --color-nav-link-hover: var(--article-link-hover);
   --color-header-divider: hsl(220 11% 81% / 0.95);
   --selection-color: hsla(220, 70%, 80%, 0.3);
   --article-link-color: #4d6da6;
@@ -55,7 +55,7 @@
     --color-surface-elevated: #262b32;
     --color-border: #363d47;
     --color-nav-link: hsl(215 16% 84%);
-    --color-nav-link-hover: hsl(215 18% 88%);
+    --color-nav-link-hover: var(--article-link-hover);
     --color-header-divider: hsl(215 14% 36% / 0.9);
     --selection-color: hsla(220, 70%, 30%, 0.4);
     --article-link-color: #98b0dd;

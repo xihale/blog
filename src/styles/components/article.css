@@ -107,7 +107,13 @@ h6 { font-size: 1.125rem; }
     color: var(--article-link-color);
     word-break: normal;
     overflow-wrap: anywhere;
-    text-decoration: none;
+    /* Subtle resting underline: thin, offset, and a low-alpha tint of the
+       link color — visible enough to read as a link, quiet enough to not
+       compete with body text. */
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.14em;
+    text-decoration-color: color-mix(in srgb, var(--article-link-color) 38%, transparent);
   }
 
   & a:hover,
@@ -116,7 +122,7 @@ h6 { font-size: 1.125rem; }
     text-decoration: underline;
     text-decoration-thickness: 0.06em;
     text-underline-offset: 0.12em;
-    text-decoration-color: var(--color-header-divider);
+    text-decoration-color: currentColor;
   }
 
   & :is(h2, h3, h4, h5, h6) {
