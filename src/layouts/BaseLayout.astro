@@ -9,6 +9,7 @@ interface Props {
 	title?: string;
 	description?: string;
 	robots?: string;
+	cover?: string | import("astro").ImageMetadata;
 	contentWidth?: "default" | "wide";
 	math?: boolean;
 }
@@ -17,6 +18,7 @@ const {
 	title: frontmatterTitle,
 	description = SITE_DESCRIPTION,
 	robots,
+	cover,
 	contentWidth = "default",
 	math = false,
 } = Astro.props;
@@ -40,9 +42,12 @@ const pageTitle = title
 		: `${title} | ${SITE_TITLE}`
 	: SITE_TITLE;
 
-const baseHeadProps = robots
-	? { title: pageTitle, description, robots }
-	: { title: pageTitle, description };
+const baseHeadProps = {
+	title: pageTitle,
+	description,
+	...(robots ? { robots } : {}),
+	...(cover !== undefined ? { cover } : {}),
+};
 
 const siteContentClass =
 	contentWidth === "wide" ? "site-content site-content-wide" : "site-content";

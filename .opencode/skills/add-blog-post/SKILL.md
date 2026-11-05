@@ -31,10 +31,12 @@ pubDate: "2026-03-23"
 description: "一句话概括文章内容。"
 tags: ["思考"]
 draft: false
+cover: "/covers/<slug>.png"
 ---
 ```
 
 - Allowed extras: `updatedDate`, `unlisted`.
+- Optional `cover`: site-root path to an image under `public/covers/` (preferred) or an absolute URL. It becomes the article's `og:image`/`twitter:image` and the RSS/Atom `<enclosure>`. Posts without `cover` emit no `og:image`, so readers show no cover — there is no avatar fallback.
 - Do not add `category` for new posts. The active schema is in `src/content.config.ts`.
 
 ## Tags

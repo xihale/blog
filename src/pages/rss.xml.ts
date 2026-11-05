@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { coverBytes, coverMime, coverUrl } from '../utils/cover';
 
 export async function GET(context: APIContext) {
 	const [blogPosts, fragmentPosts] = await Promise.all([
@@ -33,6 +34,15 @@ export async function GET(context: APIContext) {
 			description: post.data.description || '',
 			link,
 			categories: post.data.tags,
+			...(post.data.cover
+				? {
+						enclosure: {
+							url: coverUrl(post.data.cover, context.site!),
+							type: coverMime(post.data.cover),
+							length: coverBytes(post.data.cover),
+						},
+					}
+				: {}),
 		})),
 	});
 }

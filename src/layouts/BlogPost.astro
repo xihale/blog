@@ -16,15 +16,16 @@ type Props = CollectionEntry<"blog">["data"] & {
 };
 
 const {
-  title,
-  description,
-  pubDate,
-  updatedDate,
-  tags,
-  unlisted,
-  math,
-  mermaid,
-  headings = [],
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	tags,
+	unlisted,
+	cover,
+	math,
+	mermaid,
+	headings = [],
 } = Astro.props;
 
 const robots = unlisted ? "noindex" : undefined;
@@ -33,6 +34,7 @@ const baseLayoutProps = {
   title,
   description,
   ...(robots ? { robots } : {}),
+  ...(cover ? { cover } : {}),
   ...(math !== undefined ? { math } : {}),
 };
 

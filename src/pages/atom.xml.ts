@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { coverBytes, coverMime, coverUrl } from '../utils/cover';
 
 export async function GET(context: APIContext) {
 	const [blogPosts, fragmentPosts] = await Promise.all([
@@ -43,10 +44,14 @@ export async function GET(context: APIContext) {
       const postUrl = `${siteUrl}${link}`;
       const description = post.data.description || '';
       const tags = post.data.tags || [];
+      const cover = post.data.cover;
+      const enclosureLink = cover
+        ? `\n    <link rel="enclosure" href="${escapeXml(coverUrl(cover, siteUrl))}" type="${coverMime(cover)}" length="${coverBytes(cover)}"/>`
+        : '';
       return `
   <entry>
     <title>${escapeXml(post.data.title)}</title>
-    <link href="${postUrl}"/>
+    <link href="${postUrl}"/>${enclosureLink}
     <id>${postUrl}</id>
     <updated>${post.data.pubDate.toISOString()}</updated>
     <summary>${escapeXml(description)}</summary>

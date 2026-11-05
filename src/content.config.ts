@@ -5,6 +5,9 @@ const postSchema = () =>
 	z.object({
 		title: z.string(),
 		description: z.string(),
+		// Optional cover image: site-root path under public/ (e.g. "/covers/<slug>.png")
+		// or an absolute URL. Used for og:image and feed enclosures.
+		cover: z.string().optional(),
 		// Transform string to Date object
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
