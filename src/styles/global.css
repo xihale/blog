@@ -79,6 +79,12 @@ html {
      smooth here makes every scroll restoration "roll down" from y=0. */
   scroll-behavior: auto;
   background: var(--color-background);
+  /* Pin the rem base so browser default-font-size settings and webview text
+     scaling (WeChat X5 & co) cannot inflate the whole rem-based layout on
+     some devices. 1.2rem below is 19.2px everywhere, not per-device. */
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Reload scroll restore (see the inline script in BaseHead): the body stays
