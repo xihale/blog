@@ -65,7 +65,7 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "Harlan",
-        url: "https://www.harlan.top",
+        url: "https://info.harlan.top",
         avatar: harlanAvatar,
         description: "记录碎片化的所思所想",
       },
