@@ -11,11 +11,6 @@ const description = "Interesting links and resources";
   <div class="mx-auto max-w-[68ch]">
     <h1 class="mb-4">Links</h1>
 
-    <p class="mb-6 text-[var(--color-text-secondary)]">
-      A curated collection of interesting websites, blogs, and resources from
-      around the web.
-    </p>
-
     {linkGroups.map((group) => <LinkGroupSection group={group} />)}
   </div>
 </BaseLayout>

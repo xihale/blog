@@ -26,7 +26,6 @@ export interface LinkGroup {
 export const linkGroups: LinkGroup[] = [
   {
     title: "Friends",
-    description: "朋友们的站点，简洁而有趣。",
     links: [
       {
         name: "teru",
@@ -79,8 +78,7 @@ export const linkGroups: LinkGroup[] = [
     ],
   },
   {
-    title: "Personal Blogs",
-    description: "我日常会阅读的一些个人博客。",
+    title: "Subscriptions",
     links: [
       {
         name: "评论尸",
