@@ -1,0 +1,334 @@
+---
+// 回到顶部：角落里安静的一滴雨。悬停时雨滴的"重心"自然上移——肥重的
+// 肚从下部迁到上部（WAAPI 关键帧 d 形变，途经鼓腹中位，不是翻转）。
+// 点击触发「倒雨」——满屏雨滴升回天上，页面回到顶部。
+---
+
+<button class="back-to-top" aria-label="回到顶部">
+  <svg viewBox="0 0 256 256" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M 128 16 C 132 16, 135 20, 137 25 C 156 72, 208 122, 208 172 C 208 218, 172 244, 128 244 C 84 244, 48 218, 48 172 C 48 122, 100 72, 119 25 C 121 20, 124 16, 128 16 Z"
+    />
+  </svg>
+</button>
+<canvas class="btt-rain" aria-hidden="true"></canvas>
+
+<style>
+  /* 安静的一滴雨：无底板、无描边、无阴影，暗淡地待在角落 */
+  .back-to-top {
+    position: fixed;
+    right: calc(1.25rem + env(safe-area-inset-right, 0px));
+    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    z-index: 80;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: none;
+    appearance: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.5rem);
+    transition:
+      opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0.3s,
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.3s;
+  }
+
+  .back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  /* 悬停只微亮一档，不抢视线 */
+  .back-to-top:hover,
+  .back-to-top:focus-visible {
+    color: var(--color-text);
+  }
+
+  .back-to-top:focus-visible {
+    outline: 2px solid var(--color-text-secondary);
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
+
+  .back-to-top svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .btt-rain {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+  }
+</style>
+
+<script>
+  const SHOW_THRESHOLD = 480;
+
+  const bttButton = () => document.querySelector(".back-to-top");
+  const rainCanvas = () => document.querySelector<HTMLCanvasElement>(".btt-rain");
+  const prefersReducedMotion = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function updateVisibility() {
+    const btn = bttButton();
+    if (btn) btn.classList.toggle("is-visible", window.scrollY > SHOW_THRESHOLD);
+  }
+
+  // ---- 重心迁移形变：REST(肚在下) ↔ HOVER(肚在上) ----
+  // flubber 在两个任意形状之间计算液态对应关系（无需同构路径），
+  // rAF 补间可中断、从当前进度续接。
+  import { interpolate } from "flubber";
+
+  const D_REST =
+    "M 128 16 C 132 16, 135 20, 137 25 C 156 72, 208 122, 208 172 C 208 218, 172 244, 128 244 C 84 244, 48 218, 48 172 C 48 122, 100 72, 119 25 C 121 20, 124 16, 128 16 Z";
+  const D_HOVER =
+    "M 128 244 C 124 244, 121 240, 119 235 C 100 188, 48 138, 48 88 C 48 42, 84 16, 128 16 C 172 16, 208 42, 208 88 C 208 138, 156 188, 137 235 C 135 240, 132 244, 128 244 Z";
+
+  const morphAt = interpolate(D_REST, D_HOVER, { maxSegmentLength: 2 });
+
+  const dropPath = () =>
+    document.querySelector<SVGPathElement>(".back-to-top svg path");
+
+  let morphRaf = 0;
+  let morphProgress = 0; // 0 = 静止，1 = 倒置
+
+  function setMorph(p: number) {
+    morphProgress = p;
+    const el = dropPath();
+    if (!el) return;
+    // 端点吸附：静止/倒置终态用精确路径，避免重采样削平锐利尾尖
+    el.setAttribute("d", p <= 0 ? D_REST : p >= 1 ? D_HOVER : morphAt(p));
+  }
+
+  function tweenMorph(target: number, dur = 380) {
+    const el = dropPath();
+    if (!el) return;
+    if (prefersReducedMotion()) {
+      cancelAnimationFrame(morphRaf);
+      setMorph(target);
+      return;
+    }
+    cancelAnimationFrame(morphRaf);
+    const from = morphProgress;
+    if (Math.abs(target - from) < 0.005) {
+      setMorph(target);
+      return;
+    }
+    const t0 = performance.now();
+    // easeOutCubic：立即起速，不磨蹭
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+    const step = (now: number) => {
+      const t = Math.min((now - t0) / dur, 1);
+      setMorph(from + (target - from) * ease(t));
+      if (t < 1) morphRaf = requestAnimationFrame(step);
+    };
+    morphRaf = requestAnimationFrame(step);
+  }
+
+  const isOverButton = (e: Event) =>
+    e.target instanceof Element && !!e.target.closest(".back-to-top");
+
+  // pointerover/out + focusin/out 的 document 级委托（模块脚本只执行一次，
+  // 换页后 DOM 是新的，现场查询节点，兼容 ClientRouter）
+  document.addEventListener("pointerover", (e) => {
+    if (!isOverButton(e)) return;
+    if (
+      e.relatedTarget instanceof Node &&
+      (e.target as Element).contains(e.relatedTarget)
+    )
+      return;
+    tweenMorph(1);
+  });
+  document.addEventListener("pointerout", (e) => {
+    if (!isOverButton(e)) return;
+    if (
+      e.relatedTarget instanceof Node &&
+      (e.target as Element).contains(e.relatedTarget)
+    )
+      return;
+    tweenMorph(0);
+  });
+  document.addEventListener("focusin", (e) => {
+    if (isOverButton(e)) tweenMorph(1);
+  });
+  document.addEventListener("focusout", (e) => {
+    if (isOverButton(e)) tweenMorph(0);
+  });
+
+  // ---- 倒雨：雨滴从屏幕下方升回天上（时间倒流的雨） ----
+  function playRisingRain(durationS: number): void {
+    const canvas = rainCanvas();
+    if (!canvas || prefersReducedMotion()) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // 墨色跟随主题
+    const ink =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-text")
+        .trim() || "hsl(220 10% 15%)";
+
+    canvas.style.opacity = "1";
+    const drops: Array<{
+      x: number; y: number; len: number; width: number;
+      speed: number; drift: number; alpha: number;
+    }> = [];
+    const SPAWN_PER_S = 110;
+    let spawnDebt = 0;
+    let elapsed = 0;
+    let last = performance.now();
+    let running = true;
+
+    const spawn = () => {
+      drops.push({
+        x: Math.random() * w,
+        y: h + 30 + Math.random() * 70,
+        len: 14 + Math.random() * 26,
+        width: 1 + Math.random() * 1.6,
+        speed: 900 + Math.random() * 800,
+        drift: (Math.random() - 0.5) * 36,
+        alpha: 0.16 + Math.random() * 0.3,
+      });
+    };
+
+    const frame = (now: number) => {
+      if (!running) return;
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      elapsed += dt;
+
+      // 只在滚动期间补雨；之后存量雨滴落完（升完），画布整体淡出
+      if (elapsed < durationS) spawnDebt += SPAWN_PER_S * dt;
+      while (spawnDebt >= 1) {
+        spawn();
+        spawnDebt -= 1;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+      const fade =
+        elapsed > durationS
+          ? Math.max(0, 1 - (elapsed - durationS) / 0.45)
+          : 1;
+      canvas.style.opacity = String(fade);
+
+      ctx.strokeStyle = ink;
+      ctx.fillStyle = ink;
+      ctx.lineCap = "round";
+      for (let i = drops.length - 1; i >= 0; i--) {
+        const d = drops[i];
+        if (!d) continue;
+        d.y -= d.speed * dt;
+        d.x += d.drift * dt;
+        if (d.y + d.len < -50) {
+          drops.splice(i, 1);
+          continue;
+        }
+        ctx.globalAlpha = d.alpha * fade;
+        // 雨丝：头重尾轻的上升水痕
+        ctx.lineWidth = d.width;
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y + d.len);
+        ctx.lineTo(d.x, d.y + d.len * 0.25);
+        ctx.stroke();
+        // 雨滴头
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.width * 1.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      if (fade <= 0) {
+        running = false;
+        ctx.clearRect(0, 0, w, h);
+        canvas.style.opacity = "0";
+        return;
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  // ---- 点击：倒雨 + 页面回到顶部（用户输入可打断） ----
+  function rideToTop() {
+    if (prefersReducedMotion()) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
+    const startY = window.scrollY;
+    if (startY <= 0) return;
+
+    const duration = Math.min(1100, 450 + startY * 0.18);
+    playRisingRain(duration / 1000 + 0.45);
+
+    let cancelled = false;
+    const cancel = () => {
+      cancelled = true;
+      window.removeEventListener("wheel", cancel);
+      window.removeEventListener("touchstart", cancel);
+      window.removeEventListener("keydown", cancel);
+    };
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+    window.addEventListener("keydown", cancel);
+
+    const ease = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const t0 = performance.now();
+    const step = (now: number) => {
+      if (cancelled) return;
+      const t = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, Math.round(startY * (1 - ease(t))));
+      if (t < 1) requestAnimationFrame(step);
+      else cancel();
+    };
+    requestAnimationFrame(step);
+  }
+
+  // 模块脚本整个会话只执行一次；换页后 DOM 是新的，因此全部走
+  // document 级委托 + 每次事件现场查询节点（兼容 ClientRouter）。
+  document.addEventListener("click", (e) => {
+    const target = e.target instanceof Element ? e.target : null;
+    if (target?.closest(".back-to-top")) {
+      e.preventDefault();
+      rideToTop();
+    }
+  });
+
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        updateVisibility();
+      });
+    },
+    { passive: true },
+  );
+
+  document.addEventListener("astro:page-load", updateVisibility);
+  updateVisibility();
+</script>
