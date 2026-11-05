@@ -42,13 +42,24 @@ const tags = [...tagMap.entries()]
   <div class="mx-auto max-w-[120rem]">
     <header class="mb-12 md:mb-16">
       <h1 class="mb-4">Tags</h1>
+
+      <nav class="tag-container" aria-label="Tag directory">
+        {
+          tags.map(({ tag, posts }) => (
+            <a href={`#tag-${tag}`} class="tag tag-dir-link">
+              #{tag}
+              <span class="tag-small ml-1">{posts.length}</span>
+            </a>
+          ))
+        }
+      </nav>
     </header>
 
     <main class="space-y-16">
       {
         tags.map(({ tag, posts }) => (
           <section class="mb-8">
-            <h2 class="text-[var(--color-text-muted)]">
+            <h2 id={`tag-${tag}`} class="text-[var(--color-text-muted)]">
               #{tag}
               <span class="text-[var(--color-text-muted)] text-base font-normal ml-2">
                 {posts.length}

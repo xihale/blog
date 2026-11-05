@@ -409,6 +409,13 @@ blockquote {
   padding: var(--space-1) var(--space-2);
 }
 
+/* Tag directory on the Tags page: same chip look, plus hover feedback so
+   they read as jump links rather than labels. */
+.tag-dir-link:hover,
+.tag-dir-link:focus-visible {
+  color: var(--color-nav-link-hover);
+}
+
 /* Article Header */
 .article-header {
   max-width: min(100%, var(--article-column-max-width, var(--max-width)));
