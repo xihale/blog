@@ -41,6 +41,51 @@
   color: var(--color-text);
 }
 
+/* 品牌墨滴徽记：每次页面加载（含 ClientRouter 换页）重播抽枝动画。
+   墨滴本体不淡入——本体透明会让换页时标题区闪动；动的只有负空间里的树。 */
+.brandInk {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: -0.14em;
+  margin-right: 0.32em;
+  display: inline-block;
+}
+
+.brandInkTrunk,
+.brandInkBranchL,
+.brandInkBranchR {
+  stroke-dasharray: 100.5;
+  stroke-dashoffset: 100.8;
+  animation: brand-ink-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.brandInkTrunk {
+  animation-delay: 0.2s;
+}
+
+.brandInkBranchL {
+  animation-delay: 0.52s;
+  animation-duration: 0.35s;
+}
+
+.brandInkBranchR {
+  animation-delay: 0.64s;
+  animation-duration: 0.35s;
+}
+
+@keyframes brand-ink-grow {
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandInkTrunk,
+  .brandInkBranchL,
+  .brandInkBranchR {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
 .navLinkActive {
   color: var(--color-nav-link-hover);
   font-weight: 500;

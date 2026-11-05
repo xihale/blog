@@ -3,6 +3,8 @@ import { SITE_TITLE } from "../consts";
 import styles from "./Header.module.css";
 
 const currentPath = Astro.url.pathname;
+// 首页 hero 已有大墨滴，header 徽记只在子页面出现
+const isHome = currentPath === "/";
 const navItems: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/categories", label: "Categories" },
   { href: "/tags", label: "Tags" },
@@ -28,6 +30,23 @@ const isCurrent = (href: string, external?: boolean) => {
   <div class={styles["headerContainer"]}>
     <nav class={styles["brandTitle"]}>
       <a href="/" class={styles["navLink"]}>
+        {!isHome && (
+          <svg class={styles["brandInk"]} viewBox="0 0 256 256" aria-hidden="true">
+            <mask id="brandInkMask" maskUnits="userSpaceOnUse">
+              <rect width="256" height="256" fill="#fff" />
+              <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+                <path class={styles["brandInkTrunk"]} stroke-width="10" pathLength="100"
+                  d="M 126 252 C 126 200, 123 148, 136 92" />
+                <path class={styles["brandInkBranchL"]} stroke-width="7.5" pathLength="100"
+                  d="M 127 150 C 112 142, 97 135, 81 117" />
+                <path class={styles["brandInkBranchR"]} stroke-width="7" pathLength="100"
+                  d="M 129 131 C 144 121, 158 111, 168 100" />
+              </g>
+            </mask>
+            <path class={styles["brandInkBody"]} fill="currentColor" mask="url(#brandInkMask)"
+              d="M 128 20 C 132 20, 135 24, 137 29 C 156 76, 208 122, 208 168 C 208 214, 172 240, 128 240 C 84 240, 48 214, 48 168 C 48 122, 100 76, 119 29 C 121 24, 124 20, 128 20 Z" />
+          </svg>
+        )}
         {SITE_TITLE}
       </a>
     </nav>
