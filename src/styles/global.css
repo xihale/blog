@@ -81,6 +81,14 @@ html {
   background: var(--color-background);
 }
 
+/* Reload scroll restore (see the inline script in BaseHead): the body stays
+   unpainted until the saved position is re-applied, so the first visible
+   frame is already at the old offset instead of flashing the top and
+   teleporting. html itself stays visible to keep the themed background. */
+html[data-restore-scroll] body {
+  visibility: hidden;
+}
+
 body {
   color: var(--color-text);
   background: var(--color-background);

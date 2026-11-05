@@ -82,3 +82,43 @@ const ogImageUrl = cover
     document.startViewTransition = undefined;
   }
 </script>
+
+<script is:inline>
+  // Astro's ClientRouter sets history.scrollRestoration = "manual" and only
+  // re-applies the saved scroll position when its deferred router module
+  // evaluates. On a reload the browser therefore paints the top of the page
+  // first and visibly teleports to the old position once the router catches
+  // up (slow devices paint faster than module scripts run). We restore
+  // earlier ourselves: hide the body until the saved position can actually
+  // be applied (scrollHeight must be tall enough, or we hit a cap), then
+  // reveal — the first paint the user sees is already at the right offset.
+  (() => {
+    try {
+      const nav = performance.getEntriesByType("navigation")[0];
+      const state = history.state;
+      if (!nav || nav.type !== "reload" || !state || !state.scrollY) return;
+      const scrollX = state.scrollX || 0;
+      const y = state.scrollY;
+      const root = document.documentElement;
+      root.setAttribute("data-restore-scroll", "");
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        scrollTo({ left: scrollX, top: y });
+        root.removeAttribute("data-restore-scroll");
+      };
+      const tryRestore = () => {
+        if (done) return;
+        // Layout is available during parsing; wait until the document is
+        // tall enough for y instead of clamping to a half-parsed page.
+        if (root.scrollHeight - window.innerHeight >= y) finish();
+        else requestAnimationFrame(tryRestore);
+      };
+      requestAnimationFrame(tryRestore);
+      // Hard caps so a hanging subresource can never leave the page blank.
+      addEventListener("load", finish, { once: true });
+      setTimeout(finish, 2000);
+    } catch {}
+  })();
+</script>
