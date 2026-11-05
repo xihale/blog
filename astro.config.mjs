@@ -14,7 +14,6 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { remarkMermaid } from './lib/remark/remark-mermaid.js';
 import { fontPreload } from './lib/astro/font-preload.mjs';
-import { fontDisplayOptional } from './lib/astro/font-display.mjs';
 import { llmsTxt } from './lib/astro/llms-txt.mjs';
 
 // https://astro.build/config
@@ -38,7 +37,6 @@ export default defineConfig({
     },
     integrations: [
         fontPreload(),
-        fontDisplayOptional(),
         llmsTxt({ site: SITE }),
         UnoCSS(),
         expressiveCode({

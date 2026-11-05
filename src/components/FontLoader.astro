@@ -6,12 +6,11 @@
   the @font-face declarations into every page's CSS bundle. font-preload.mjs
   injects per-page <link rel="preload"> for the LXGW subsets each page uses.
 
-  Render-blocking on purpose. The webfonts are font-display: optional, so a
-  stylesheet that lands after first paint never swaps glyphs in mid-view —
-  repeat visits would lose their cached fonts instead of gaining them.
-  Blocking puts the @font-face rules (and the cached woff2 files) inside
-  optional's 100 ms block window, so repeat views paint with the real fonts
-  on the first frame while cold visits render the fallback with no swap.
+  Render-blocking on purpose. The webfonts are font-display: swap, so the
+  @font-face rules must be in place before the preloaded subset woff2 files
+  finish: blocking puts the declarations in the critical path, the woff2
+  downloads start at parse time (see font-preload.mjs), and the swap lands
+  on the first paint that has them — no refresh needed, on any visit.
   Both files are immutable-cached /_astro assets, so the blocking cost is
   paid once per cache, not per navigation.
 */
