@@ -97,7 +97,8 @@ html[data-restore-scroll] body {
 
 body {
   color: var(--color-text);
-  background: var(--color-background);
+  /* 背景由 html 承担（同色 var）。body 若再画一层背景，会盖住
+     fixed + 负 z-index 的首页雨层（根上下文绘制顺序：body 背景晚于负层）。 */
   font: 1.2rem/1.4 var(--font-sans);
   min-height: 100vh;
 
