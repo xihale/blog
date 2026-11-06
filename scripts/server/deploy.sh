@@ -54,8 +54,14 @@ cat "$0" > "$SELF_SNAP"
 # non-final command of an AND-list is exempt.
 WANT="${BLOG_PUSH_SHA:-}"
 ok=""
+# Attempt 1 connects directly; from attempt 2 on, route through the local
+# snirect SNI-rewrite proxy (root user service, 127.0.0.1:7654): the direct
+# route intermittently dies on github.com TLS handshakes while snirect
+# bypasses the SNI reset entirely. Attempt 1 stays proxy-free.
 for attempt in 1 2 3 4 5; do
-  if timeout 60 git fetch --depth=1 origin "$BRANCH"; then
+  proxyenv=""
+  [ "$attempt" -ge 2 ] && proxyenv="HTTPS_PROXY=http://127.0.0.1:7654 HTTP_PROXY=http://127.0.0.1:7654"
+  if env $proxyenv timeout 60 git fetch --depth=1 origin "$BRANCH"; then
     got=$(git rev-parse -q --verify FETCH_HEAD || true)
     if [ -z "$WANT" ] || [ "$got" = "$WANT" ]; then ok=1; break; fi
     say "fetch got ${got:-nothing}, want $WANT — attempt $attempt"
