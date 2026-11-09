@@ -6,11 +6,11 @@ const currentPath = Astro.url.pathname;
 // 首页 hero 已有大墨滴，header 徽记只在子页面出现
 const isHome = currentPath === "/";
 const navItems: Array<{ href: string; label: string; external?: boolean }> = [
-  { href: "/categories", label: "Categories" },
-  { href: "/tags", label: "Tags" },
-  { href: "/writing", label: "Writing" },
-  { href: "/links", label: "Links" },
-  { href: "/about", label: "About" },
+  { href: "/writing/", label: "长文" },
+  { href: "/fragments/", label: "碎语" },
+  { href: "/tags/", label: "标签" },
+  { href: "/links/", label: "友链" },
+  { href: "/about/", label: "关于" },
 ];
 
 const isCurrent = (href: string, external?: boolean) => {
@@ -22,24 +22,25 @@ const isCurrent = (href: string, external?: boolean) => {
     return currentPath === "/";
   }
 
-  return currentPath === href || currentPath.startsWith(`${href}/`);
+  const base = href.replace(/\/$/, "");
+  return currentPath === base || currentPath.startsWith(`${base}/`);
 };
 ---
 
 <header class={styles["siteHeader"]}>
   <div class={styles["headerContainer"]}>
-    <nav class={styles["brandTitle"]}>
+    <nav class={styles["brandTitle"]} aria-label="站点首页">
       <a href="/" class={styles["navLink"]}>
         {!isHome && (
           <svg class={styles["brandInk"]} viewBox="0 0 256 256" aria-hidden="true">
             <mask id="brandInkMask" maskUnits="userSpaceOnUse">
               <rect width="256" height="256" fill="#fff" />
               <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
-                <path class={styles["brandInkTrunk"]} stroke-width="10" pathLength="100"
+                <path class={styles["brandInkTrunk"]} stroke-width="10"
                   d="M 126 252 C 126 200, 123 148, 136 92" />
-                <path class={styles["brandInkBranchL"]} stroke-width="7.5" pathLength="100"
+                <path class={styles["brandInkBranchL"]} stroke-width="7.5"
                   d="M 127 150 C 112 142, 97 135, 81 117" />
-                <path class={styles["brandInkBranchR"]} stroke-width="7" pathLength="100"
+                <path class={styles["brandInkBranchR"]} stroke-width="7"
                   d="M 129 131 C 144 121, 158 111, 168 100" />
               </g>
             </mask>
@@ -51,7 +52,7 @@ const isCurrent = (href: string, external?: boolean) => {
       </a>
     </nav>
 
-    <nav class={styles["navMenuDesktop"]}>
+    <nav class={styles["navMenuDesktop"]} aria-label="主导航">
       {
         navItems.map(({ href, label, external }) => (
           <a
@@ -69,10 +70,12 @@ const isCurrent = (href: string, external?: boolean) => {
 
     <button
       class={styles["mobileMenuToggle"]}
-      aria-label="Toggle navigation menu"
+      aria-label="展开或收起导航菜单"
       aria-expanded="false"
+      aria-controls="nav-menu"
       data-open="false"
       id="mobile-menu-button"
+      type="button"
     >
       <span class={styles["mobileMenuLine"]}></span>
       <span class={styles["mobileMenuLine"]}></span>
@@ -80,7 +83,7 @@ const isCurrent = (href: string, external?: boolean) => {
     </button>
   </div>
 
-  <nav class={styles["navMenuMobile"]} data-open="false" id="nav-menu">
+  <nav class={styles["navMenuMobile"]} data-open="false" id="nav-menu" aria-label="移动端主导航">
     <div class={styles["navMenuContainer"]}>
       {
         navItems.map(({ href, label, external }) => (
@@ -100,21 +103,41 @@ const isCurrent = (href: string, external?: boolean) => {
 </header>
 
 <script>
-  const initMobileMenu = () => {
+  const setMobileMenuOpen = (open: boolean) => {
     const button = document.getElementById("mobile-menu-button");
     const nav = document.getElementById("nav-menu");
-
     if (!button || !nav) return;
-
-    const toggleMenu = () => {
-      const isOpen = nav.dataset["open"] !== "true";
-      nav.dataset["open"] = isOpen ? "true" : "false";
-      button.dataset["open"] = isOpen ? "true" : "false";
-      button.setAttribute("aria-expanded", isOpen.toString());
-    };
-
-    button.addEventListener("click", toggleMenu);
+    const state = open ? "true" : "false";
+    nav.dataset["open"] = state;
+    button.dataset["open"] = state;
+    button.setAttribute("aria-expanded", state);
   };
 
-  document.addEventListener("astro:page-load", initMobileMenu);
+  document.addEventListener("click", (e) => {
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+
+    if (target.closest("#mobile-menu-button")) {
+      const nav = document.getElementById("nav-menu");
+      setMobileMenuOpen(nav?.dataset["open"] !== "true");
+      return;
+    }
+
+    const nav = document.getElementById("nav-menu");
+    if (nav?.dataset["open"] === "true") {
+      if (target.closest("#nav-menu a") || !target.closest("header")) {
+        setMobileMenuOpen(false);
+      }
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      setMobileMenuOpen(false);
+    }
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    setMobileMenuOpen(false);
+  });
 </script>
