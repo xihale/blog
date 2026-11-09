@@ -3,17 +3,25 @@
 }
 
 .header {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.header h2 {
+  font: 300 1.25rem/1.4 var(--font-serif);
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 .description {
+  margin-top: var(--space-1);
   color: var(--color-text-muted);
+  font-size: 0.9rem;
 }
 
 .linkGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-2) var(--space-3);
 }
 
 @media (max-width: 768px) {

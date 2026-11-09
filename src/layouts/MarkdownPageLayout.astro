@@ -9,9 +9,17 @@ interface Props {
   title?: string;
   description?: string;
   robots?: string;
+  frontmatter?: {
+    title?: string;
+    description?: string;
+    robots?: string;
+  };
 }
 
-const { title, description = SITE_DESCRIPTION, robots } = Astro.props as Props;
+const props = Astro.props as Props;
+const title = props.title ?? props.frontmatter?.title;
+const description = props.description ?? props.frontmatter?.description ?? SITE_DESCRIPTION;
+const robots = props.robots ?? props.frontmatter?.robots;
 
 const baseLayoutProps: {
   description: string;
@@ -25,7 +33,14 @@ if (typeof title === "string") {
 ---
 
 <BaseLayout {...baseLayoutProps}>
-  <article class="mx-auto max-w-[68ch] py-8 md:py-12 article-content body-text">
+  {
+    title && (
+      <header class="page-header">
+        <h1>{title}</h1>
+      </header>
+    )
+  }
+  <article class="article-content body-text">
     <slot />
   </article>
 </BaseLayout>

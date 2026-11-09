@@ -38,64 +38,60 @@ const tags = [...tagMap.entries()]
   .sort((a, b) => b.posts.length - a.posts.length);
 ---
 
-<BaseLayout title="Tags" description="Posts grouped by tag">
-  <div class="mx-auto max-w-[120rem]">
-    <header class="mb-12 md:mb-16">
-      <h1 class="mb-4">Tags</h1>
+<BaseLayout title="标签" description="按标签归档的全部文章与碎语">
+  <header class="page-header">
+    <h1>标签</h1>
 
-      <nav class="tag-container" aria-label="Tag directory">
-        {
-          tags.map(({ tag, posts }) => (
-            <a href={`#tag-${tag}`} class="tag tag-dir-link">
-              #{tag}
-              <span class="tag-small ml-1">{posts.length}</span>
-            </a>
-          ))
-        }
-      </nav>
-    </header>
-
-    <main class="space-y-16">
+    <nav class="tag-directory" aria-label="标签索引">
       {
         tags.map(({ tag, posts }) => (
-          <section class="mb-8">
-            <h2 id={`tag-${tag}`} class="text-[var(--color-text-muted)]">
-              #{tag}
-              <span class="text-[var(--color-text-muted)] text-base font-normal ml-2">
-                {posts.length}
-              </span>
-            </h2>
-            <div class="mb-6">
-              {posts.map(({ post, href }) => (
-                <div class="post-card">
-                  <a href={href} class="block">
-                    <div class="blog-post-item">
-                      <time
-                        datetime={formatDateISO(post.data.pubDate)}
-                        class="blog-date"
-                      >
-                        {formatDateShort(post.data.pubDate)}
-                      </time>
-
-                      <div class="blog-content">
-                        <div class="post-title-row">
-                          <h3 class="post-title">{post.data.title}</h3>
-                        </div>
-
-                        {post.data.description && (
-                          <p class="post-description">
-                            {post.data.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              ))}
-            </div>
-          </section>
+          <a href={`#tag-${tag}`} class="tag tag-dir-link">
+            #{tag}
+            <span class="tag-count">{posts.length}</span>
+          </a>
         ))
       }
-    </main>
+    </nav>
+  </header>
+
+  <div class="archive-list">
+    {
+      tags.map(({ tag, posts }) => (
+        <section class="archive-group">
+          <h2 id={`tag-${tag}`} class="archive-heading">
+            #{tag}
+            <span class="archive-heading-count">{posts.length}</span>
+          </h2>
+          <div class="archive-items">
+            {posts.map(({ post, href }) => (
+              <div class="post-card">
+                <a href={href} class="block">
+                  <div class="blog-post-item">
+                    <time
+                      datetime={formatDateISO(post.data.pubDate)}
+                      class="blog-date"
+                    >
+                      {formatDateShort(post.data.pubDate)}
+                    </time>
+
+                    <div class="blog-content">
+                      <div class="post-title-row">
+                        <h3 class="post-title">{post.data.title}</h3>
+                      </div>
+
+                      {post.data.description && (
+                        <p class="post-description">
+                          {post.data.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
   </div>
 </BaseLayout>

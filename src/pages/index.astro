@@ -4,8 +4,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout>
   <section class="hero" aria-label="种墨">
-    <canvas class="hero-rain" aria-hidden="true"></canvas>
-
     <div class="hero-inner">
       <svg class="hero-emblem" viewBox="0 0 256 256" role="img" aria-label="墨滴中生长的小树">
         <mask id="heroInkMask" maskUnits="userSpaceOnUse">
@@ -40,10 +38,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </svg>
 
       <h1 class="sr-only">种墨</h1>
-      <p class="hero-tagline">Essays, notes, and a quieter personal corner.</p>
+      <p class="hero-tagline">落墨成字，静待抽枝。</p>
     </div>
-
-    <div class="hero-hint" aria-hidden="true"></div>
   </section>
 </BaseLayout>
 
@@ -54,16 +50,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: grid;
     place-items: center;
     overflow: hidden;
-  }
-
-  /* 雨层固定铺满整个视口：压在页面背景之上、内容文字之下，不随滚动移动 */
-  .hero-rain {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
   }
 
   .hero-inner {
@@ -120,20 +106,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .hero-tagline {
     margin-top: 2rem;
     color: var(--color-text-secondary);
-    font-size: 1.05rem;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
     animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
-  }
-
-  /* 底部一缕渐隐细线作为滚动暗示，静态不跳动 */
-  .hero-hint {
-    position: absolute;
-    bottom: 1.75rem;
-    left: 50%;
-    translate: -50% 0;
-    width: 1px;
-    height: 3.25rem;
-    background: linear-gradient(var(--color-border), transparent);
-    animation: hero-rise 1.1s cubic-bezier(0.22, 1, 0.36, 1) 1.5s both;
   }
 
   @keyframes hero-rise {
@@ -152,8 +127,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .hero-ink-trunk,
     .hero-ink-branch-l,
     .hero-ink-branch-r,
-    .hero-tagline,
-    .hero-hint {
+    .hero-tagline {
       animation: none !important;
     }
 
@@ -164,118 +138,3 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
   }
 </style>
-
-<script>
-  // 首页环境层：稀疏的雨丝从画面底部升回天上（与回到顶部的倒雨同一意象，
-  // 但更慢更淡，只在 hero 可见时运行）。
-  function initHeroRain() {
-    const canvas = document.querySelector<HTMLCanvasElement>("canvas.hero-rain");
-    if (!canvas || canvas.dataset["bound"]) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.dataset["bound"] = "1";
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let active = false;
-    let w = 0;
-    let h = 0;
-    let ink = "";
-    let spawnDebt = 0;
-    let last = 0;
-    let raf = 0;
-    const drops: Array<{
-      x: number; y: number; len: number; width: number;
-      speed: number; drift: number; alpha: number;
-    }> = [];
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const spawn = () => {
-      drops.push({
-        x: Math.random() * w,
-        y: h + 20 + Math.random() * 40,
-        len: 10 + Math.random() * 16,
-        width: 0.8 + Math.random() * 0.9,
-        speed: 220 + Math.random() * 320,
-        drift: (Math.random() - 0.5) * 22,
-        alpha: 0.1 + Math.random() * 0.1,
-      });
-    };
-
-    const frame = (now: number) => {
-      // 换页后旧画布被移出文档，循环自停
-      if (!active || !canvas.isConnected) {
-        return;
-      }
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
-
-      spawnDebt += 22 * dt; // 稀疏而连续：每秒约 22 滴
-      while (spawnDebt >= 1) {
-        spawn();
-        spawnDebt -= 1;
-      }
-
-      ctx.clearRect(0, 0, w, h);
-      ctx.strokeStyle = ink;
-      ctx.lineCap = "round";
-      for (let i = drops.length - 1; i >= 0; i--) {
-        const d = drops[i];
-        if (!d) continue;
-        d.y -= d.speed * dt;
-        d.x += d.drift * dt;
-        if (d.y + d.len < -30) {
-          drops.splice(i, 1);
-          continue;
-        }
-        ctx.globalAlpha = d.alpha;
-        ctx.lineWidth = d.width;
-        ctx.beginPath();
-        ctx.moveTo(d.x, d.y + d.len);
-        ctx.lineTo(d.x, d.y);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(frame);
-    };
-
-    const start = () => {
-      if (active || reduced.matches) return;
-      active = true;
-      resize();
-      ink =
-        getComputedStyle(document.documentElement)
-          .getPropertyValue("--color-text")
-          .trim() || "hsl(220 10% 15%)";
-      drops.length = 0;
-      last = performance.now();
-      raf = requestAnimationFrame(frame);
-    };
-
-    const stop = () => {
-      active = false;
-      cancelAnimationFrame(raf);
-      ctx.clearRect(0, 0, w, h);
-    };
-
-    window.addEventListener("resize", () => {
-      if (active) resize();
-    });
-    reduced.addEventListener("change", () => {
-      if (reduced.matches) stop();
-    });
-
-    start();
-  }
-
-  initHeroRain();
-  // ClientRouter 换页后 DOM 全新，回到首页时重新绑定（dataset.bound 防重入）
-  document.addEventListener("astro:page-load", initHeroRain);
-</script>

@@ -3,14 +3,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import LinkGroupSection from "../components/LinkGroupSection.astro";
 import { linkGroups } from "../data/links";
 
-const title = "Links";
-const description = "Interesting links and resources";
+const title = "友链";
+const description = "朋友们的站点与日常阅读";
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="mx-auto max-w-[68ch]">
-    <h1 class="mb-4">Links</h1>
+  <header class="page-header">
+    <h1>友链</h1>
+  </header>
 
+  <div>
     {linkGroups.map((group) => <LinkGroupSection group={group} />)}
   </div>
 </BaseLayout>

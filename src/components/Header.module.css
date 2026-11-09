@@ -1,14 +1,13 @@
 .siteHeader {
   background: var(--color-background);
   border-bottom: 1px solid var(--color-header-divider);
-  box-shadow: var(--shadow-sm);
 }
 
 .headerContainer {
   max-width: var(--max-width);
   margin-inline: auto;
-  margin-block: 1rem;
-  padding-inline: 1rem;
+  padding-block: 1rem;
+  padding-inline: var(--layout-inline-padding);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,20 +15,21 @@
 }
 
 .brandTitle {
-  font: 300 1.25rem/1.75rem var(--font-serif);
-  letter-spacing: -0.025em;
+  font: 300 1.2rem/1.5 var(--font-serif);
+  letter-spacing: -0.015em;
 }
 
 .navMenuDesktop {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-4);
+  font-size: 1rem;
 }
 
 .navLink {
   color: var(--color-nav-link);
   text-decoration: none;
-  transition: color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: color 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navLink:hover,
@@ -41,8 +41,7 @@
   color: var(--color-text);
 }
 
-/* 品牌墨滴徽记：每次页面加载（含 ClientRouter 换页）重播抽枝动画。
-   墨滴本体不淡入——本体透明会让换页时标题区闪动；动的只有负空间里的树。 */
+/* 子页面品牌墨滴徽记：保持安静常驻，不在换页时重播抽枝动画 */
 .brandInk {
   width: 1.05em;
   height: 1.05em;
@@ -51,44 +50,9 @@
   display: inline-block;
 }
 
-.brandInkTrunk,
-.brandInkBranchL,
-.brandInkBranchR {
-  stroke-dasharray: 100.5;
-  stroke-dashoffset: 100.8;
-  animation: brand-ink-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.brandInkTrunk {
-  animation-delay: 0.2s;
-}
-
-.brandInkBranchL {
-  animation-delay: 0.52s;
-  animation-duration: 0.35s;
-}
-
-.brandInkBranchR {
-  animation-delay: 0.64s;
-  animation-duration: 0.35s;
-}
-
-@keyframes brand-ink-grow {
-  to { stroke-dashoffset: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brandInkTrunk,
-  .brandInkBranchL,
-  .brandInkBranchR {
-    animation: none !important;
-    stroke-dashoffset: 0 !important;
-  }
-}
-
 .navLinkActive {
-  color: var(--color-nav-link-hover);
-  font-weight: 500;
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 .navMenuMobile {
@@ -96,21 +60,22 @@
   max-height: 0;
   overflow: hidden;
   background: var(--color-background);
-  border-top: 1px solid var(--color-header-divider);
-  transition: max-height 0.3s ease-in-out;
+  border-top: 1px solid transparent;
+  transition: max-height 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
 }
 
 .navMenuMobile[data-open="true"] {
   max-height: 300px;
+  border-top-color: var(--color-header-divider);
 }
 
 .navMenuContainer {
   max-width: var(--max-width);
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: var(--layout-inline-padding);
   display: flex;
   flex-direction: column;
-  padding-block: var(--space-2) var(--space-4);
+  padding-block: var(--space-2) var(--space-3);
   background: var(--color-background);
 }
 
@@ -162,7 +127,7 @@
 @media (max-width: 768px) {
   .headerContainer,
   .navMenuContainer {
-    padding-inline: calc(1rem * 2 / 3);
+    padding-inline: var(--layout-inline-padding-narrow);
   }
 
   .mobileMenuToggle {
@@ -178,11 +143,12 @@
   }
 
   .navMenuMobile .navLink {
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 0.5rem;
     text-align: center;
-    border-radius: 0.375rem;
+    border-radius: 0.25rem;
     display: block;
-    transition: color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    font-size: 1rem;
+    transition: color 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .navMenuMobile .navLink:hover {
