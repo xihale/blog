@@ -1,7 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import BackToTop from "../components/BackToTop.astro";
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_ICP, SITE_ICP_URL } from "../consts";
 import { ClientRouter } from "astro:transitions";
 import katexCss from "katex/dist/katex.min.css?url";
@@ -65,11 +64,9 @@ const currentYear = new Date().getFullYear();
 	<body class="site-layout">
 		<Header />
 		<div class={siteContentClass}>
-			<div class="px-[0.3333rem] md:px-2">
-				<main class="site-main">
-					<slot />
-				</main>
-			</div>
+			<main class="site-main">
+				<slot />
+			</main>
 		</div>
 
 		<footer class="site-footer">
@@ -92,6 +89,5 @@ const currentYear = new Date().getFullYear();
 				</nav>
 			</div>
 		</footer>
-		<BackToTop />
 	</body>
 </html>
