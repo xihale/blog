@@ -38,55 +38,48 @@ const baseLayoutProps = {
   ...(math !== undefined ? { math } : {}),
 };
 
-const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const hasToc = tocHeadings.length >= 2;
-const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
 ---
 
 <BaseLayout {...baseLayoutProps} contentWidth="wide">
-  <div class="min-h-screen">
-    <article class="mx-auto max-w-[120rem] py-8 md:py-12 blog-post-layout">
-      <!-- Article Header -->
-      <header class="article-header">
-        <h1>
-          {title}
-        </h1>
+  <article class="mx-auto max-w-[88rem] blog-post-layout">
+    <!-- Article Header -->
+    <header class="article-header">
+      <h1>
+        {title}
+      </h1>
 
-        <div class="article-meta-container">
-          <time datetime={formatDateISO(pubDate)} class="font-mono">
-            {formatDate(pubDate)}
-          </time>
+      <div class="article-meta-container">
+        <time datetime={formatDateISO(pubDate)} class="font-mono">
+          {formatDate(pubDate)}
+        </time>
 
-          {
-            updatedDate && (
-              <time datetime={formatDateISO(updatedDate)} class="font-mono">
-                | {formatDate(updatedDate)}
-              </time>
-            )
-          }
-        </div>
+        {
+          updatedDate && (
+            <time datetime={formatDateISO(updatedDate)} class="font-mono">
+              · 更新于 {formatDate(updatedDate)}
+            </time>
+          )
+        }
 
         {
           tags && tags.length > 0 && (
             <div class="tag-container">
               {tags.map((tag: string) => (
-                <span class="tag">#{tag}</span>
+                <a href={`/tags/#tag-${tag}`} class="tag tag-dir-link">
+                  #{tag}
+                </a>
               ))}
             </div>
           )
         }
-      </header>
+      </div>
+    </header>
 
-      <div class={articleShellClass}>
-        {
-          hasToc && (
-            <aside class="article-toc-wrap">
-              <TableOfContents headings={tocHeadings} />
-            </aside>
-          )
-        }
-
+      <div class="article-shell">
         <div class="article-main">
+          {hasToc && <TableOfContents headings={tocHeadings} />}
           <main class="article-content body-text">
             <slot />
           </main>
@@ -132,6 +125,5 @@ const articleShellClass = hasToc ? "article-shell has-toc" : "article-shell";
           )}
         </div>
       </div>
-    </article>
-  </div>
+  </article>
 </BaseLayout>
