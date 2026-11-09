@@ -3,20 +3,29 @@
 /* Inline Code */
 :not(pre) code {
   color: var(--color-accent);
-  font: 0.85em var(--font-mono);
-  padding: 0;
-  background: none;
-  border: 0;
-  border-radius: 0;
-  word-break: break-all;
-  white-space: pre-wrap;
+  font: 0.86em var(--font-mono);
+  padding: 0.12em 0.32em;
+  background: var(--color-surface);
+  border-radius: 3px;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 /* Expressive Code */
 .expressive-code {
   margin-bottom: var(--space-4);
 
+  /* 边线与全站 hairline 统一（主题默认的 1.5px #f7f7f7 在纸面上不可见） */
+  --ec-brdWd: 1px !important;
+  --ec-brdCol: var(--color-border) !important;
+
   & :is(pre, figcaption, figcaption.header) { border-radius: 0 !important; }
+
+  /* 边线与全站 hairline 统一：EC 默认把顶边画在隐藏的 header 上（会缺一条顶边），
+     这里直接给 pre 确定的四边细线，不再依赖 EC 的拆分 */
+  & pre {
+    border: 1px solid var(--color-border) !important;
+  }
 
   & .frame {
     position: relative;
