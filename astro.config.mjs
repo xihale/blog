@@ -43,7 +43,7 @@ export default defineConfig({
             themes: ['vitesse-dark', 'vitesse-light'],
             // 扁平纸面：去掉默认的悬浮投影，代码块不应像浮在纸上的卡片
             styleOverrides: {
-                frames: { frameBoxShadowCssVal: 'none' },
+                frames: { frameBoxShadowCssValue: 'none' },
             },
             defaultProps:{
                 wrap: true,

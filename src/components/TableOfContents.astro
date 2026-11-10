@@ -37,27 +37,27 @@ for (const item of tocItems) {
 
 {
   tocItems.length >= 2 && (
-    <nav class={styles.toc} aria-label="文章目录">
-      <details class={styles.details} data-toc-details>
-        <summary class={styles.summary}>
-          <span class={styles.chevron} aria-hidden="true">
+    <nav class={styles["toc"]} aria-label="文章目录">
+      <details class={styles["details"]} data-toc-details>
+        <summary class={styles["summary"]}>
+          <span class={styles["chevron"]} aria-hidden="true">
             ›
           </span>
-          <span class={styles.title}>目录</span>
+          <span class={styles["title"]}>目录</span>
         </summary>
 
-        <ol class={styles.list}>
+        <ol class={styles["list"]}>
           {tocTree.map((h2) => (
             <li>
-              <a href={`#${h2.id}`} class={styles.linkH2}>
+              <a href={`#${h2.id}`} class={styles["linkH2"]}>
                 {h2.text}
               </a>
 
               {h2.children.length > 0 && (
-                <ol class={styles.sublist}>
+                <ol class={styles["sublist"]}>
                   {h2.children.map((h3) => (
                     <li>
-                      <a href={`#${h3.id}`} class={styles.linkH3}>
+                      <a href={`#${h3.id}`} class={styles["linkH3"]}>
                         {h3.text}
                       </a>
                     </li>
