@@ -4,16 +4,18 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { coverBytes, coverMime, coverUrl } from '../utils/cover';
 
 export async function GET(context: APIContext) {
-	const [blogPosts, fragmentPosts] = await Promise.all([
+	const [blogPosts, fragmentPosts, essayPosts] = await Promise.all([
 		getCollection('blog'),
 		getCollection('fragments'),
+		getCollection('essays'),
 	]);
 
 	const sortedPosts = [
 		...blogPosts.map((post) => ({ post, link: `/writing/${post.id}/` })),
 		...fragmentPosts.map((post) => ({ post, link: `/fragments/${post.id}/` })),
+		...essayPosts.map((post) => ({ post, link: `/essays/${post.id}/` })),
 	]
-		.filter(({ post }) => !post.data.draft)
+		.filter(({ post }) => !post.data.draft && !post.data.unlisted)
 		.sort((a, b) => b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf());
 
 	const siteUrl = context.site!.toString().replace(/\/$/, "");

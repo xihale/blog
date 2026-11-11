@@ -14,6 +14,7 @@ const postSchema = () =>
 		updatedDate: z.coerce.date().optional(),
 		draft: z.boolean().optional(),
 		unlisted: z.boolean().optional(),
+		featured: z.boolean().optional(),
 		tags: z.array(z.string()).optional(),
 		math: z.boolean().optional(),
 		mermaid: z.boolean().optional(),
@@ -32,4 +33,10 @@ const fragments = defineCollection({
 	schema: postSchema,
 });
 
-export const collections = { blog, fragments };
+const essays = defineCollection({
+	// Load Markdown and MDX files in the `src/content/essays/` directory.
+	loader: glob({ base: './src/content/essays', pattern: '**/*.{md,mdx}' }),
+	schema: postSchema,
+});
+
+export const collections = { blog, fragments, essays };

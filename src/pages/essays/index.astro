@@ -1,0 +1,94 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDateShort, formatDateISO } from "../../utils/date";
+import "../../styles/components/article.css";
+
+const posts = await getCollection("essays", ({ data }) => {
+  return data.draft !== true && data.unlisted !== true;
+});
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const postsByYear = sortedPosts.reduce(
+  (acc, post) => {
+    const year = post.data.pubDate.getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof posts>,
+);
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<BaseLayout title="闲笔" description="白描、具体生活与克制的叙事">
+  <header class="page-header">
+    <h1>闲笔</h1>
+    <p class="page-subtitle">白描、具体生活与克制的叙事。不入首页，慢写慢发。</p>
+  </header>
+
+  <div class="archive-list">
+    {
+      years.map((year) => (
+        <section class="archive-group">
+          <h2 class="archive-heading">{year}</h2>
+          <div class="archive-items">
+            {postsByYear[year]?.map((post) => (
+              <div class="post-card">
+                <a href={`/essays/${post.id}/`} class="block">
+                  <div class="blog-post-item">
+                    <time
+                      datetime={formatDateISO(post.data.pubDate)}
+                      class="blog-date"
+                    >
+                      {formatDateShort(post.data.pubDate)}
+                    </time>
+
+                    <div class="blog-content">
+                      <div class="post-title-row">
+                        <h3 class="post-title">{post.data.title}</h3>
+                        {post.data.tags && post.data.tags.length > 0 && (
+                          <div class="tag-container">
+                            {post.data.tags.slice(0, 3).map((tag: string) => (
+                              <span class="tag-small">#{tag}</span>
+                            ))}
+                            {post.data.tags.length > 3 && (
+                              <span class="tag-small">
+                                +{post.data.tags.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {post.data.description && (
+                        <p class="post-description">
+                          {post.data.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  {
+    sortedPosts.length === 0 && (
+      <div class="empty-state">
+        <p class="text-[var(--color-text-muted)]">暂无闲笔。草稿尚在冷却中。</p>
+      </div>
+    )
+  }
+</BaseLayout>

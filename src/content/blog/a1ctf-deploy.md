@@ -1,7 +1,7 @@
 ---
 title: "26 网安卫士平台搭建 (a1ctf)"
 pubDate: "2026-5-18"
-description: ""
+description: "基于三节点 Debian 12、k3s、Caddy 与私有镜像仓库部署 A1CTF 比赛平台的网络拓扑与运维实录。"
 tags: ["CTF"]
 ---
 

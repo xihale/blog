@@ -1,5 +1,7 @@
 // @ts-check
 
+import fs from 'node:fs';
+import path from 'node:path';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
@@ -16,24 +18,52 @@ import { remarkMermaid } from './lib/remark/remark-mermaid.js';
 import { fontPreload } from './lib/astro/font-preload.mjs';
 import { llmsTxt } from './lib/astro/llms-txt.mjs';
 
+/** Collect URL paths of posts marked `unlisted: true` so sitemap excludes them. */
+function collectUnlistedPaths() {
+    /** @type {Set<string>} */
+    const paths = new Set();
+    /** @type {Array<[string, string]>} */
+    const dirs = [
+        ['blog', '/writing/'],
+        ['fragments', '/fragments/'],
+        ['essays', '/essays/'],
+    ];
+    for (const [dir, prefix] of dirs) {
+        const fullDir = path.join(process.cwd(), 'src/content', dir);
+        if (!fs.existsSync(fullDir)) continue;
+        for (const entry of fs.readdirSync(fullDir)) {
+            if (!/\.(md|mdx)$/.test(entry)) continue;
+            const raw = fs.readFileSync(path.join(fullDir, entry), 'utf8');
+            const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+            if (/^unlisted:\s*true\s*$/m.test(fm)) {
+                const slug = entry.replace(/\.(md|mdx)$/, '').toLowerCase();
+                paths.add(`${prefix}${slug}/`);
+            }
+        }
+    }
+    return paths;
+}
+const unlistedPaths = collectUnlistedPaths();
+
 // https://astro.build/config
 const SITE = 'https://xeed.ink';
 export default defineConfig({
     site: SITE,
     output: 'static',
     redirects: {
-        '/writing/erasable': '/fragments/erasable/',
-        '/writing/relay-race': '/fragments/relay-race/',
-        '/writing/the-crier': '/fragments/the-crier/',
-        '/writing/setting-out-for-future': '/fragments/setting-out-for-future/',
-        '/writing/when-you-cant-cry': '/fragments/when-you-cant-cry/',
         '/writing/coincidence-high-school': '/fragments/coincidence-high-school/',
-        '/writing/dream-garden': '/fragments/dream-garden/',
         '/writing/knowledge-action': '/fragments/knowledge-action/',
-        '/writing/neo-colonialism': '/fragments/neo-colonialism/',
         '/writing/science-and-religion': '/fragments/science-and-religion/',
-        '/writing/slow-retreat': '/fragments/slow-retreat/',
-        '/writing/sakurada-reset-quotes': '/fragments/sakurada-reset-quotes/',
+        '/writing/aur-publish': '/fragments/aur-publish/',
+        '/writing/compitition-cpp': '/fragments/compitition-cpp/',
+        '/writing/import-shiki': '/fragments/import-shiki/',
+        '/writing/lxgw-everywhere': '/fragments/lxgw-everywhere/',
+        '/writing/sni': '/fragments/sni/',
+        '/blog/aur-publish': '/fragments/aur-publish/',
+        '/blog/compitition-cpp': '/fragments/compitition-cpp/',
+        '/blog/import-shiki': '/fragments/import-shiki/',
+        '/blog/lxgw-everywhere': '/fragments/lxgw-everywhere/',
+        '/blog/sni': '/fragments/sni/',
     },
     integrations: [
         fontPreload(),
@@ -56,7 +86,15 @@ export default defineConfig({
             ]
         }),
         mdx(),
-        sitemap()
+        sitemap({
+            filter: (page) => {
+                const pathname = new URL(page).pathname;
+                if (pathname === '/blog/' || pathname.startsWith('/blog/') || pathname === '/categories/') {
+                    return false;
+                }
+                return !unlistedPaths.has(pathname);
+            },
+        })
     ],
     markdown: {
         processor: unified({

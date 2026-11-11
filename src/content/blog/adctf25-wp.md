@@ -1,7 +1,7 @@
 ---
 title: "ADCTF25-WP"
 pubDate: "2025-12-02"
-description: ""
+description: "ADCTF 2025 多方向题解记录，涵盖八元数与椭圆曲线异常攻击等 Crypto、Forensic、Misc、Pwn、Reverse 与 Web 题目。"
 tags: ["CTF"]
 math: true
 ---

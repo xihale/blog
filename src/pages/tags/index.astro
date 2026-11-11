@@ -4,11 +4,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { formatDateShort, formatDateISO } from "../../utils/date";
 import "../../styles/components/article.css";
 
-const [blogPosts, fragmentPosts] = await Promise.all([
+const [blogPosts, fragmentPosts, essayPosts] = await Promise.all([
   getCollection("blog", ({ data }) => {
     return data.draft !== true && data.unlisted !== true;
   }),
   getCollection("fragments", ({ data }) => {
+    return data.draft !== true && data.unlisted !== true;
+  }),
+  getCollection("essays", ({ data }) => {
     return data.draft !== true && data.unlisted !== true;
   }),
 ]);
@@ -16,6 +19,7 @@ const [blogPosts, fragmentPosts] = await Promise.all([
 const entries = [
   ...blogPosts.map((post) => ({ post, href: `/writing/${post.id}/` })),
   ...fragmentPosts.map((post) => ({ post, href: `/fragments/${post.id}/` })),
+  ...essayPosts.map((post) => ({ post, href: `/essays/${post.id}/` })),
 ];
 
 // Collect all tags and group posts by tag
@@ -38,7 +42,7 @@ const tags = [...tagMap.entries()]
   .sort((a, b) => b.posts.length - a.posts.length);
 ---
 
-<BaseLayout title="标签" description="按标签归档的全部文章与碎语">
+<BaseLayout title="标签" description="按标签归档的全部长文与短记">
   <header class="page-header">
     <h1>标签</h1>
 

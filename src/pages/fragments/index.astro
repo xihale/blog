@@ -29,10 +29,10 @@ const years = Object.keys(postsByYear)
   .sort((a, b) => b - a);
 ---
 
-<BaseLayout title="碎语" description="散文、随想，与不成篇的句子">
+<BaseLayout title="短记" description="TIL、技术踩坑、工具速记与简短思考">
   <header class="page-header">
-    <h1>碎语</h1>
-    <p class="page-subtitle">散文、随想，与不成篇的句子。</p>
+    <h1>短记</h1>
+    <p class="page-subtitle">TIL、踩坑速记、工具折腾与简短思考。</p>
   </header>
 
   <div class="archive-list">
@@ -88,7 +88,7 @@ const years = Object.keys(postsByYear)
   {
     sortedPosts.length === 0 && (
       <div class="empty-state">
-        <p class="text-[var(--color-text-muted)]">暂无碎语。</p>
+        <p class="text-[var(--color-text-muted)]">暂无短记。</p>
       </div>
     )
   }

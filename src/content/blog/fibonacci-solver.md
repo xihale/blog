@@ -3,6 +3,7 @@ title: "斐波那契：矩阵快速幂、通项与扩域"
 pubDate: "2026-07-25"
 description: "从递推矩阵出发，整理斐波那契的 O(log n) 求法：矩阵快速幂、对角化通项公式，以及用扩域做精确整数运算。"
 tags: ["技术"]
+featured: true
 draft: false
 math: true
 ---
