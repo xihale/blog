@@ -115,10 +115,12 @@ const recentFragments = allFragments
                 >
                   {formatDate(note.data.pubDate)}
                 </time>
-                <span class="note-title">{note.data.title}</span>
-                {note.data.tags?.[0] && (
-                  <span class="entry-tag">#{note.data.tags[0]}</span>
-                )}
+                <span class="note-title-row">
+                  <span class="note-title">{note.data.title}</span>
+                  {note.data.tags?.[0] && (
+                    <span class="entry-tag">#{note.data.tags[0]}</span>
+                  )}
+                </span>
               </a>
             ))}
           </div>
@@ -300,14 +302,22 @@ const recentFragments = allFragments
 
   .note-item {
     display: grid;
-    grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
     gap: 0.85rem;
     align-items: baseline;
+  }
+
+  .note-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    min-width: 0;
   }
 
   .note-title {
     font: 400 1rem/1.5 var(--font-serif);
     color: var(--color-text);
+    flex: 0 1 auto;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -318,6 +328,10 @@ const recentFragments = allFragments
   .note-item:hover .note-title,
   .note-item:focus-visible .note-title {
     color: var(--article-link-color);
+  }
+
+  .note-title-row .entry-tag {
+    flex: none;
   }
 
   @media (max-width: 600px) {
